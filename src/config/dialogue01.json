@@ -1,0 +1,16 @@
+{
+  "sceneId": "w2",
+  "intro": [
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "다음 관문은 티켓팅이야. 그림자 상단이 입구를 통째로 장악했대." },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "{nickname}, 8시 정각. 심호흡하고—— 새로고침 준비!" }
+  ],
+  "boss": [
+    { "speaker": "티켓팅 서버", "portrait": "server", "side": "left", "text": "대기번호 999,999번. ……뒤로 가." },
+    { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "8시 정각에 들어왔는데?!" },
+    { "speaker": "티켓팅 서버", "portrait": "server", "side": "left", "text": "그건 너의 사정. 새로고침은 죄악이다." }
+  ],
+  "outro": [
+    { "speaker": "티켓팅 서버", "portrait": "server", "side": "left", "text": "좌석이…… 확정…… 되었습니다……" },
+    { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "정공법으로 뚫었다." }
+  ]
+}

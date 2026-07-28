@@ -1,0 +1,29 @@
+name: Supabase Keep-Alive
+
+# §6 운영 필수: Supabase 무료 티어는 7일 무활동 시 자동 일시정지.
+# 3일마다 REST 엔드포인트를 핑해 활성 상태 유지. (Secrets 미설정 시 스킵 — v1은 localStorage)
+on:
+  schedule:
+    - cron: '0 6 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "Supabase Secrets 미설정 — v1 파일럿(localStorage)에서는 스킵합니다."
+            exit 0
+          fi
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            "$SUPABASE_URL/rest/v1/scores?select=id&limit=1")
+          echo "Supabase ping → HTTP $code"
+          if [ "$code" -ge 500 ]; then
+            echo "서버 오류 응답"; exit 1
+          fi

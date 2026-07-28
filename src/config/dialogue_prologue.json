@@ -1,0 +1,11 @@
+{
+  "sceneId": "prologue",
+  "lines": [
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "나는 DIA의 빛을 돌보는 요정. 오늘도 심심해서 지구 소리에 이끌려 여기 왔어." },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "……어? 저 아이, 주파수가 나랑 되게 잘 맞는데?" },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "카드를 뽑네. 두구두구두구—— 우와, 13장 다? 이런 애 오랜만이다." },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "잠깐, 이 떨림…… DIA가?! 안 돼, 저 아이 위험해!", "effect": "shake" },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "……에잇, 모르겠다!" },
+    { "speaker": "", "portrait": "", "text": "(봉이, 유저 손의 응원봉으로 빙의 — 넘어짐을 막는다. 암전.)", "effect": "narration" }
+  ]
+}

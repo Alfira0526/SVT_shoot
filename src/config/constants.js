@@ -1,0 +1,100 @@
+// 게임 전역 상수 — 기획서 §5.3(규격), §2.6(색 토큰), §3.7(점수), §6(랭킹)
+// 주의(§7): 그룹명·멤버명·팬덤명 등 공식 IP는 코드/에셋/공개물에 일절 사용하지 않음.
+// 여기 정의는 전면 노출 가능 등급(색/숫자/일반용어)만 포함한다.
+
+// ── 논리 해상도 (세로 모바일) ─────────────────────────────
+export const GAME_WIDTH = 480;
+export const GAME_HEIGHT = 800;
+
+// ── 팬덤 상징 색 팔레트 (§2.6 전면 노출 가능 등급, 전역 토큰) ──
+// 색상값 자체는 저작권 보호 대상이 아님. UI·빛 이펙트 기본색으로 사용.
+export const PALETTE = {
+  // 상징색 2종 (로즈/세레니티 계열 — 빛 이펙트·UI 강조)
+  rose: 0xf1c7d2,
+  serenity: 0x9cc1e5,
+  roseHex: '#f1c7d2',
+  serenityHex: '#9cc1e5',
+  // 배경·심연 (DIA가 흐려진 세계)
+  deep: 0x0d0b1a,
+  deepHex: '#0d0b1a',
+  deepMid: 0x1a1730,
+  panel: 0x161327,
+  panelHex: '#161327',
+  // 빛(플레이어 탄·DIA 결정)
+  light: 0xfdf6c9,
+  lightHex: '#fdf6c9',
+  // 위험(적 탄·노이즈)
+  danger: 0xff5d73,
+  dangerHex: '#ff5d73',
+  // 텍스트
+  ink: '#f6f2ff',
+  inkDim: '#b9b2d6',
+  gold: 0xffd66b,
+  goldHex: '#ffd66b',
+};
+
+// ── 상징 숫자 (§2.6 / §4.2) — 보너스·연출 소품 ────────────
+export const LUCKY = {
+  guardians: 13, // 13인의 수호자
+  seventeen: 17,
+  ticketHour: 8, // 8:00 정각 티켓팅
+};
+
+// ── 플레이어 (§3.2 사망 처리, §3.3 조작) ──────────────────
+export const PLAYER = {
+  startLives: 3, // 잔기 3, 컨티뉴 없음 (D16)
+  speedLerp: 0.35, // 드래그 추종 보간
+  dragOffsetY: 64, // 손가락 위 오프셋 (§3.3)
+  fireIntervalMs: 220,
+  invincibleMs: 1400, // 피격 후 짧은 무적
+  maxPower: 3, // 탄 1열 → 최대 3열 (응원봉 파워업)
+  hitRadius: 7, // 판정(그레이즈 여지) — 겉보기보다 작게
+};
+
+// ── 점수 체계 (§3.7) ─────────────────────────────────────
+export const SCORE = {
+  mobKill: 100,
+  bossTick: 10, // 보스 데미지 틱당
+  bossKill: 10000,
+  noMiss: 5000,
+};
+
+// ── 서버측 검증용: 모드별 이론상 최대 점수 상한 (T7, §6) ──
+// (총 잡몹 수 × 100) + (보스HP/틱데미지 × 10) + 보스격파 + 노미스
+export function theoreticalMaxScore({ totalMobs, bossHp, tickDamage }) {
+  const mobs = (totalMobs || 0) * SCORE.mobKill;
+  const bossDamageTicks =
+    tickDamage > 0 ? Math.ceil(bossHp / tickDamage) * SCORE.bossTick : 0;
+  return mobs + bossDamageTicks + SCORE.bossKill + SCORE.noMiss;
+}
+
+// ── 랭킹/저장 (§5.5, §6 / 인수인계 §5) ───────────────────
+// v1 localStorage 키 — v2 Supabase progress 테이블 컬럼과 1:1 대응되게 설계(D28)
+//   fs_nickname            → progress.nickname
+//   fs_progress            → progress.{cleared_stages, best_score, no_miss_clear}
+//   fs_settings            → progress.settings {bgm, sfx}
+export const STORAGE = {
+  nickname: 'fs_nickname',
+  progress: 'fs_progress', // { clearedStages:[], bestScore:0, noMissClear:false }
+  settings: 'fs_settings', // { bgm:true, sfx:true }
+  localRanking: 'fs_ranking_stage', // v1 로컬 보드 [{ nickname, score, mode, play_ms, at }]
+};
+
+// 닉네임 규칙 (인수인계 §6: scores.nickname 2~8자)
+export const NICKNAME = {
+  min: 2,
+  max: 8,
+};
+
+// 금칙어 필터 (§6 ④ — 아티스트 비방 방지, 클라 1차 / 서버 2차).
+// 최소 방어용 목록 — 서버 이관(v1.5) 시 서버측 목록이 최종 기준. 확장은 QA 관리.
+export const BANNED_WORDS = [
+  'fuck', 'shit', 'bitch', 'asshole', 'nigger', 'faggot',
+  '씨발', '시발', '씨빨', '개새', '병신', '지랄', '좆', '보지', '자지', '섹스', '창녀', '한남', '한녀',
+];
+
+// 필터 실패·빈 닉네임 시 대사 호칭 대체값 (인수인계 §6)
+export const FALLBACK_NAME = '신입 수호자';
+
+// 서버 검증 ②: 플레이 시간 대비 점수 비율 상한 (점수/초). 캐주얼 조작 차단용 보수값.
+export const SCORE_PER_SEC_CAP = 4000;

@@ -1,0 +1,46 @@
+{
+  "id": "w1",
+  "title": "W1 · 입덕",
+  "subtitle": "빙의 직후, 봉이와의 첫 만남",
+  "dialogueKey": "w1",
+  "bgTint": "deepMid",
+  "waves": [
+    {
+      "at": 800,
+      "enemies": [
+        { "type": "macro", "x": 0.3 },
+        { "type": "macro", "x": 0.7 }
+      ]
+    },
+    {
+      "at": 2600,
+      "enemies": [
+        { "type": "spinner", "x": 0.25 },
+        { "type": "spinner", "x": 0.75 }
+      ]
+    },
+    {
+      "at": 4600,
+      "enemies": [
+        { "type": "macro", "x": 0.2 },
+        { "type": "macro", "x": 0.5 },
+        { "type": "macro", "x": 0.8 }
+      ]
+    },
+    {
+      "at": 6600,
+      "item": "wand",
+      "itemX": 0.5
+    }
+  ],
+  "boss": {
+    "name": "소형 노이즈",
+    "portrait": "noise",
+    "type": "mini_noise",
+    "hp": 900,
+    "phases": [
+      { "from": 1.0, "to": 0.5, "pattern": "spread", "count": 5, "speed": 120, "intervalMs": 1100 },
+      { "from": 0.5, "to": 0.0, "pattern": "spread", "count": 8, "speed": 150, "intervalMs": 850 }
+    ]
+  }
+}

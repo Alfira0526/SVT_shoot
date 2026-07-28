@@ -1,0 +1,18 @@
+{
+  "sceneId": "w1",
+  "intro": [
+    { "speaker": "", "portrait": "", "text": "(유저, 얼떨떨하게 정신을 차린다.)", "effect": "narration" },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "정신 좀 들어? 방금 진짜 아슬아슬했어." },
+    { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "……뭐야, 방금 목소리?" },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "나? 어, 그……. 나도 지금 좀 당황스러운데, 일단 네 응원봉 안에 있어." },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "설명하자면 긴데 — 네가 낸 빛이 하도 예뻐서 눈여겨보다가, 위험해 보이길래 그냥 뛰어들었어." },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "근데 하필 첫날부터 손님이 왔네. 잡는 법부터 가르쳐줄게!" }
+  ],
+  "boss": [
+    { "speaker": "소형 노이즈", "portrait": "noise", "side": "left", "text": "지지직…… 그 빛, 거슬려……" }
+  ],
+  "outro": [
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "소질 있는데? 정식 소개할게. 난 이제 네 응원봉에 깃든 요정, 뭐 그런 거야." },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "오늘부터 우리가 빛을 지키는 거야." }
+  ]
+}

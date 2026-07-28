@@ -1,0 +1,67 @@
+{
+  "id": "w2",
+  "title": "W2 · 티켓팅 대전",
+  "subtitle": "그림자 상단이 장악한 관문 돌파",
+  "dialogueKey": "w2",
+  "bgTint": "deep",
+  "isPilot": true,
+  "waves": [
+    {
+      "at": 900,
+      "enemies": [
+        { "type": "macro", "x": 0.25 },
+        { "type": "macro", "x": 0.5 },
+        { "type": "macro", "x": 0.75 }
+      ]
+    },
+    {
+      "at": 3200,
+      "enemies": [
+        { "type": "spinner", "x": 0.2 },
+        { "type": "spinner", "x": 0.5 },
+        { "type": "spinner", "x": 0.8 }
+      ]
+    },
+    {
+      "at": 5600,
+      "enemies": [
+        { "type": "macro", "x": 0.15 },
+        { "type": "popup", "x": 0.5 },
+        { "type": "macro", "x": 0.85 }
+      ]
+    },
+    {
+      "at": 8000,
+      "item": "seed",
+      "itemX": 0.5,
+      "enemies": [
+        { "type": "spinner", "x": 0.3 },
+        { "type": "macro", "x": 0.7 }
+      ]
+    },
+    {
+      "at": 10600,
+      "midPattern": "queue_surge"
+    },
+    {
+      "at": 14200,
+      "item": "wand",
+      "itemX": 0.5,
+      "enemies": [
+        { "type": "popup", "x": 0.3 },
+        { "type": "popup", "x": 0.7 }
+      ]
+    }
+  ],
+  "boss": {
+    "name": "티켓팅 서버",
+    "portrait": "server",
+    "type": "ticketing_server",
+    "hp": 4200,
+    "phases": [
+      { "from": 1.0, "to": 0.7, "pattern": "fan", "count": 7, "speed": 130, "intervalMs": 950, "summon": "macro" },
+      { "from": 0.7, "to": 0.3, "pattern": "refresh", "count": 16, "speed": 150, "intervalMs": 1500 },
+      { "from": 0.3, "to": 0.0, "pattern": "rage", "count": 20, "speed": 180, "intervalMs": 700 }
+    ]
+  }
+}
