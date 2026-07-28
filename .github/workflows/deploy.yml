@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+      - run: npm install
       - run: npm run build
         env:
           # Supabase 연동(v1.5~) 시 리포지토리 Secrets로 주입. 미설정이면 localStorage 동작.
