@@ -9,6 +9,9 @@ export class BootScene extends Phaser.Scene {
   }
 
   create() {
+    // 모바일: 롱프레스 컨텍스트 메뉴 억제 (오조작·선택 방지)
+    this.input.mouse?.disableContextMenu();
+
     this._transparent('__none');
     this._makeBullets();
     this._makePlayer();

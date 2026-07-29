@@ -50,17 +50,17 @@ npm run preview    # 빌드 결과 로컬 확인
 | 2 | 코어 루프 (드래그·자동발사·충돌·점수 HUD) | ✅ |
 | 3 | 웨이브 시스템 (JSON·잡몹 3종·중간 패턴) | ✅ |
 | 4 | 대사·보스 3페이즈·플로우·스킵/빨리감기 | ✅ |
-| 5 | 도트 에셋 교체 | ⬜ 임시 도형으로 전 기능 완성 (교체 대기) |
-| 6 | Supabase 랭킹 연동 + keep-alive | 🟡 인터페이스·로컬 보드·워크플로 준비 / 원격 배선 대기(v1.5) |
-| 7 | 모바일 최적화 | 🟡 터치·반응형 스케일 적용 (실기기 검증 대기) |
-| 8 | GitHub Pages 배포 | 🟡 워크플로 준비 (`main` 병합 시 활성화) |
+| 5 | 도트 에셋 교체 | ⬜ 임시 도형으로 전 기능 완성 (디자이너 산출물 교체 대기) |
+| 6 | Supabase 랭킹 연동 + keep-alive | ✅ 코드 완성 — 스키마·Edge Function(서버검증 5종)·env 자동전환. 프로젝트 생성+시크릿만 남음 ([supabase/](./supabase/)) |
+| 7 | 모바일 최적화 | ✅ 터치·멀티터치·컨텍스트메뉴 억제·100dvh·FIT autoRound·60fps 목표 |
+| 8 | GitHub Pages 배포 | 🟡 워크플로 준비 (`main` 병합 + Pages 활성화 시 게시) |
 
 ## 랭킹·보안 (§6)
 
 - v1은 **localStorage 로컬 보드**로 동작. 점수 제출 시 클라이언트 1차 검증(이론상 최대 상한 `theoreticalMaxScore()`,
   플레이 시간 대비 비율, 닉네임 길이·금칙어)을 서버 검증과 동일 로직으로 선반영.
-- v1.5~ Supabase 전환: `.env`에 `VITE_SUPABASE_URL`·`VITE_SUPABASE_ANON_KEY` 설정 →
-  `src/net/supabase.js`의 `submitRemote/fetchRemote` 구현부 활성화. 스키마·검증은 동일 인터페이스 유지.
+- Supabase 전환: `.env`에 `VITE_SUPABASE_URL`·`VITE_SUPABASE_ANON_KEY`만 설정하면 코드 수정 없이
+  자동으로 원격 모드(`isRemoteRanking()`)로 동작. 스키마·Edge Function 검증·배포 절차는 [`supabase/README.md`](./supabase/README.md).
 - 개인정보 미수집 — 익명 닉네임만. 진행도는 기기 종속(게임 내 고지).
 
 ## IP·저작권 제약 (§7 / 하드 제약 — 위반 시 배포 불가)

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT, PALETTE } from '../config/constants.js';
-import { submitScore, fetchRanking } from '../net/supabase.js';
+import { submitScore, fetchRanking, isRemoteRanking } from '../net/supabase.js';
 
 // 랭킹 (§3.1-3, §6) — 점수 제출 → 보드 표시 → 재도전.
 export class RankingScene extends Phaser.Scene {
@@ -58,12 +58,16 @@ export class RankingScene extends Phaser.Scene {
 
     await this._renderBoard(submitName, score);
 
-    // 로컬 저장 고지 (§5.5 — 기기 종속)
+    // 저장 모드 고지 (§5.5 — 로컬은 기기 종속)
     this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT - 118, '※ 진행도·랭킹은 이 기기에 저장됩니다 (v1)', {
-        fontSize: '11px',
-        color: PALETTE.inkDim,
-      })
+      .text(
+        GAME_WIDTH / 2,
+        GAME_HEIGHT - 118,
+        isRemoteRanking()
+          ? '※ 랭킹은 온라인 서버에 기록됩니다'
+          : '※ 진행도·랭킹은 이 기기에 저장됩니다 (v1)',
+        { fontSize: '11px', color: PALETTE.inkDim }
+      )
       .setOrigin(0.5);
 
     this._button(GAME_WIDTH / 2 - 92, GAME_HEIGHT - 66, '다시 도전', () =>

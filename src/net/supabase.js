@@ -1,21 +1,34 @@
 // 랭킹 백엔드 어댑터 (§6, §9-6)
-// v1 파일럿: localStorage 로컬 랭킹으로 동작.
-// v1.5~ : 아래 SUPABASE_CONFIG 채우고 submitRemote/fetchRemote 구현부를 활성화하면
-//         동일 인터페이스로 Supabase(scores 테이블 mode 컬럼: stage/endless)로 전환.
+// 동작 모드는 빌드 시 환경변수로 자동 결정:
+//   VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY 둘 다 설정 → 원격(Supabase) 모드
+//   미설정(v1 파일럿 기본) → localStorage 로컬 랭킹
+// 원격/로컬 모두 동일한 submitScore/fetchRanking 인터페이스. 원격 실패 시 로컬로 폴백.
 //
-// 서버측 검증(§6): 이론상 최대 점수 상한 · 플레이시간 대비 점수 비율 · 제출 빈도 · 닉네임 금칙어.
-// 클라 점수는 원천 조작 가능 — 목표는 캐주얼 조작 차단(전제 사실).
+// 서버측 검증(§6)은 Supabase Edge Function(supabase/functions/submit-score)에서 최종 수행:
+//   ① 이론상 최대 점수 상한 ② 플레이시간 대비 점수 비율 ③ 제출 빈도 ④ 닉네임 길이·금칙어.
+// 아래 클라이언트 검증은 1차 방어(캐주얼 조작 차단)이며, 서버가 동일 로직으로 재검증한다.
 
 import { STORAGE, SCORE_PER_SEC_CAP, NICKNAME } from '../config/constants.js';
 import { containsBanned } from '../systems/Filter.js';
 
 const SUPABASE_CONFIG = {
-  url: '', // 예: https://xxxx.supabase.co
-  anonKey: '', // 공개 anon key
-  enabled: false, // true 로 바꾸면 원격 모드
+  url: (import.meta.env.VITE_SUPABASE_URL || '').replace(/\/+$/, ''),
+  anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
 };
+const REMOTE_ENABLED = !!(SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey);
+
+export function isRemoteRanking() {
+  return REMOTE_ENABLED;
+}
 
 const MAX_ROWS = 100;
+
+function authHeaders() {
+  return {
+    apikey: SUPABASE_CONFIG.anonKey,
+    Authorization: `Bearer ${SUPABASE_CONFIG.anonKey}`,
+  };
+}
 
 function readLocal() {
   try {
@@ -70,7 +83,7 @@ export async function submitScore({
     at: nowIso(),
   };
 
-  if (SUPABASE_CONFIG.enabled) {
+  if (REMOTE_ENABLED) {
     try {
       return await submitRemote(entry);
     } catch (e) {
@@ -92,7 +105,7 @@ export async function submitScore({
  * @returns {Promise<Array<{nickname,score,mode,at}>>}
  */
 export async function fetchRanking({ mode = 'stage', limit = 20 } = {}) {
-  if (SUPABASE_CONFIG.enabled) {
+  if (REMOTE_ENABLED) {
     try {
       return await fetchRemote({ mode, limit });
     } catch (e) {
@@ -105,13 +118,43 @@ export async function fetchRanking({ mode = 'stage', limit = 20 } = {}) {
     .slice(0, limit);
 }
 
-// ── 원격 구현 자리(placeholder) — v1.5~ 활성화 ─────────────
-async function submitRemote(_entry) {
-  // TODO(v1.5): supabase-js 또는 Edge Function fetch 로 교체.
-  throw new Error('remote-not-implemented');
+// ── 원격 구현 (Supabase) ─────────────────────────────────
+// 제출은 Edge Function(service_role 로 검증·insert)을 통해서만. anon 직접 insert는 RLS로 차단.
+async function submitRemote(entry) {
+  const res = await fetch(`${SUPABASE_CONFIG.url}/functions/v1/submit-score`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify({
+      nickname: entry.nickname,
+      score: entry.score,
+      mode: entry.mode,
+      play_ms: entry.play_ms,
+    }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    // 함수가 검증 반려(422 등)를 명시 사유와 함께 반환
+    return { ok: false, rank: null, reason: data.reason || `http-${res.status}` };
+  }
+  return { ok: data.ok !== false, rank: data.rank ?? null, reason: data.reason };
 }
-async function fetchRemote(_opts) {
-  throw new Error('remote-not-implemented');
+
+// 보드 조회는 REST(select)로. RLS select 정책이 익명 읽기를 허용.
+async function fetchRemote({ mode, limit }) {
+  const q =
+    `${SUPABASE_CONFIG.url}/rest/v1/scores` +
+    `?select=nickname,score,mode,play_ms,created_at` +
+    `&mode=eq.${encodeURIComponent(mode)}&order=score.desc&limit=${limit}`;
+  const res = await fetch(q, { headers: authHeaders() });
+  if (!res.ok) throw new Error(`fetch http-${res.status}`);
+  const rows = await res.json();
+  return rows.map((r) => ({
+    nickname: r.nickname,
+    score: r.score,
+    mode: r.mode,
+    play_ms: r.play_ms,
+    at: r.created_at,
+  }));
 }
 
 // new Date() 직접 사용 최소화를 위한 래퍼 (테스트 시 주입 용이)
