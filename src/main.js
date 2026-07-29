@@ -6,6 +6,7 @@ import { PrologueScene } from './scenes/PrologueScene.js';
 import { GameScene } from './scenes/GameScene.js';
 import { DialogueScene } from './scenes/DialogueScene.js';
 import { RankingScene } from './scenes/RankingScene.js';
+import { SettingsScene } from './scenes/SettingsScene.js';
 
 // 팬덤 세로 슈팅 파일럿 — 빛의 세계(DIA)
 // 모바일 세로 480×800 논리 해상도 / 터치 드래그 이동 / 자동 발사 (§5.1, §9)
@@ -36,7 +37,7 @@ const config = {
     default: 'arcade',
     arcade: { debug: false },
   },
-  scene: [BootScene, TitleScene, PrologueScene, GameScene, DialogueScene, RankingScene],
+  scene: [BootScene, TitleScene, PrologueScene, GameScene, DialogueScene, RankingScene, SettingsScene],
 };
 
 const game = new Phaser.Game(config);

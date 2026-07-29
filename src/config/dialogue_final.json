@@ -1,0 +1,16 @@
+{
+  "sceneId": "final",
+  "_status": "1차 초안 — DIA 세계관 반영 재검토 필요 (T14). v1 미사용, v2 예약 슬롯.",
+  "intro": [
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "……전부 이어져 있었어. 상단도, 기계 군단도, 노이즈도." },
+    { "speaker": "독점자", "portrait": "monopolist", "side": "left", "text": "빛은 낭비다. 내가 거두어 보관해주지. 영원히, 나 혼자." },
+    { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "빛은 모으라고 있는 거야. 혼자가 아니라, 다 같이." }
+  ],
+  "boss": [
+    { "speaker": "독점자", "portrait": "monopolist", "side": "left", "text": "그 오만함, 여기서 거두어주마." }
+  ],
+  "outro": [
+    { "speaker": "독점자", "portrait": "monopolist", "side": "left", "text": "……오늘은 물러난다. 하지만 빛이 있는 한, 나도 있다." },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "가라 가~! ……{nickname}, 고마워. 오늘의 빛, 최고였어." }
+  ]
+}

@@ -30,8 +30,20 @@ await page.goto(URL, { waitUntil: 'networkidle' });
 await page.waitForTimeout(2500);
 console.log('load:', await scenes());
 
+// 설정 화면 점검 (§11): 설정(240,624) → 토글 → 타이틀로(240,730)
+await page.mouse.click(240, 624);
+await page.waitForTimeout(600);
+const inSettings = (await scenes())?.includes('Settings');
+await page.mouse.click(390, 150); // BGM 토글
+await page.mouse.click(390, 214); // SFX 토글
+await page.waitForTimeout(200);
+await page.mouse.click(240, 730); // 타이틀로
+await page.waitForTimeout(600);
+const backToTitle = (await scenes())?.includes('Title');
+console.log('settings:', inSettings, 'backToTitle:', backToTitle);
+
 await page.evaluate(() => { const el = document.getElementById('nick'); if (el) el.value = '스모크'; });
-await page.mouse.click(240, 580);
+await page.mouse.click(240, 500);
 await page.waitForTimeout(1200);
 
 // Dialogue가 열려 있으면 계속 탭해서 전투(fighting)까지 진입
@@ -43,6 +55,15 @@ for (let i = 0; i < 60; i++) {
   await page.waitForTimeout(300);
 }
 console.log('reached fighting:', reachedFighting, await gstate());
+
+// 일시정지 점검 (§11): 좌상단 버튼 → paused → 계속하기 → resume
+await page.mouse.click(24, 24);
+await page.waitForTimeout(400);
+const paused = await page.evaluate(() => !!window.__game.scene.getScene('Game').paused);
+await page.mouse.click(240, 340); // 계속하기
+await page.waitForTimeout(400);
+const resumed = await page.evaluate(() => !window.__game.scene.getScene('Game').paused);
+console.log('pause:', paused, 'resume:', resumed);
 
 // 전투: 드래그 이동하며 자동발사·격파로 점수 증가 확인
 await page.mouse.move(240, 640); await page.mouse.down();
@@ -75,6 +96,10 @@ const storage = await page.evaluate(() => ({
 console.log('localStorage:', JSON.stringify(storage));
 
 const assert = (c, m) => { if (!c) errors.push(`[assert] ${m}`); };
+assert(inSettings, '설정 화면 진입 실패');
+assert(backToTitle, '설정→타이틀 복귀 실패');
+assert(paused, '일시정지 미작동');
+assert(resumed, '일시정지 해제 미작동');
 assert(reachedFighting, '전투 페이즈 진입 실패');
 assert(sawBullets, '플레이어 자동발사 탄 미확인');
 assert(sawEnemies, '잡몹 스폰 미확인');

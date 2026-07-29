@@ -9,6 +9,7 @@ import { ScoreSystem } from '../systems/ScoreSystem.js';
 import { WaveSpawner } from '../systems/WaveSpawner.js';
 import { Save } from '../systems/SaveSystem.js';
 import { safeDisplayName } from '../systems/Filter.js';
+import { Audio } from '../systems/Audio.js';
 
 import stageW1 from '../config/stage_w1.json';
 import stageW2 from '../config/stage01.json';
@@ -36,6 +37,7 @@ export class GameScene extends Phaser.Scene {
 
   create() {
     this.score = new ScoreSystem();
+    this.paused = false;
     this._buildBackground();
     this._buildGroups();
 
@@ -79,12 +81,20 @@ export class GameScene extends Phaser.Scene {
 
   // ── HUD ─────────────────────────────────────────────────
   _buildHud() {
+    // 일시정지 버튼 (좌상단, §11)
+    this.pauseBtn = this.add
+      .text(16, 14, '⏸', { fontSize: '22px', color: PALETTE.ink })
+      .setDepth(20)
+      .setScrollFactor(0)
+      .setInteractive({ useHandCursor: true });
+    this.pauseBtn.on('pointerdown', () => this._togglePause());
+
     this.scoreText = this.add
-      .text(12, 10, '0', { fontSize: '20px', color: PALETTE.ink, fontStyle: 'bold' })
+      .text(52, 10, '0', { fontSize: '20px', color: PALETTE.ink, fontStyle: 'bold' })
       .setDepth(20)
       .setScrollFactor(0);
     this.add
-      .text(12, 34, 'SCORE', { fontSize: '10px', color: PALETTE.serenityHex })
+      .text(52, 34, 'SCORE', { fontSize: '10px', color: PALETTE.serenityHex })
       .setDepth(20);
 
     this.livesText = this.add
@@ -148,6 +158,33 @@ export class GameScene extends Phaser.Scene {
       spawnItem: (kind, x) => this._spawnItem(kind, x),
     });
     this.spawner.start(() => this._bossIntro());
+
+    // 첫 플레이 튜토리얼 오버레이 (§11) — 최초 1회, 비차단
+    if (this.stageId === 'w1' && !Save.getFlag('tutorialSeen')) this._showTutorial();
+  }
+
+  _showTutorial() {
+    Save.setFlag('tutorialSeen');
+    const c = this.add.container(0, 0).setDepth(28);
+    const dim = this.add.rectangle(0, GAME_HEIGHT - 220, GAME_WIDTH, 120, 0x000000, 0.55).setOrigin(0);
+    const msg = this.add
+      .text(GAME_WIDTH / 2, GAME_HEIGHT - 176, '드래그로 이동 — 발사는 자동', {
+        fontSize: '18px',
+        color: PALETTE.ink,
+        fontStyle: 'bold',
+      })
+      .setOrigin(0.5);
+    const finger = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 138, '👆', { fontSize: '26px' }).setOrigin(0.5);
+    c.add([dim, msg, finger]);
+    // 손가락 좌우 흔들기
+    this.tweens.add({ targets: finger, x: GAME_WIDTH / 2 + 40, duration: 700, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    // 3.5초 후 또는 첫 이동 시 사라짐
+    const dismiss = () => {
+      if (!c.active) return;
+      this.tweens.add({ targets: c, alpha: 0, duration: 400, onComplete: () => c.destroy() });
+    };
+    this.time.delayedCall(3500, dismiss);
+    this.input.once('pointermove', dismiss);
   }
 
   _bossIntro() {
@@ -177,6 +214,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.world.pause();
     this.score.addBossKill();
     this._syncScore();
+    Audio.sfx('explode');
     this.boss.defeatSequence(() => {
       // 격파 연출: 예매 성공
       this._showBanner('예매 성공', 'SEAT CONFIRMED');
@@ -237,6 +275,63 @@ export class GameScene extends Phaser.Scene {
       noMiss,
       playMs,
     });
+  }
+
+  // ── 일시정지 (§11) ───────────────────────────────────────
+  _togglePause() {
+    if (this.paused) return this._resume();
+    if (this.phase !== 'fighting' && this.phase !== 'boss') return; // 전투 중에만
+    this._pause();
+  }
+
+  _pause() {
+    this.paused = true;
+    this.physics.world.pause();
+    Audio.sfx('ui');
+    const c = this.add.container(0, 0).setDepth(40);
+    c.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.68).setOrigin(0).setInteractive());
+    c.add(this.add.text(GAME_WIDTH / 2, 250, '일시정지', { fontSize: '30px', fontStyle: 'bold', color: PALETTE.ink }).setOrigin(0.5));
+    c.add(this._menuButton(GAME_WIDTH / 2, 340, '계속하기', PALETTE.rose, () => this._resume()));
+    c.add(this._menuButton(GAME_WIDTH / 2, 404, '재시작', PALETTE.serenity, () => {
+      Audio.sfx('ui');
+      this.scene.start('Game', { stageId: 'w1' });
+    }));
+    c.add(this._menuButton(GAME_WIDTH / 2, 468, '타이틀로', PALETTE.panel, () => {
+      Audio.sfx('ui');
+      this.scene.start('Title');
+    }));
+    this._pauseMenu = c;
+  }
+
+  _resume() {
+    this.paused = false;
+    this._pauseMenu?.destroy();
+    this._pauseMenu = null;
+    Audio.sfx('ui');
+    if (this.phase === 'fighting' || this.phase === 'boss') this.physics.world.resume();
+  }
+
+  _menuButton(x, y, label, color, cb) {
+    const container = this.add.container(x, y);
+    const w = 200;
+    const h = 52;
+    const g = this.add.graphics();
+    g.fillStyle(color, 1);
+    g.fillRoundedRect(-w / 2, -h / 2, w, h, 14);
+    const outline = color === PALETTE.panel;
+    if (outline) {
+      g.lineStyle(2, PALETTE.serenity, 0.9);
+      g.strokeRoundedRect(-w / 2, -h / 2, w, h, 14);
+    }
+    const t = this.add
+      .text(0, 0, label, { fontSize: '19px', color: outline ? PALETTE.ink : '#1a1420', fontStyle: 'bold' })
+      .setOrigin(0.5);
+    const z = this.add.zone(0, 0, w, h).setInteractive({ useHandCursor: true });
+    z.on('pointerover', () => g.setAlpha(0.85));
+    z.on('pointerout', () => g.setAlpha(1));
+    z.on('pointerdown', cb);
+    container.add([g, t, z]);
+    return container;
   }
 
   // 이론상 최대 점수 상한 (T7, §6) — W1+W2 누적 기준 보수적 산출
@@ -303,6 +398,7 @@ export class GameScene extends Phaser.Scene {
     bullet.deactivate();
     if (enemy.takeDamage(20)) {
       this.spawnExplosion(enemy.x, enemy.y, 0.8);
+      Audio.sfx('hitEnemy');
       enemy.deactivate();
       this.score.addMobKill();
       this._syncScore();
@@ -337,6 +433,7 @@ export class GameScene extends Phaser.Scene {
     if (this.player.hit(now)) {
       this.score.markMiss();
       this.spawnExplosion(this.player.x, this.player.y, 0.9);
+      Audio.sfx('playerHit');
       this._refreshLives();
       this.cameras.main.shake(180, 0.008);
       if (this.player.lives <= 0) this._gameOver();
@@ -350,11 +447,17 @@ export class GameScene extends Phaser.Scene {
     if (!item.active) return;
     const kind = item.kind;
     item.deactivate();
-    if (kind === 'wand') this.player.powerUp();
-    else if (kind === 'seed') {
+    if (kind === 'wand') {
+      this.player.powerUp();
+      Audio.sfx('powerup');
+    } else if (kind === 'seed') {
       this.player.addLife(1);
       this._refreshLives();
-    } else if (kind === 'shield') this.player.addShield(3000);
+      Audio.sfx('life');
+    } else if (kind === 'shield') {
+      this.player.addShield(3000);
+      Audio.sfx('shield');
+    }
     this._floatText(item.x, item.y, kind === 'wand' ? 'POWER UP' : kind === 'seed' ? 'LIFE +1' : 'SHIELD');
   }
 
@@ -371,6 +474,8 @@ export class GameScene extends Phaser.Scene {
 
   // ── 프레임 루프 ──────────────────────────────────────────
   update(time, delta) {
+    if (this.paused) return; // 일시정지 중 완전 정지
+
     // 배경 별 스크롤 (대사 중에도 잔잔히)
     const dy = (delta / 1000);
     for (const s of this.stars) {
@@ -403,6 +508,7 @@ export class GameScene extends Phaser.Scene {
         const b = this.playerBullets.get();
         if (b) b.fire(pt.x, pt.y, pt.vx || 0, -520, 20, 'bullet_player');
       }
+      Audio.sfx('shoot');
     });
 
     if (this.phase === 'boss' && this.boss && this.boss.active) {

@@ -2,6 +2,11 @@
 // 주의(§7): 그룹명·멤버명·팬덤명 등 공식 IP는 코드/에셋/공개물에 일절 사용하지 않음.
 // 여기 정의는 전면 노출 가능 등급(색/숫자/일반용어)만 포함한다.
 
+// ── 게임 제목 (T2 미확정 — 가제. 확정 시 여기만 교체, §8 상수 분리) ──
+export const GAME_TITLE = '빛의 세계';
+export const GAME_SUBTITLE = 'D I A';
+export const TITLE_CANDIDATES = ['티켓팅 워리어', '덕질 원정대', '다이아 탄막', '13++']; // T2 후보
+
 // ── 논리 해상도 (세로 모바일) ─────────────────────────────
 export const GAME_WIDTH = 480;
 export const GAME_HEIGHT = 800;

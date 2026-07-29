@@ -1,0 +1,15 @@
+{
+  "sceneId": "w4",
+  "_status": "1차 초안 — DIA 세계관 반영 재검토 필요 (T14). v1 미사용, v2 예약 슬롯.",
+  "intro": [
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "드디어 결집지야. 근데 공기가 이상해…… 노이즈가 빛을 덮으려 해." },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "{nickname}, 여기서 밀리면 오늘 모인 빛이 전부 흐려져." }
+  ],
+  "boss": [
+    { "speaker": "노이즈 군체", "portrait": "noise", "side": "left", "text": "지지직…… 어차피…… 금방 식을 마음…… 지지직……" },
+    { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "몇 년째 안 식어서 문제야." }
+  ],
+  "outro": [
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "들려? 노이즈가 걷힌 소리. 이게 우리가 지킨 거야." }
+  ]
+}

@@ -6,7 +6,13 @@ import { STORAGE, NICKNAME } from '../config/constants.js';
 //   fs_progress            → { clearedStages[], bestScore, noMissClear }
 //   fs_settings            → { bgm, sfx }
 
-const DEFAULT_PROGRESS = { clearedStages: [], bestScore: 0, noMissClear: false };
+const DEFAULT_PROGRESS = {
+  clearedStages: [],
+  bestScore: 0,
+  noMissClear: false,
+  prologueSeen: false, // 재방문 시 프롤로그 스킵 (§11)
+  tutorialSeen: false, // 첫 조작 안내 오버레이 1회 (§11)
+};
 const DEFAULT_SETTINGS = { bgm: true, sfx: true };
 
 function read(key, fallback) {
@@ -58,6 +64,17 @@ export const Save = {
     return p;
   },
 
+  // 단발 플래그 (프롤로그·튜토리얼 시청 여부)
+  setFlag(key, value = true) {
+    const p = this.getProgress();
+    p[key] = value;
+    write(STORAGE.progress, p);
+    return p;
+  },
+  getFlag(key) {
+    return !!this.getProgress()[key];
+  },
+
   getSettings() {
     return { ...DEFAULT_SETTINGS, ...read(STORAGE.settings, {}) };
   },
@@ -65,5 +82,16 @@ export const Save = {
     const s = { ...this.getSettings(), ...partial };
     write(STORAGE.settings, s);
     return s;
+  },
+
+  // 데이터 초기화 (§11 설정 — 2단계 확인 후 호출). 랭킹 로컬 보드 포함 전체 삭제.
+  resetAll() {
+    for (const key of Object.values(STORAGE)) {
+      try {
+        localStorage.removeItem(key);
+      } catch {
+        /* ignore */
+      }
+    }
   },
 };

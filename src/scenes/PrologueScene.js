@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT, PALETTE } from '../config/constants.js';
 import prologueData from '../config/dialogue_prologue.json';
 import { safeDisplayName } from '../systems/Filter.js';
+import { Save } from '../systems/SaveSystem.js';
 
 // 프롤로그 (D25) — 스테이지 없는 순수 대사 Scene. 창세신화 전달.
 export class PrologueScene extends Phaser.Scene {
@@ -34,6 +35,7 @@ export class PrologueScene extends Phaser.Scene {
       lines: prologueData.lines,
       nickname,
       onComplete: () => {
+        Save.setFlag('prologueSeen'); // 재방문 시 프롤로그 스킵 (§11)
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => {
           this.scene.start('Game', { stageId: 'w1' });
