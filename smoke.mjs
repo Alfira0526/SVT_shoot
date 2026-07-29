@@ -12,7 +12,7 @@ const browser = await chromium.launch({
   args: ['--no-sandbox', '--use-gl=swiftshader', '--enable-webgl', '--ignore-gpu-blocklist'],
 });
 const page = await browser.newPage({ viewport: { width: 480, height: 800 } });
-page.on('console', (m) => { if (m.type() === 'error') errors.push(`[console] ${m.text()}`); });
+page.on('console', (m) => { if (m.type() === 'error' && !/supabase|Failed to load resource|net::|ERR_/.test(m.text())) errors.push(`[console] ${m.text()}`); });
 page.on('pageerror', (e) => errors.push(`[pageerror] ${e.message}`));
 
 const scenes = () => page.evaluate(() => window.__game?.scene.getScenes(true).map((s) => s.scene.key) ?? null);

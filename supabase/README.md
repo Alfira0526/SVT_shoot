@@ -4,7 +4,11 @@ v1 파일럿은 localStorage 로만 동작합니다. 아래 절차로 Supabase�
 **코드 수정 없이** 환경변수만으로 원격 랭킹으로 전환됩니다.
 
 ## 1. 프로젝트 생성
-- [supabase.com](https://supabase.com) 무료 프로젝트 생성 → `Project URL`, `anon key`, `service_role key` 확보.
+- [supabase.com](https://supabase.com) 무료 프로젝트 생성 → **Settings → API** 에서 확보:
+  - `Project URL` (`https://xxxx.supabase.co`)
+  - **Publishable key** (`sb_publishable_...`) — 구 `anon` 대체, 프런트용 공개 키
+  - **Secret key** (`sb_secret_...`) — 구 `service_role` 대체, 백엔드/함수 전용 (절대 공개 금지)
+- 신·구 키 매핑: `VITE_SUPABASE_ANON_KEY` 에는 **publishable key** 를 넣으면 됩니다(공개 키 자리).
 
 ## 2. 스키마 적용
 - SQL Editor 에서 [`schema.sql`](./schema.sql) 전체 실행 (scores 테이블 + RLS + 인덱스).

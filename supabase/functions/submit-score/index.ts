@@ -89,10 +89,11 @@ Deno.serve(async (req) => {
     return reject('rate-too-high');
   }
 
-  const supabase = createClient(
-    Deno.env.get('SUPABASE_URL')!,
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
-  );
+  // 권한 키: 레거시 service_role(자동 주입) 우선, 신 키 체계(secret key)는 SB_SECRET_KEY 폴백.
+  //   신 키만 쓰는 프로젝트: supabase secrets set SB_SECRET_KEY=sb_secret_xxx
+  const SERVICE_KEY =
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? Deno.env.get('SB_SECRET_KEY') ?? '';
+  const supabase = createClient(Deno.env.get('SUPABASE_URL')!, SERVICE_KEY);
 
   // ⑤ 제출 빈도 제한 (동일 닉네임 쿨다운)
   const since = new Date(Date.now() - SUBMIT_COOLDOWN_MS).toISOString();
