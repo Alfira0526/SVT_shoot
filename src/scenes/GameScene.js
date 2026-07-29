@@ -405,7 +405,11 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  _hitBoss(bullet, boss) {
+  _hitBoss(a, b) {
+    // Phaser는 overlap(group, sprite)를 collideSpriteVsGroup(sprite, group)로 라우팅하며
+    // 콜백 인자를 (boss, bullet) 순으로 넘긴다 → 인자 순서에 의존하지 않게 판별.
+    const boss = a === this.boss ? a : b;
+    const bullet = a === this.boss ? b : a;
     if (!bullet.active || !boss.alive) return;
     bullet.deactivate();
     this.score.addBossTick(20);
