@@ -30,6 +30,9 @@ export class GameScene extends Phaser.Scene {
     this.stage = STAGES[this.stageId];
     this.nickname = safeDisplayName(this.registry.get('nickname'));
     this.phase = 'intro'; // intro | fighting | boss_intro | boss | outro | clear | over
+    // scene.start는 Game 인스턴스를 재사용 → 스테이지 전환 시 이월점수 적용 플래그를 반드시 리셋
+    // (미리셋 시 W1에서 세팅된 채 W2로 넘어와 W1→W2 누적점수가 유실됨)
+    this._carryApplied = false;
 
     // 플레이 시간 측정 시작점 (§6 서버 검증 ② score/play_ms). W1 진입 시 리셋.
     if (this.stageId === 'w1') this.registry.set('playStartMs', Date.now());

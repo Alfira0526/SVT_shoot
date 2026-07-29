@@ -80,12 +80,12 @@ export class Boss extends Phaser.Physics.Arcade.Sprite {
     const ph = this.currentPhase();
     if (time > this._nextShot) {
       this._nextShot = time + ph.intervalMs;
-      this._firePattern(ph);
+      this._firePattern(ph, time);
       if (ph.summon) this.scene.summonEnemy?.(ph.summon);
     }
   }
 
-  _firePattern(ph) {
+  _firePattern(ph, time) {
     const cx = this.x;
     const cy = this.y + 30;
     const speed = ph.speed;
