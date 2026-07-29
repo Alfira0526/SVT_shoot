@@ -1,11 +1,25 @@
 {
   "sceneId": "prologue",
-  "lines": [
-    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "나는 DIA의 빛을 돌보는 요정. 오늘도 심심해서 지구 소리에 이끌려 여기 왔어." },
-    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "……어? 저 아이, 주파수가 나랑 되게 잘 맞는데?" },
-    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "카드를 뽑네. 두구두구두구—— 우와, 13장 다? 이런 애 오랜만이다." },
-    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "잠깐, 이 떨림…… DIA가?! 안 돼, 저 아이 위험해!", "effect": "shake" },
-    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "……에잇, 모르겠다!" },
-    { "speaker": "", "portrait": "", "text": "(봉이, 유저 손의 응원봉으로 빙의 — 넘어짐을 막는다. 암전.)", "effect": "narration" }
+  "note": "D30 프롤로그 v2 — 유저 시점 콜드오픈. 봉이 정체 유예(창세 설명은 W1 이후). image 필드는 D31 컷씬 시스템용(미제작 시 절차 폴백).",
+  "beats": [
+    { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "text": "오늘은—— 드디어 그 날. 첫 콘서트 현장이다." },
+    { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "text": "발밑까지 물든 빛의 바다. 심장이 자꾸 두근거린다." },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "text": "부스 앞. 럭키드로우 한 장이 내 차례를 기다리고 있다." },
+    { "type": "tap_card", "cut": "c2", "text": "카드를 탭해서 뒤집어 보자" },
+    { "type": "reveal", "cut": "c3", "image": "cutscenes/c3_reveal.png", "text": "……어? 한 장이 아니야. 13장—— 전부 다?!" },
+    { "type": "caption", "cut": "c3", "image": "cutscenes/c3_reveal.png", "text": "이런 일이 진짜 있어? 손끝이 다 떨린다." },
+    { "type": "messenger", "cut": "msg", "chat": [
+      { "from": "me", "text": "야 나 방금 럭키드로우 13장 다 뽑음ㅋㅋㅋㅋ 실화냐" },
+      { "from": "me", "text": "[사진] 오늘의 최애들, 전부 내 손에 있음" },
+      { "from": "friend", "name": "덕메", "text": "뭐?? 13장?! 거짓말 ㄴㄴ 인증해봐" },
+      { "from": "friend", "name": "덕메", "text": "와 진짜네 미쳤다 {nickname}야 오늘 로또각", "glitch": true }
+    ] },
+    { "type": "glitch", "text": "지-지직……   그   빛,   거슬-려……" },
+    { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "text": "……방금 뭐였지? 화면이 잠깐 지직거린 것 같은데." },
+    { "type": "accident", "cut": "c4", "image": "cutscenes/c4_accident.png", "text": "폰만 보며 걷다가—— 앞을, 못 봤다.", "effect": "shake" },
+    { "type": "caption", "cut": "c4", "image": "cutscenes/c4_accident.png", "text": "인파에 휩쓸려 몸이 확 기운다. 카드가 손에서 흩어지고——", "effect": "shake" },
+    { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "???", "text": "——잡았다." },
+    { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "???", "text": "휴, 아슬아슬했네. 이런 애는 오랜만이라 그냥 못 지나치겠더라." },
+    { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "???", "text": "자세한 얘긴 좀 있다가. 일단—— 눈 좀 떠 봐." }
   ]
 }
