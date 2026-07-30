@@ -218,6 +218,8 @@ export class GameScene extends Phaser.Scene {
   _bossDefeated() {
     this.phase = 'outro';
     this.physics.world.pause();
+    // 화면에 얼어붙은 적탄 정리 — 클리어 연출이 깔끔하게 보이도록
+    this.enemyBullets.children.each((b) => { if (b.active) b.deactivate(); });
     this.score.addBossKill();
     this._syncScore();
     Audio.sfx('explode');
@@ -387,7 +389,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   _confetti() {
-    const p = this.add.particles(GAME_WIDTH / 2, 120, 'spark', {
+    // 이미터 원점을 x=0 으로 — x 오프셋 op(0~GAME_WIDTH)이 화면 전폭에 고르게 뿌려짐
+    // (원점을 중앙에 두면 0~GAME_WIDTH 가 더해져 우측으로 몰림)
+    const p = this.add.particles(0, 120, 'spark', {
       x: { min: 0, max: GAME_WIDTH },
       speedY: { min: 60, max: 200 },
       speedX: { min: -40, max: 40 },

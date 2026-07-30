@@ -37,7 +37,7 @@
     "name": "소형 노이즈",
     "portrait": "noise",
     "type": "mini_noise",
-    "hp": 900,
+    "hp": 720,
     "phases": [
       { "from": 1.0, "to": 0.5, "pattern": "spread", "count": 5, "speed": 120, "intervalMs": 1100 },
       { "from": 0.5, "to": 0.0, "pattern": "spread", "count": 8, "speed": 150, "intervalMs": 850 }

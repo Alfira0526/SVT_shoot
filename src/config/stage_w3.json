@@ -57,7 +57,7 @@
     "name": "암표 총책",
     "portrait": "scalper",
     "type": "scalper_boss",
-    "hp": 3000,
+    "hp": 2600,
     "midBark": { "at": 0.5, "speaker": "암표 총책", "text": "……거참, 오늘따라 손님이 까다롭네." },
     "phases": [
       { "from": 1.0, "to": 0.5, "pattern": "fan", "count": 6, "speed": 130, "intervalMs": 1000, "summon": "macro" },

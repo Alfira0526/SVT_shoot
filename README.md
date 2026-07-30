@@ -1,7 +1,15 @@
 # fan-shooter (가제) — 빛의 세계 · DIA
 
 팬덤 세로 탄막 슈팅 게임 **v1 파일럿**. 오리지널 세계관(DIA)·오리지널 캐릭터 기반의 모바일 세로 웹게임.
-기준 문서: `game_design_draft_v1.md` (기획 v1.7) / `handover_claude_code.md` (개발 인수인계).
+기준 문서: `game_design_draft_v1.md` (기획 v2.5) / `handover_claude_code.md` (개발 인수인계).
+
+## ▶ 플레이 (라이브)
+
+**https://alfira0526.github.io/SVT_shoot/**
+
+- 모바일 브라우저 권장(세로). 최초 진입 시 닉네임 입력 → 프롤로그 → W1 → W2 → W3 → 랭킹.
+- 프롤로그·스테이지를 처음부터 다시 보려면 게임 내 **설정 → 데이터 초기화**.
+- `main` 브랜치에 push되면 GitHub Actions가 자동 빌드·배포합니다(`.github/workflows/deploy.yml`).
 
 > ⚠️ 제목 미정(T2) — 코드/화면상 가제 "빛의 세계". 확정 시 `src/config/constants.js`·타이틀 텍스트 일괄 치환.
 

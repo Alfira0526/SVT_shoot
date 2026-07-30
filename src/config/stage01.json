@@ -57,7 +57,7 @@
     "name": "티켓팅 서버",
     "portrait": "server",
     "type": "ticketing_server",
-    "hp": 4200,
+    "hp": 3200,
     "phases": [
       { "from": 1.0, "to": 0.7, "pattern": "fan", "count": 7, "speed": 130, "intervalMs": 950, "summon": "macro" },
       { "from": 0.7, "to": 0.3, "pattern": "refresh", "count": 16, "speed": 150, "intervalMs": 1500 },
