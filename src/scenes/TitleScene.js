@@ -83,9 +83,8 @@ export class TitleScene extends Phaser.Scene {
     Audio.sfx('ui');
     const name = Save.setNickname(raw);
     this.registry.set('nickname', name);
-    // 재방문(프롤로그 시청 완료) 시 프롤로그 스킵하고 바로 진행 (§11)
-    if (Save.getFlag('prologueSeen')) this.scene.start('Game', { stageId: 'w1' });
-    else this.scene.start('Prologue');
+    // 프롤로그는 매번 재생 — 스토리 몰입 유지. 건너뛰기는 프롤로그 내 SKIP 버튼으로만.
+    this.scene.start('Prologue');
   }
 
   // ── 연출 헬퍼 ────────────────────────────────────────────
