@@ -163,7 +163,12 @@ export class DialogueScene extends Phaser.Scene {
   }
 
   _portraitKey(p) {
-    const map = { bongi: 'pt_bongi', player: 'pt_player', noise: 'pt_noise', server: 'pt_server' };
+    const map = {
+      bongi: 'pt_bongi', player: 'pt_player', noise: 'pt_noise', server: 'pt_server',
+      // W3 암표 총책 감정곡선 (D34): 등장=sell / 균열=smug / 격파=crack
+      scalper: 'pt_scalper_sell', scalper_sell: 'pt_scalper_sell',
+      scalper_smug: 'pt_scalper_smug', scalper_crack: 'pt_scalper_crack',
+    };
     return map[p] || 'pt_player';
   }
 

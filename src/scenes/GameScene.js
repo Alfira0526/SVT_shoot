@@ -13,12 +13,14 @@ import { Audio } from '../systems/Audio.js';
 
 import stageW1 from '../config/stage_w1.json';
 import stageW2 from '../config/stage01.json';
+import stageW3 from '../config/stage_w3.json';
 import dialogueW1 from '../config/dialogue_w1.json';
 import dialogueW2 from '../config/dialogue01.json';
+import dialogueW3 from '../config/dialogue_w3.json';
 
-const STAGES = { w1: stageW1, w2: stageW2 };
-const DIALOGUES = { w1: dialogueW1, w2: dialogueW2 };
-const NEXT = { w1: 'w2', w2: null }; // 파일럿 순서: W1 → W2 → 랭킹
+const STAGES = { w1: stageW1, w2: stageW2, w3: stageW3 };
+const DIALOGUES = { w1: dialogueW1, w2: dialogueW2, w3: dialogueW3 };
+const NEXT = { w1: 'w2', w2: 'w3', w3: null }; // 캠페인 순서: W1 → W2 → W3 → 랭킹
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -33,6 +35,7 @@ export class GameScene extends Phaser.Scene {
     // scene.start는 Game 인스턴스를 재사용 → 스테이지 전환 시 이월점수 적용 플래그를 반드시 리셋
     // (미리셋 시 W1에서 세팅된 채 W2로 넘어와 W1→W2 누적점수가 유실됨)
     this._carryApplied = false;
+    this._midBarkShown = false;
 
     // 플레이 시간 측정 시작점 (§6 서버 검증 ② score/play_ms). W1 진입 시 리셋.
     if (this.stageId === 'w1') this.registry.set('playStartMs', Date.now());
@@ -219,8 +222,9 @@ export class GameScene extends Phaser.Scene {
     this._syncScore();
     Audio.sfx('explode');
     this.boss.defeatSequence(() => {
-      // 격파 연출: 예매 성공
-      this._showBanner('예매 성공', 'SEAT CONFIRMED');
+      // 격파 연출: 스테이지별 배너 (기본=예매 성공)
+      const cb = this.stage.clearBanner || { title: '예매 성공', subtitle: 'SEAT CONFIRMED' };
+      this._showBanner(cb.title, cb.subtitle);
       this.cameras.main.flash(300, 255, 245, 200);
       this._confetti();
       this.time.delayedCall(1400, () => {
@@ -340,7 +344,7 @@ export class GameScene extends Phaser.Scene {
   // 이론상 최대 점수 상한 (T7, §6) — W1+W2 누적 기준 보수적 산출
   _maxAllowed() {
     let total = 0;
-    for (const id of ['w1', 'w2']) {
+    for (const id of ['w1', 'w2', 'w3']) {
       const st = STAGES[id];
       const mobs = st.waves.reduce((n, w) => n + (w.enemies ? w.enemies.length : 0), 0);
       total += theoreticalMaxScore({ totalMobs: mobs, bossHp: st.boss.hp, tickDamage: 20 });
@@ -352,7 +356,7 @@ export class GameScene extends Phaser.Scene {
   // ── 스폰 헬퍼 ────────────────────────────────────────────
   _spawnEnemy(type, x, y) {
     const e = this.enemies.get();
-    if (e) e.spawn(type, x, y);
+    if (e) e.spawn(type, x, y, this.stage.enemySkin);
   }
 
   _spawnItem(kind, x) {
@@ -521,7 +525,36 @@ export class GameScene extends Phaser.Scene {
     if (this.phase === 'boss' && this.boss && this.boss.active) {
       this.boss.update(time);
       this._drawBossHp();
+      this._checkMidBark();
     }
+  }
+
+  // 보스 중간 대사 (D34 W3 총책 체력 50% 균열) — 비차단 말풍선
+  _checkMidBark() {
+    const mb = this.stage.boss?.midBark;
+    if (!mb || this._midBarkShown) return;
+    if (this.boss.hpRatio() <= (mb.at ?? 0.5)) {
+      this._midBarkShown = true;
+      this._bossBark(mb.speaker, mb.text);
+    }
+  }
+
+  _bossBark(speaker, text) {
+    const c = this.add.container(GAME_WIDTH / 2, 170).setDepth(24).setScrollFactor(0); // 보스 HUD(상단) 아래로
+    const t = this.add
+      .text(0, 0, text, {
+        fontSize: '15px', color: PALETTE.ink, align: 'center',
+        backgroundColor: 'rgba(22,19,39,0.88)', padding: { x: 12, y: 8 },
+        wordWrap: { width: GAME_WIDTH - 90 },
+      })
+      .setOrigin(0.5);
+    c.add(t);
+    if (speaker) {
+      c.add(this.add.text(0, -t.height / 2 - 12, speaker, { fontSize: '12px', color: PALETTE.dangerHex, fontStyle: 'bold' }).setOrigin(0.5));
+    }
+    c.setAlpha(0);
+    this.tweens.add({ targets: c, alpha: 1, duration: 200, yoyo: true, hold: 2400, onComplete: () => c.destroy() });
+    Audio.sfx('ui');
   }
 
   _drawBossHp() {

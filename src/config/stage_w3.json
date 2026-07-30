@@ -1,0 +1,68 @@
+{
+  "id": "w3",
+  "title": "W3 · 콘서트 가는 길",
+  "subtitle": "지옥철·도로를 뚫고 결집지로",
+  "dialogueKey": "w3",
+  "bgTint": "deepMid",
+  "enemySkin": "w3",
+  "clearBanner": { "title": "입장 성공", "subtitle": "GATE PASSED" },
+  "waves": [
+    {
+      "at": 800,
+      "enemies": [
+        { "type": "macro", "x": 0.25 },
+        { "type": "macro", "x": 0.75 }
+      ]
+    },
+    {
+      "at": 2600,
+      "enemies": [
+        { "type": "spinner", "x": 0.2 },
+        { "type": "spinner", "x": 0.5 },
+        { "type": "spinner", "x": 0.8 }
+      ]
+    },
+    {
+      "at": 4800,
+      "enemies": [
+        { "type": "macro", "x": 0.2 },
+        { "type": "popup", "x": 0.5 },
+        { "type": "macro", "x": 0.8 }
+      ]
+    },
+    {
+      "at": 7000,
+      "item": "shield",
+      "itemX": 0.5,
+      "enemies": [
+        { "type": "spinner", "x": 0.3 },
+        { "type": "spinner", "x": 0.7 }
+      ]
+    },
+    {
+      "at": 9200,
+      "midPattern": "queue_surge"
+    },
+    {
+      "at": 12000,
+      "item": "wand",
+      "itemX": 0.5,
+      "enemies": [
+        { "type": "popup", "x": 0.3 },
+        { "type": "popup", "x": 0.7 }
+      ]
+    }
+  ],
+  "boss": {
+    "name": "암표 총책",
+    "portrait": "scalper",
+    "type": "scalper_boss",
+    "hp": 3000,
+    "midBark": { "at": 0.5, "speaker": "암표 총책", "text": "……거참, 오늘따라 손님이 까다롭네." },
+    "phases": [
+      { "from": 1.0, "to": 0.5, "pattern": "fan", "count": 6, "speed": 130, "intervalMs": 1000, "summon": "macro" },
+      { "from": 0.5, "to": 0.25, "pattern": "spread", "count": 9, "speed": 150, "intervalMs": 850 },
+      { "from": 0.25, "to": 0.0, "pattern": "rage", "count": 18, "speed": 175, "intervalMs": 720 }
+    ]
+  }
+}

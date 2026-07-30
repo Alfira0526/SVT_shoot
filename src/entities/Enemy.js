@@ -12,7 +12,7 @@ const DEFS = {
 };
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
-  spawn(type, x, y) {
+  spawn(type, x, y, skin) {
     const def = DEFS[type] || DEFS.macro;
     this.enemyType = type;
     this.def = def;
@@ -22,7 +22,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.state2 = 'move';
     this.baseX = x;
 
-    this.setTexture(def.texture);
+    // 스테이지 스킨(팔레트 스왑) — 예: W3 '{skin}_{type}'. 없으면 기본 텍스처.
+    const skinTex = skin && this.scene.textures.exists(`${skin}_${type}`) ? `${skin}_${type}` : def.texture;
+    this.setTexture(skinTex);
     this.enableBody(true, x, y, true, true);
     this.setActive(true).setVisible(true);
     this.setVelocity(0, def.vy);

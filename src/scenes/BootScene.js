@@ -12,6 +12,7 @@ export class BootScene extends Phaser.Scene {
     // 도트 스프라이트(§9-5 교체 완료분) — 크기는 논리 규격 1:1
     const sprites = [
       'player_ship', 'enemy_macro', 'enemy_spinner', 'enemy_popup',
+      'w3_macro', 'w3_spinner', 'w3_popup', // W3 잡몹 팔레트 스왑 스킨 (D34)
       'item_wand', 'item_seed', 'item_shield', 'bullet_player', 'bullet_enemy',
       'boss_noise', 'boss_scalper',
     ];

@@ -1,16 +1,17 @@
 {
   "sceneId": "w3",
-  "_status": "1차 초안 — DIA 세계관 반영 재검토 필요 (T14). v1 미사용, v2 예약 슬롯.",
+  "_status": "확정 (D34, 2026-07-30) — 암표 총책 3단 감정곡선. 격파 대사에 Final 반전 복선.",
   "intro": [
     { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "예매 끝났다고 방심 금물. 진짜 시련은 '가는 길'이야." },
     { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "만석 지하철, 막히는 도로, 그리고…… 입구 앞의 저 그림자." }
   ],
   "boss": [
-    { "speaker": "암표 총책", "portrait": "merchant", "side": "left", "text": "표 삽니다, 표 팝니다. 정가의 열 배…… 아니, 너한테는 스무 배." },
-    { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "내 자리는 안 팔아." },
-    { "speaker": "암표 총책", "portrait": "merchant", "side": "left", "text": "팔 때까지 못 지나간다." }
+    { "speaker": "암표 총책", "portrait": "scalper_sell", "side": "left", "text": "어서 와, 고객님. 오늘도 물량 넉넉하게 준비했어." },
+    { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "이게 무슨 일이야, 범죄지 이게." },
+    { "speaker": "암표 총책", "portrait": "scalper_sell", "side": "left", "text": "말이 좀 심하네, 고객님. 이거 다 서비스인데, 사업이라구." }
   ],
   "outro": [
-    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "정가의 가치를 모르는 놈은 빛의 가치도 몰라. 자, 입장이다!" }
+    { "speaker": "암표 총책", "portrait": "scalper_crack", "side": "left", "text": "잠깐, 잠깐만— 나 혼자 결정한 거 아니야. 위에서 시킨 거라고!" },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "'위에서'라……. 대체 얼마나 큰 게 이 뒤에 있는 거지?" }
   ]
 }
