@@ -4,7 +4,8 @@ import { GAME_WIDTH } from '../config/constants.js';
 // 보스 (§3.5) — 데이터 기반 3페이즈. HP바 = 대기열 숫자 감소 연출.
 export class Boss extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, config) {
-    super(scene, GAME_WIDTH / 2, -80, config.portrait === 'server' ? 'boss_server' : 'boss_noise');
+    // 보스 텍스처 맵 (D34 scalper 추가). super 선행 제약으로 인라인.
+    super(scene, GAME_WIDTH / 2, -80, { server: 'boss_server', noise: 'boss_noise', scalper: 'boss_scalper' }[config.portrait] || 'boss_noise');
     scene.add.existing(this);
     scene.physics.add.existing(this);
 

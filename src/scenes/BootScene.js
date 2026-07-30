@@ -1,11 +1,27 @@
 import Phaser from 'phaser';
 import { PALETTE } from '../config/constants.js';
+import { makeBongiPortraits } from '../entities/BongiPortrait.js';
 
-// 임시 도형 에셋 생성 (§9-2) — 프로그램적으로 텍스처를 만들어 외부 파일 의존 제거.
-// 도트 에셋 완성 시(§9-5) load 로 교체하면 됨.
+// 에셋 로딩·생성 (§9-2/§9-5) — 완성 도트 스프라이트/컷씬/초상화는 load, 미제작분은 Graphics 생성.
 export class BootScene extends Phaser.Scene {
   constructor() {
     super('Boot');
+  }
+
+  preload() {
+    // 도트 스프라이트(§9-5 교체 완료분) — 크기는 논리 규격 1:1
+    const sprites = [
+      'player_ship', 'enemy_macro', 'enemy_spinner', 'enemy_popup',
+      'item_wand', 'item_seed', 'item_shield', 'bullet_player', 'bullet_enemy',
+      'boss_noise', 'boss_scalper',
+    ];
+    sprites.forEach((n) => this.load.image(n, `assets/sprites/${n}.png`));
+    // 컷씬(D31) — 텍스처 키를 dialogue JSON 의 image 값과 동일하게
+    ['c1_concert', 'c2_booth', 'c3_reveal', 'c4_accident', 'c5_wand']
+      .forEach((n) => this.load.image(`cutscenes/${n}.png`, `assets/cutscenes/${n}.png`));
+    this.load.image('card_back', 'assets/cutscenes/card_back.png');
+    // W3 암표 총책 초상화(D34 — v2 선반영, 감정곡선 sell/smug/crack)
+    ['sell', 'smug', 'crack'].forEach((e) => this.load.image(`pt_scalper_${e}`, `assets/portraits/pt_scalper_${e}.png`));
   }
 
   create() {
@@ -13,11 +29,7 @@ export class BootScene extends Phaser.Scene {
     this.input.mouse?.disableContextMenu();
 
     this._transparent('__none');
-    this._makeBullets();
-    this._makePlayer();
-    this._makeEnemies();
-    this._makeBosses();
-    this._makeItems();
+    this._makeBossServer(); // boss_server 96×96 은 도트 미제작 — Graphics 유지
     this._makeFx();
     this._makeQueueNumber();
     this._makePortraits();
@@ -38,87 +50,9 @@ export class BootScene extends Phaser.Scene {
     g.destroy();
   }
 
-  // ── 탄환 ────────────────────────────────────────────────
-  _makeBullets() {
-    let g = this._g();
-    // 플레이어탄: 빛 캡슐
-    g.fillStyle(PALETTE.light, 1);
-    g.fillRoundedRect(1, 0, 6, 16, 3);
-    g.fillStyle(0xffffff, 0.9);
-    g.fillRoundedRect(2, 2, 4, 6, 2);
-    g.generateTexture('bullet_player', 8, 16);
-    g.destroy();
-
-    g = this._g();
-    // 적탄: 위험색 구슬
-    g.fillStyle(PALETTE.danger, 1);
-    g.fillCircle(5, 5, 5);
-    g.fillStyle(0xffffff, 0.7);
-    g.fillCircle(3.5, 3.5, 1.8);
-    g.generateTexture('bullet_enemy', 10, 10);
-    g.destroy();
-  }
-
-  // ── 플레이어 (응원봉 든 팬 실루엣) ────────────────────────
-  _makePlayer() {
+  // ── 보스: 서버랙 (96×96 도트 미제작 — Graphics 유지) ─────
+  _makeBossServer() {
     const g = this._g();
-    // 몸체
-    g.fillStyle(PALETTE.serenity, 1);
-    g.fillTriangle(16, 2, 4, 28, 28, 28);
-    g.fillStyle(PALETTE.rose, 1);
-    g.fillRoundedRect(12, 18, 8, 12, 3);
-    // 응원봉 빛
-    g.fillStyle(PALETTE.light, 1);
-    g.fillCircle(16, 8, 4);
-    g.fillStyle(0xffffff, 0.9);
-    g.fillCircle(16, 8, 2);
-    g.generateTexture('player_ship', 32, 32);
-    g.destroy();
-  }
-
-  // ── 잡몹 3종 ─────────────────────────────────────────────
-  _makeEnemies() {
-    // macro: 소형 로봇
-    let g = this._g();
-    g.fillStyle(0x8b93b8, 1);
-    g.fillRoundedRect(6, 6, 20, 16, 4);
-    g.fillStyle(PALETTE.danger, 1);
-    g.fillCircle(12, 14, 2.5);
-    g.fillCircle(20, 14, 2.5);
-    g.fillStyle(0x5a6180, 1);
-    g.fillRect(10, 2, 3, 6);
-    g.fillRect(19, 2, 3, 6);
-    g.generateTexture('enemy_macro', 32, 32);
-    g.destroy();
-
-    // spinner: 회전 스피너
-    g = this._g();
-    g.lineStyle(4, PALETTE.rose, 1);
-    g.strokeCircle(16, 16, 11);
-    g.lineStyle(4, 0xffffff, 0.5);
-    g.beginPath();
-    g.arc(16, 16, 11, Phaser.Math.DegToRad(0), Phaser.Math.DegToRad(120));
-    g.strokePath();
-    g.generateTexture('enemy_spinner', 32, 32);
-    g.destroy();
-
-    // popup: "일시적인 오류입니다" 팝업창
-    g = this._g();
-    g.fillStyle(0xecebf2, 1);
-    g.fillRoundedRect(2, 4, 28, 24, 3);
-    g.fillStyle(0xc0392b, 1);
-    g.fillRect(2, 4, 28, 7);
-    g.fillStyle(0x2a2a3a, 1);
-    g.fillRect(7, 16, 18, 2);
-    g.fillRect(7, 20, 12, 2);
-    g.generateTexture('enemy_popup', 32, 32);
-    g.destroy();
-  }
-
-  // ── 보스 2종 ─────────────────────────────────────────────
-  _makeBosses() {
-    // server: 거대 서버랙
-    let g = this._g();
     g.fillStyle(0x2b2f45, 1);
     g.fillRoundedRect(8, 6, 80, 84, 8);
     g.fillStyle(0x1a1d2e, 1);
@@ -127,64 +61,12 @@ export class BootScene extends Phaser.Scene {
     }
     // 상태 LED
     for (let r = 0; r < 5; r++) {
-      g.fillStyle(r % 2 ? PALETTE.danger : 0x4be08a, 1);
+      g.fillStyle(r % 2 ? PALETTE.danger : PALETTE.ok, 1);
       g.fillCircle(24, 19 + r * 15, 2.5);
       g.fillStyle(PALETTE.serenity, 1);
       g.fillCircle(32, 19 + r * 15, 2.5);
     }
     g.generateTexture('boss_server', 96, 96);
-    g.destroy();
-
-    // noise: 글리치 덩어리
-    g = this._g();
-    g.fillStyle(0x39304f, 1);
-    g.fillRoundedRect(6, 10, 68, 60, 16);
-    g.fillStyle(PALETTE.danger, 0.85);
-    for (let i = 0; i < 7; i++) {
-      const y = 16 + i * 8;
-      g.fillRect(8 + (i % 3) * 6, y, 60 - (i % 4) * 10, 3);
-    }
-    g.fillStyle(0xffffff, 0.9);
-    g.fillCircle(28, 36, 4);
-    g.fillCircle(50, 36, 4);
-    g.generateTexture('boss_noise', 80, 80);
-    g.destroy();
-  }
-
-  // ── 아이템 3종 ───────────────────────────────────────────
-  _makeItems() {
-    // wand: 응원봉 (오리지널 형태 — 공식 굿즈 복제 금지, §3.6)
-    let g = this._g();
-    g.fillStyle(0xffffff, 1);
-    g.fillRect(10, 12, 4, 12);
-    g.fillStyle(PALETTE.rose, 1);
-    g.fillCircle(12, 8, 7);
-    g.fillStyle(PALETTE.light, 1);
-    g.fillCircle(12, 8, 4);
-    g.generateTexture('item_wand', 24, 26);
-    g.destroy();
-
-    // seed: 민들레 꽃씨
-    g = this._g();
-    g.fillStyle(0xffffff, 0.9);
-    for (let i = 0; i < 8; i++) {
-      const a = (Math.PI * 2 * i) / 8;
-      g.fillCircle(12 + Math.cos(a) * 8, 12 + Math.sin(a) * 8, 2);
-    }
-    g.fillStyle(PALETTE.gold, 1);
-    g.fillCircle(12, 12, 3);
-    g.generateTexture('item_seed', 24, 24);
-    g.destroy();
-
-    // shield: 단결 실드
-    g = this._g();
-    g.lineStyle(3, PALETTE.serenity, 1);
-    g.strokeCircle(12, 12, 9);
-    g.fillStyle(PALETTE.serenity, 0.3);
-    g.fillCircle(12, 12, 9);
-    g.fillStyle(0xffffff, 0.9);
-    g.fillCircle(12, 12, 3);
-    g.generateTexture('item_shield', 24, 24);
     g.destroy();
   }
 
@@ -223,27 +105,11 @@ export class BootScene extends Phaser.Scene {
 
   // ── 초상화 (오리지널 심볼릭 디자인) ──────────────────────
   _makePortraits() {
-    // 봉이: 빛의 요정 (응원봉 오브 + 날개)
-    let g = this._g();
-    g.fillStyle(PALETTE.panel, 1);
-    g.fillRoundedRect(0, 0, 110, 120, 12);
-    g.fillStyle(0xffffff, 0.85);
-    g.fillTriangle(30, 60, 8, 40, 12, 78); // 왼 날개
-    g.fillTriangle(80, 60, 102, 40, 98, 78); // 오른 날개
-    g.fillStyle(PALETTE.rose, 1);
-    g.fillCircle(55, 58, 26);
-    g.fillStyle(PALETTE.light, 1);
-    g.fillCircle(55, 58, 16);
-    g.fillStyle(0x2a2a3a, 1);
-    g.fillCircle(48, 55, 3);
-    g.fillCircle(62, 55, 3);
-    g.fillStyle(0x2a2a3a, 1);
-    g.fillRoundedRect(50, 64, 10, 3, 2);
-    g.generateTexture('pt_bongi', 110, 120);
-    g.destroy();
+    // 봉이 v2 — 둥근 정령형 초상화(표정·색 배리언트 포함). pt_bongi 키 그대로 생성.
+    makeBongiPortraits(this);
 
     // 플레이어: 응원봉 든 팬
-    g = this._g();
+    let g = this._g();
     g.fillStyle(PALETTE.panel, 1);
     g.fillRoundedRect(0, 0, 110, 120, 12);
     g.fillStyle(PALETTE.serenity, 1);

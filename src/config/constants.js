@@ -31,6 +31,13 @@ export const PALETTE = {
   // 위험(적 탄·노이즈)
   danger: 0xff5d73,
   dangerHex: '#ff5d73',
+  // 적 계열·성공/아이템 (도트 에셋 팔레트 승격 — 기존 BootScene 하드코딩분)
+  noise: 0x6e63a8,
+  ok: 0x4be08a,
+  okHex: '#4be08a',
+  // 봉이 배리언트 파생색 (BongiPortrait 조화 파생)
+  mint: 0x8fdcc2,
+  lavender: 0xc9b8e8,
   // 텍스트
   ink: '#f6f2ff',
   inkDim: '#b9b2d6',

@@ -87,19 +87,18 @@ export class PrologueScene extends Phaser.Scene {
     this._showCaption(this._resolve(b.text), '');
     const cx = GAME_WIDTH / 2, cy = 320;
     const card = this.add.container(cx, cy);
-    const g = this.add.graphics();
-    g.fillStyle(0x2a2450, 1);
-    g.fillRoundedRect(-70, -100, 140, 200, 16);
-    g.lineStyle(3, PALETTE.serenity, 0.9);
-    g.strokeRoundedRect(-70, -100, 140, 200, 16);
-    // 오리지널 카드 뒷면 무늬 (다이아 모티브 — 공식 포카 디자인 복제 금지, §2.10)
-    g.lineStyle(2, PALETTE.rose, 0.8);
-    g.strokeRect(-52, -82, 104, 164);
-    g.fillStyle(PALETTE.serenity, 0.9);
-    g.fillTriangle(0, -34, -26, -6, 26, -6);
-    g.fillStyle(PALETTE.rose, 0.95);
-    g.fillTriangle(-26, -6, 26, -6, 0, 34);
-    card.add(g);
+    let back;
+    if (this.textures.exists('card_back')) {
+      back = this.add.image(0, 0, 'card_back').setDisplaySize(150, 234); // 도트 카드 뒷면(오리지널)
+    } else {
+      // 폴백: 절차 다이아 무늬 카드
+      back = this.add.graphics();
+      back.fillStyle(0x2a2450, 1); back.fillRoundedRect(-70, -100, 140, 200, 16);
+      back.lineStyle(3, PALETTE.serenity, 0.9); back.strokeRoundedRect(-70, -100, 140, 200, 16);
+      back.fillStyle(PALETTE.serenity, 0.9); back.fillTriangle(0, -34, -26, -6, 26, -6);
+      back.fillStyle(PALETTE.rose, 0.95); back.fillTriangle(-26, -6, 26, -6, 0, 34);
+    }
+    card.add(back);
     this._beatLayer.add(card);
     this.tweens.add({ targets: card, y: cy - 10, duration: 900, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
@@ -112,11 +111,13 @@ export class PrologueScene extends Phaser.Scene {
       this.tweens.add({
         targets: card, scaleX: 0, duration: 160, ease: 'Quad.easeIn',
         onComplete: () => {
-          g.clear();
-          g.fillStyle(PALETTE.light, 1);
-          g.fillRoundedRect(-70, -100, 140, 200, 16);
-          g.fillStyle(0xffffff, 0.9);
-          g.fillCircle(0, 0, 30);
+          back.setVisible(false);
+          const front = this.add.graphics();
+          front.fillStyle(PALETTE.light, 1);
+          front.fillRoundedRect(-75, -117, 150, 234, 16);
+          front.fillStyle(0xffffff, 0.9);
+          front.fillCircle(0, 0, 34);
+          card.add(front);
           this.tweens.add({
             targets: card, scaleX: 1, duration: 160, ease: 'Quad.easeOut',
             onComplete: () => this.time.delayedCall(350, () => this._next()),
@@ -157,7 +158,7 @@ export class PrologueScene extends Phaser.Scene {
   // ── 비트: 메신저 자랑 + 수신 글리치 (노이즈 첫 복선) ────────
   _doMessenger(b) {
     const chat = b.chat || [];
-    const px = 24, pw = GAME_WIDTH - 48, py = 96, ph = 480;
+    const px = 24, pw = GAME_WIDTH - 48, py = 78, ph = 610;
     const panel = this.add.graphics();
     panel.fillStyle(0x0e0c1c, 0.9); panel.fillRoundedRect(px, py, pw, ph, 16);
     panel.lineStyle(2, PALETTE.serenity, 0.35); panel.strokeRoundedRect(px, py, pw, ph, 16);
