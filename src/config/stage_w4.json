@@ -1,0 +1,70 @@
+{
+  "id": "w4",
+  "title": "W4 · 콘서트 현장",
+  "subtitle": "빛의 결집 — 노이즈 총공세",
+  "dialogueKey": "w4",
+  "bgTint": "deep",
+  "clearBanner": { "title": "빛의 결집", "subtitle": "LIGHT GATHERED" },
+  "waves": [
+    {
+      "at": 800,
+      "enemies": [
+        { "type": "spinner", "x": 0.2 },
+        { "type": "spinner", "x": 0.5 },
+        { "type": "spinner", "x": 0.8 }
+      ]
+    },
+    {
+      "at": 2600,
+      "enemies": [
+        { "type": "macro", "x": 0.15 },
+        { "type": "macro", "x": 0.4 },
+        { "type": "macro", "x": 0.6 },
+        { "type": "macro", "x": 0.85 }
+      ]
+    },
+    {
+      "at": 4800,
+      "enemies": [
+        { "type": "popup", "x": 0.3 },
+        { "type": "popup", "x": 0.7 }
+      ]
+    },
+    {
+      "at": 6800,
+      "item": "seed",
+      "itemX": 0.5,
+      "enemies": [
+        { "type": "spinner", "x": 0.25 },
+        { "type": "macro", "x": 0.5 },
+        { "type": "spinner", "x": 0.75 }
+      ]
+    },
+    {
+      "at": 9000,
+      "midPattern": "queue_surge"
+    },
+    {
+      "at": 12000,
+      "item": "wand",
+      "itemX": 0.5,
+      "enemies": [
+        { "type": "popup", "x": 0.2 },
+        { "type": "macro", "x": 0.5 },
+        { "type": "popup", "x": 0.8 }
+      ]
+    }
+  ],
+  "boss": {
+    "name": "노이즈 군체",
+    "portrait": "noise",
+    "type": "noise_swarm",
+    "hp": 2800,
+    "midBark": { "at": 0.5, "speaker": "노이즈 군체", "text": "……재밌잖아…… ……다들 웃는데…… ……왜 너만……" },
+    "phases": [
+      { "from": 1.0, "to": 0.6, "pattern": "spread", "count": 7, "speed": 135, "intervalMs": 950, "summon": "spinner" },
+      { "from": 0.6, "to": 0.3, "pattern": "rage", "count": 14, "speed": 150, "intervalMs": 900 },
+      { "from": 0.3, "to": 0.0, "pattern": "rage", "count": 22, "speed": 175, "intervalMs": 680 }
+    ]
+  }
+}

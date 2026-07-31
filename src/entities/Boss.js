@@ -5,7 +5,7 @@ import { GAME_WIDTH } from '../config/constants.js';
 export class Boss extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, config) {
     // 보스 텍스처 맵 (D34 scalper 추가). super 선행 제약으로 인라인.
-    super(scene, GAME_WIDTH / 2, -80, { server: 'boss_server', noise: 'boss_noise', scalper: 'boss_scalper' }[config.portrait] || 'boss_noise');
+    super(scene, GAME_WIDTH / 2, -80, { server: 'boss_server', noise: 'boss_noise', scalper: 'boss_scalper', monopolist: 'boss_monopolist' }[config.portrait] || 'boss_noise');
     scene.add.existing(this);
     scene.physics.add.existing(this);
 

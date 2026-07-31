@@ -1,0 +1,70 @@
+{
+  "id": "final",
+  "title": "FINAL · 흑막전",
+  "subtitle": "DIA 파편화의 배후와 결전",
+  "dialogueKey": "final",
+  "bgTint": "deep",
+  "clearBanner": { "title": "빛을 되찾다", "subtitle": "LIGHT RECLAIMED" },
+  "epilogue": true,
+  "waves": [
+    {
+      "at": 800,
+      "enemies": [
+        { "type": "macro", "x": 0.2 },
+        { "type": "spinner", "x": 0.5 },
+        { "type": "macro", "x": 0.8 }
+      ]
+    },
+    {
+      "at": 2800,
+      "enemies": [
+        { "type": "popup", "x": 0.25 },
+        { "type": "popup", "x": 0.75 }
+      ]
+    },
+    {
+      "at": 4800,
+      "enemies": [
+        { "type": "spinner", "x": 0.2 },
+        { "type": "spinner", "x": 0.5 },
+        { "type": "spinner", "x": 0.8 }
+      ]
+    },
+    {
+      "at": 6800,
+      "item": "shield",
+      "itemX": 0.5,
+      "enemies": [
+        { "type": "macro", "x": 0.3 },
+        { "type": "popup", "x": 0.5 },
+        { "type": "macro", "x": 0.7 }
+      ]
+    },
+    {
+      "at": 9200,
+      "midPattern": "queue_surge"
+    },
+    {
+      "at": 12200,
+      "item": "wand",
+      "itemX": 0.5,
+      "enemies": [
+        { "type": "spinner", "x": 0.2 },
+        { "type": "macro", "x": 0.5 },
+        { "type": "spinner", "x": 0.8 }
+      ]
+    }
+  ],
+  "boss": {
+    "name": "독점자",
+    "portrait": "monopolist",
+    "type": "monopolist",
+    "hp": 4200,
+    "midBark": { "at": 0.4, "speaker": "독점자", "text": "빛은 나눌수록 옅어질 뿐. 어리석은 낭비다." },
+    "phases": [
+      { "from": 1.0, "to": 0.6, "pattern": "fan", "count": 8, "speed": 140, "intervalMs": 900, "summon": "macro" },
+      { "from": 0.6, "to": 0.3, "pattern": "refresh", "count": 16, "speed": 155, "intervalMs": 1300 },
+      { "from": 0.3, "to": 0.0, "pattern": "rage", "count": 24, "speed": 185, "intervalMs": 640 }
+    ]
+  }
+}

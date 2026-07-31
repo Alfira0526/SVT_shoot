@@ -14,13 +14,18 @@ import { Audio } from '../systems/Audio.js';
 import stageW1 from '../config/stage_w1.json';
 import stageW2 from '../config/stage01.json';
 import stageW3 from '../config/stage_w3.json';
+import stageW4 from '../config/stage_w4.json';
+import stageFinal from '../config/stage_final.json';
 import dialogueW1 from '../config/dialogue_w1.json';
 import dialogueW2 from '../config/dialogue01.json';
 import dialogueW3 from '../config/dialogue_w3.json';
+import dialogueW4 from '../config/dialogue_w4.json';
+import dialogueFinal from '../config/dialogue_final.json';
 
-const STAGES = { w1: stageW1, w2: stageW2, w3: stageW3 };
-const DIALOGUES = { w1: dialogueW1, w2: dialogueW2, w3: dialogueW3 };
-const NEXT = { w1: 'w2', w2: 'w3', w3: null }; // 캠페인 순서: W1 → W2 → W3 → 랭킹
+const STAGES = { w1: stageW1, w2: stageW2, w3: stageW3, w4: stageW4, final: stageFinal };
+const DIALOGUES = { w1: dialogueW1, w2: dialogueW2, w3: dialogueW3, w4: dialogueW4, final: dialogueFinal };
+// 캠페인 순서: W1 → W2 → W3 → W4(콘서트 현장) → Final(흑막전) → 에필로그 → 랭킹
+const NEXT = { w1: 'w2', w2: 'w3', w3: 'w4', w4: 'final', final: null };
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -241,6 +246,11 @@ export class GameScene extends Phaser.Scene {
     this.phase = 'clear';
     Save.markStageCleared(this.stageId);
     const next = NEXT[this.stageId];
+    // 최종 스테이지 클리어 & 에필로그 지정(D37) → 밤하늘 연출 + 에필로그 대사 후 랭킹
+    if (!next && this.stage.epilogue) {
+      this._runEpilogue();
+      return;
+    }
     this.cameras.main.fadeOut(500, 0, 0, 0);
     this.cameras.main.once('camerafadeoutcomplete', () => {
       if (next) {
@@ -251,6 +261,28 @@ export class GameScene extends Phaser.Scene {
       } else {
         this._toRanking(false);
       }
+    });
+  }
+
+  // ── 에필로그 (D37) — 밤하늘·조용히 깜박이는 또 다른 빛(v3+ 떡밥) ──
+  _runEpilogue() {
+    // 전투 잔여물 정리 후 밤하늘로 페이드
+    this.enemyBullets.children.each((b) => { if (b.active) b.deactivate(); });
+    this.cameras.main.fadeOut(700, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => {
+      // 밤하늘 오버레이 + 멀리서 깜박이는 빛
+      const sky = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0a0716).setOrigin(0).setDepth(50);
+      const far = this.add.image(GAME_WIDTH * 0.72, GAME_HEIGHT * 0.3, 'spark')
+        .setDepth(51).setTint(PALETTE.serenity).setScale(0.9).setAlpha(0.15);
+      this.tweens.add({ targets: far, alpha: 0.95, scale: 1.5, duration: 1300, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+      this.cameras.main.fadeIn(700, 0, 0, 0);
+      // 밤하늘이 보인 뒤 에필로그 대사 → 랭킹
+      this.time.delayedCall(900, () => {
+        this._dialogue('epilogue', () => {
+          this.cameras.main.fadeOut(500, 0, 0, 0);
+          this.cameras.main.once('camerafadeoutcomplete', () => this._toRanking(false));
+        });
+      });
     });
   }
 
@@ -348,7 +380,7 @@ export class GameScene extends Phaser.Scene {
   // 이론상 최대 점수 상한 (T7, §6) — W1+W2 누적 기준 보수적 산출
   _maxAllowed() {
     let total = 0;
-    for (const id of ['w1', 'w2', 'w3']) {
+    for (const id of ['w1', 'w2', 'w3', 'w4', 'final']) {
       const st = STAGES[id];
       const mobs = st.waves.reduce((n, w) => n + (w.enemies ? w.enemies.length : 0), 0);
       total += theoreticalMaxScore({ totalMobs: mobs, bossHp: st.boss.hp, tickDamage: 20 });

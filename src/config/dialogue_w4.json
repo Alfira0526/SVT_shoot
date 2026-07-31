@@ -1,15 +1,17 @@
 {
   "sceneId": "w4",
-  "_status": "1차 초안 — DIA 세계관 반영 재검토 필요 (T14). v1 미사용, v2 예약 슬롯.",
+  "_status": "확정 (D36, 2026-07-30) — 노이즈 군체=익명 다수. 말줄임표 겹침 연출. '혼자/함께' 주제 복선.",
   "intro": [
-    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "드디어 결집지야. 근데 공기가 이상해…… 노이즈가 빛을 덮으려 해." },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "드디어 결집지야. 근데 공기가 이상해…… 노이즈가 유독 몰려있어." },
     { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "{nickname}, 여기서 밀리면 오늘 모인 빛이 전부 흐려져." }
   ],
   "boss": [
-    { "speaker": "노이즈 군체", "portrait": "noise", "side": "left", "text": "지지직…… 어차피…… 금방 식을 마음…… 지지직……" },
-    { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "몇 년째 안 식어서 문제야." }
+    { "speaker": "노이즈 군체", "portrait": "noise", "side": "left", "text": "……별거 아니네…… ……다들 그러던데……" },
+    { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "'다들'이 대체 누구야. 너, 지금 혼자잖아." },
+    { "speaker": "노이즈 군체", "portrait": "noise", "side": "left", "text": "……혼자? ……아닌데…… ……우리…… 많은데……" }
   ],
   "outro": [
-    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "들려? 노이즈가 걷힌 소리. 이게 우리가 지킨 거야." }
+    { "speaker": "노이즈 군체", "portrait": "noise", "side": "left", "text": "……이상해…… ……누가 자꾸…… 부추기는 것 같은데…… ……혼자였나, 우리……" },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "'부추기는 것'……? 저번에도 비슷한 얘기 들은 것 같은데." }
   ]
 }

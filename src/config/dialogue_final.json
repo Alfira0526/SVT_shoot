@@ -1,6 +1,6 @@
 {
   "sceneId": "final",
-  "_status": "1차 초안 — DIA 세계관 반영 재검토 필요 (T14). v1 미사용, v2 예약 슬롯.",
+  "_status": "확정 (D37, 2026-07-30) — Final 전투 대사 + 직후 에필로그(13인 수호자·v3+ 떡밥).",
   "intro": [
     { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "……전부 이어져 있었어. 상단도, 기계 군단도, 노이즈도." },
     { "speaker": "독점자", "portrait": "monopolist", "side": "left", "text": "빛은 낭비다. 내가 거두어 보관해주지. 영원히, 나 혼자." },
@@ -12,5 +12,11 @@
   "outro": [
     { "speaker": "독점자", "portrait": "monopolist", "side": "left", "text": "……오늘은 물러난다. 하지만 빛이 있는 한, 나도 있다." },
     { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "가라 가~! ……{nickname}, 고마워. 오늘의 빛, 최고였어." }
+  ],
+  "epilogue": [
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "……근데 {nickname}, 이상하지 않아? DIA가 원래 13개였는데, 나 혼자 여기 있는 거." },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "다른 빛들은…… 다 어디로 흩어진 걸까." },
+    { "speaker": "", "portrait": "", "text": "(밤하늘 — 저 멀리 어딘가, 또 다른 빛 하나가 조용히 깜박인다.)", "effect": "narration" },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "이건 시작에 불과했다. 어딘가에, 또 다른 우리가 있다." }
   ]
 }

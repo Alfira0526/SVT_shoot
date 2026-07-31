@@ -31,6 +31,7 @@ export class BootScene extends Phaser.Scene {
 
     this._transparent('__none');
     this._makeBossServer(); // boss_server 96×96 은 도트 미제작 — Graphics 유지
+    this._makeBossMonopolist(); // 독점자(Final) — 도트 미제작, Graphics 생성
     this._makeFx();
     this._makeQueueNumber();
     this._makePortraits();
@@ -68,6 +69,40 @@ export class BootScene extends Phaser.Scene {
       g.fillCircle(32, 19 + r * 15, 2.5);
     }
     g.generateTexture('boss_server', 96, 96);
+    g.destroy();
+  }
+
+  // ── 보스: 독점자(Final) — 빛을 창살 뒤에 가둔 어둠의 프리즘 ─
+  _makeBossMonopolist() {
+    const g = this._g();
+    // 왕관 스파이크
+    g.fillStyle(0x2a2450, 1);
+    for (let i = 0; i < 5; i++) {
+      const x = 20 + i * 14;
+      g.fillTriangle(x, 14, x + 7, 14, x + 3.5, 2);
+    }
+    // 각진 어둠 몸체 (프리즘)
+    g.fillStyle(0x141024, 1);
+    g.fillTriangle(48, 8, 8, 42, 88, 42);
+    g.fillRect(10, 42, 76, 40);
+    g.fillTriangle(10, 82, 86, 82, 48, 94);
+    g.lineStyle(2, 0x3a2f5e, 1);
+    g.strokeTriangle(48, 8, 8, 42, 88, 42);
+    // 가둔 빛 코어
+    g.fillStyle(PALETTE.light, 1);
+    g.fillCircle(48, 54, 15);
+    g.fillStyle(0xffffff, 0.85);
+    g.fillCircle(44, 50, 5);
+    // 창살 (독점의 상징)
+    g.fillStyle(0x141024, 1);
+    g.fillRect(40, 40, 3, 30);
+    g.fillRect(47, 40, 3, 30);
+    g.fillRect(54, 40, 3, 30);
+    // 위험한 눈
+    g.fillStyle(PALETTE.danger, 1);
+    g.fillCircle(34, 34, 3);
+    g.fillCircle(62, 34, 3);
+    g.generateTexture('boss_monopolist', 96, 96);
     g.destroy();
   }
 
@@ -154,6 +189,33 @@ export class BootScene extends Phaser.Scene {
     g.fillRoundedRect(30, 66, 50, 8, 3);
     g.fillRoundedRect(30, 80, 50, 8, 3);
     g.generateTexture('pt_server', 110, 120);
+    g.destroy();
+
+    // 독점자(Final 흑막): 빛을 창살에 가둔 왕관 쓴 어둠 (D37)
+    g = this._g();
+    g.fillStyle(PALETTE.panel, 1);
+    g.fillRoundedRect(0, 0, 110, 120, 12);
+    // 왕관
+    g.fillStyle(0x2a2450, 1);
+    for (let i = 0; i < 5; i++) {
+      const x = 30 + i * 12;
+      g.fillTriangle(x, 26, x + 6, 26, x + 3, 14);
+    }
+    // 어둠 얼굴
+    g.fillStyle(0x141024, 1);
+    g.fillRoundedRect(24, 26, 62, 78, 12);
+    // 가둔 빛 코어 + 창살
+    g.fillStyle(PALETTE.light, 1);
+    g.fillCircle(55, 66, 18);
+    g.fillStyle(0xffffff, 0.85);
+    g.fillCircle(50, 61, 6);
+    g.fillStyle(0x141024, 1);
+    for (let i = 0; i < 4; i++) g.fillRect(42 + i * 9, 48, 3, 36);
+    // 위험한 눈
+    g.fillStyle(PALETTE.danger, 1);
+    g.fillCircle(40, 44, 4);
+    g.fillCircle(70, 44, 4);
+    g.generateTexture('pt_monopolist', 110, 120);
     g.destroy();
   }
 }
