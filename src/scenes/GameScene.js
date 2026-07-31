@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME_WIDTH, GAME_HEIGHT, PALETTE, SCORE, theoreticalMaxScore } from '../config/constants.js';
+import { GAME_WIDTH, GAME_HEIGHT, PALETTE, PLAYER, SCORE, theoreticalMaxScore } from '../config/constants.js';
 import { Player } from '../entities/Player.js';
 import { Enemy, createEnemyGroup } from '../entities/Enemy.js';
 import { Boss } from '../entities/Boss.js';
@@ -36,6 +36,7 @@ export class GameScene extends Phaser.Scene {
     // (미리셋 시 W1에서 세팅된 채 W2로 넘어와 W1→W2 누적점수가 유실됨)
     this._carryApplied = false;
     this._midBarkShown = false;
+    this._dev = Save.getDev(); // QA 개발자 모드 — 무제한 라이프(무적)
 
     // 플레이 시간 측정 시작점 (§6 서버 검증 ② score/play_ms). W1 진입 시 리셋.
     if (this.stageId === 'w1') this.registry.set('playStartMs', Date.now());
@@ -125,6 +126,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   _refreshLives() {
+    if (this._dev) { this.livesText.setText('DEV ∞'); return; } // 무제한 라이프
     this.livesText.setText('♥ '.repeat(Math.max(0, this.player?.lives ?? 0)).trim() || '—');
   }
 
@@ -445,6 +447,16 @@ export class GameScene extends Phaser.Scene {
 
   _applyPlayerHit() {
     const now = this.time.now;
+    // QA 개발자 모드 — 무제한 라이프: 피격 피드백만, 라이프·미스 무효(게임오버 없음)
+    if (this._dev) {
+      if (!this.player.isInvincible(now)) {
+        this.player.invincibleUntil = now + PLAYER.invincibleMs;
+        this.spawnExplosion(this.player.x, this.player.y, 0.6);
+        Audio.sfx('playerHit');
+        this.cameras.main.flash(70, 156, 193, 229);
+      }
+      return;
+    }
     if (this.player.hit(now)) {
       this.score.markMiss();
       this.spawnExplosion(this.player.x, this.player.y, 0.9);

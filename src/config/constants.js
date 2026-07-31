@@ -90,7 +90,12 @@ export const STORAGE = {
   progress: 'fs_progress', // { clearedStages:[], bestScore:0, noMissClear:false }
   settings: 'fs_settings', // { bgm:true, sfx:true }
   localRanking: 'fs_ranking_stage', // v1 로컬 보드 [{ nickname, score, mode, play_ms, at }]
+  dev: 'fs_dev', // QA 개발자 모드 on/off (무제한 라이프). 클라 전용 — 보안 아님
 };
+
+// QA 개발자 모드 — 타이틀 숨김 버튼 + 패스워드로 진입. 무제한 라이프(무적).
+// 주의: 클라이언트 번들에 노출되는 값이라 보안용 아님(캐주얼 차단용). 팀 공유 후 필요 시 교체.
+export const DEV_PASSWORD = 'dia13';
 
 // 닉네임 규칙 (인수인계 §6: scores.nickname 2~8자)
 export const NICKNAME = {

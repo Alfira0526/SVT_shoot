@@ -7,6 +7,7 @@ import {
   NICKNAME,
   GAME_TITLE,
   GAME_SUBTITLE,
+  DEV_PASSWORD,
 } from '../config/constants.js';
 import { Save } from '../systems/SaveSystem.js';
 import { validateNickname } from '../systems/Filter.js';
@@ -66,6 +67,97 @@ export class TitleScene extends Phaser.Scene {
     this.add
       .text(GAME_WIDTH - 12, GAME_HEIGHT - 14, `OPEN ${LUCKY.ticketHour}:00`, { fontSize: '11px', color: PALETTE.inkDim })
       .setOrigin(1);
+
+    // ── QA 개발자 모드 (숨김 버튼 + 패스워드) ──────────────
+    this.registry.set('devMode', Save.getDev()); // GameScene 이 참조
+    // 좌하단 코너 투명 버튼 (보이지 않음 — 아는 사람만 탭)
+    this.add
+      .zone(0, GAME_HEIGHT - 46, 54, 46)
+      .setOrigin(0)
+      .setInteractive({ useHandCursor: false })
+      .on('pointerdown', () => this._openDevPrompt());
+    this._devBadge = this.add
+      .text(12, 12, 'DEV ∞', { fontSize: '12px', color: PALETTE.goldHex, fontStyle: 'bold' })
+      .setDepth(15)
+      .setVisible(Save.getDev());
+  }
+
+  // ── 개발자 모드 패스워드 오버레이 ────────────────────────
+  _openDevPrompt() {
+    if (this._devOverlay) return;
+    Audio.unlock();
+    Audio.sfx('ui');
+    this.domInput?.setVisible(false); // 닉네임 DOM 입력 숨김 (딤 위로 뜨는 것 방지)
+    const c = this.add.container(0, 0).setDepth(60);
+    const py = 288;
+    const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.74).setOrigin(0).setInteractive();
+    const g = this.add.graphics();
+    g.fillStyle(PALETTE.panel, 1);
+    g.fillRoundedRect(56, py, GAME_WIDTH - 112, 226, 16);
+    g.lineStyle(2, PALETTE.gold, 0.9);
+    g.strokeRoundedRect(56, py, GAME_WIDTH - 112, 226, 16);
+    const on = Save.getDev();
+    const title = this.add.text(GAME_WIDTH / 2, py + 30, '🔒 개발자 모드 (QA)', { fontSize: '20px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0.5);
+    const sub = this.add.text(GAME_WIDTH / 2, py + 58, on ? '현재 ON · 무제한 라이프 (끄려면 패스워드)' : '패스워드 입력 → 무제한 라이프', { fontSize: '13px', color: PALETTE.inkDim }).setOrigin(0.5);
+    const dom = this.add
+      .dom(GAME_WIDTH / 2, py + 104)
+      .createFromHTML(
+        `<input id="devpw" type="password" autocomplete="off" placeholder="password" style="
+          width:200px;padding:11px 12px;border-radius:10px;border:2px solid ${PALETTE.goldHex};
+          background:#12102a;color:#fff;font-size:16px;text-align:center;outline:none;" />`
+      );
+    const warn = this.add.text(GAME_WIDTH / 2, py + 138, '', { fontSize: '12px', color: PALETTE.dangerHex }).setOrigin(0.5);
+    // 베이스(딤·패널·텍스트)를 먼저 넣어 버튼이 위에 오도록 — 딤이 버튼 탭을 가로채지 않게
+    c.add([dim, g, title, sub, dom, warn]);
+
+    const btn = (x, label, fill, ink, cb) => {
+      const w = 110, h = 46, by = py + 176;
+      const bg = this.add.graphics();
+      bg.fillStyle(fill, 1);
+      bg.fillRoundedRect(x - w / 2, by - h / 2, w, h, 12);
+      const t = this.add.text(x, by, label, { fontSize: '17px', color: ink, fontStyle: 'bold' }).setOrigin(0.5);
+      const z = this.add.zone(x, by, w, h).setInteractive({ useHandCursor: true }).on('pointerdown', (p, lx, ly, ev) => { ev?.stopPropagation?.(); cb(); });
+      c.add([bg, t, z]);
+    };
+
+    const close = () => {
+      c.destroy();
+      this._devOverlay = null;
+      this.domInput?.setVisible(true);
+    };
+    const submit = () => {
+      const el = document.getElementById('devpw');
+      const val = (el?.value || '').trim();
+      if (val !== DEV_PASSWORD) {
+        Audio.sfx('playerHit');
+        warn.setText('패스워드가 틀렸어.');
+        this.cameras.main.shake(160, 0.006);
+        if (el) el.value = '';
+        return;
+      }
+      const next = !Save.getDev();
+      Save.setDev(next);
+      this.registry.set('devMode', next);
+      this._devBadge.setVisible(next);
+      Audio.sfx('powerup');
+      close();
+      this._toast(next ? '개발자 모드 ON · 무제한 라이프' : '개발자 모드 OFF');
+    };
+
+    btn(GAME_WIDTH / 2 - 62, '취소', PALETTE.panel, PALETTE.ink, close);
+    btn(GAME_WIDTH / 2 + 62, '확인', PALETTE.gold, '#2a1a12', submit);
+    this._devOverlay = c;
+  }
+
+  _toast(msg) {
+    const t = this.add
+      .text(GAME_WIDTH / 2, 120, msg, {
+        fontSize: '15px', color: PALETTE.ink, fontStyle: 'bold',
+        backgroundColor: 'rgba(22,19,39,0.92)', padding: { x: 14, y: 9 },
+      })
+      .setOrigin(0.5)
+      .setDepth(70);
+    this.tweens.add({ targets: t, alpha: 0, y: 96, duration: 1600, delay: 900, onComplete: () => t.destroy() });
   }
 
   _start() {

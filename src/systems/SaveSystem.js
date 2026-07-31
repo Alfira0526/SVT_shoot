@@ -75,6 +75,15 @@ export const Save = {
     return !!this.getProgress()[key];
   },
 
+  // QA 개발자 모드 (무제한 라이프) — 세션 유지용 localStorage 플래그
+  getDev() {
+    return read(STORAGE.dev, false) === true;
+  },
+  setDev(on) {
+    write(STORAGE.dev, !!on);
+    return !!on;
+  },
+
   getSettings() {
     return { ...DEFAULT_SETTINGS, ...read(STORAGE.settings, {}) };
   },
