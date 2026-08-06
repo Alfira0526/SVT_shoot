@@ -5,6 +5,7 @@ import { TitleScene } from './scenes/TitleScene.js';
 import { PrologueScene } from './scenes/PrologueScene.js';
 import { GameScene } from './scenes/GameScene.js';
 import { EndlessScene } from './scenes/EndlessScene.js';
+import { GuardianScene } from './scenes/GuardianScene.js';
 import { DialogueScene } from './scenes/DialogueScene.js';
 import { RankingScene } from './scenes/RankingScene.js';
 import { SettingsScene } from './scenes/SettingsScene.js';
@@ -38,7 +39,7 @@ const config = {
     default: 'arcade',
     arcade: { debug: false },
   },
-  scene: [BootScene, TitleScene, PrologueScene, GameScene, EndlessScene, DialogueScene, RankingScene, SettingsScene],
+  scene: [BootScene, TitleScene, PrologueScene, GameScene, EndlessScene, GuardianScene, DialogueScene, RankingScene, SettingsScene],
 };
 
 const game = new Phaser.Game(config);

@@ -170,7 +170,10 @@ export class DialogueScene extends Phaser.Scene {
       scalper: 'pt_scalper_sell', scalper_sell: 'pt_scalper_sell',
       scalper_smug: 'pt_scalper_smug', scalper_crack: 'pt_scalper_crack',
     };
-    return map[p] || 'pt_player';
+    if (map[p]) return map[p];
+    // 수호자 등 데이터 주도 초상화: 텍스처 키를 직접 지정한 경우 그대로 사용 (예: pt_bongi_gold)
+    if (p && this.textures.exists(p)) return p;
+    return 'pt_player';
   }
 
   _resolve(s) {

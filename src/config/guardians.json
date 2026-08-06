@@ -1,0 +1,63 @@
+{
+  "_status": "수직 슬라이스 (2026-08) — 13 수호자 도감. #1 봉이(가이드) + #2~4 기존 스테이지 각성. #5~13 잠금(차기).",
+  "_note": "이름은 전부 순우리말/자연광 어휘 기반 오리지널. 최종 확정 시 실존 아티스트명 크로스체크(D9/D26/D27).",
+  "roster": [
+    {
+      "id": "bongi", "order": 1, "name": "봉이", "light": "응원의 빛",
+      "color": "rose", "portrait": "pt_bongi", "awake": true,
+      "personality": "유일하게 깨어있던 첫 빛. 흩어진 열둘을 찾아 함께한다."
+    },
+    {
+      "id": "noeul", "order": 2, "name": "노을", "light": "설렘의 빛",
+      "color": "gold", "portrait": "pt_bongi_gold", "stage": "w1", "shadow": "소형 노이즈",
+      "personality": "공연 첫 곡의 그 두근거림. 설렘이 식으면 잠든다.",
+      "encounter": [
+        { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "저기 봐, {nickname}. 빛이 하나 꺼져가고 있어……" },
+        { "speaker": "노을", "portrait": "pt_bongi_gold", "side": "right", "text": "……소용없어. 설레봤자, 어차피 또 튕길 텐데." },
+        { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "설렘의 빛 '노을'이야. 노이즈가 '어차피 안 돼'라고 속삭여서 흐려졌어." }
+      ],
+      "awaken": [
+        { "speaker": "노을", "portrait": "pt_bongi_gold", "side": "right", "text": "……어? 다시…… 두근거려. 아직 안 끝났던 거야?" },
+        { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "응. 설렘은 튕겨도 다시 서는 거야. 같이 가자." },
+        { "speaker": "노을", "portrait": "pt_bongi_gold", "side": "right", "text": "고마워…… 나, 다시 빛날게!" }
+      ]
+    },
+    {
+      "id": "yunseul", "order": 3, "name": "윤슬", "light": "새벽의 빛",
+      "color": "serenity", "portrait": "pt_bongi_serenity", "stage": "w2", "shadow": "티켓팅 서버",
+      "personality": "밤을 새워 지켜온 잔잔한 물빛. 지침에 삼켜지면 가라앉는다.",
+      "encounter": [
+        { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "이번엔 물가 쪽이야. 밤새 대기열에 지쳐버린 빛이 있어." },
+        { "speaker": "윤슬", "portrait": "pt_bongi_serenity", "side": "right", "text": "……너무 오래 기다렸어. 이제…… 그냥 자고 싶어……" },
+        { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "기다림 끝엔 새벽이 와. 그 서버, 내가 뚫어줄게." }
+      ],
+      "awaken": [
+        { "speaker": "윤슬", "portrait": "pt_bongi_serenity", "side": "right", "text": "……해가, 떠오르네. 내가 기다린 게 이거였구나." },
+        { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "윤슬, 돌아왔다! 이제 셋이야." }
+      ]
+    },
+    {
+      "id": "yeoul", "order": 4, "name": "여울", "light": "약속의 빛",
+      "color": "mint", "portrait": "pt_bongi_mint", "stage": "w3", "shadow": "암표 총책",
+      "personality": "'꼭 만나자'던 약속의 빛. 배신에 데면 흩어진다.",
+      "encounter": [
+        { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "여긴…… 약속이 사고 팔린 자리야. 여울이 배신에 데였어." },
+        { "speaker": "여울", "portrait": "pt_bongi_mint", "side": "right", "text": "약속 같은 거…… 믿는 게 바보였어." },
+        { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "진짜 약속은 돈으로 못 사. 그거, 내가 증명할게." }
+      ],
+      "awaken": [
+        { "speaker": "여울", "portrait": "pt_bongi_mint", "side": "right", "text": "……너는, 지켰네. 약속을. 그럼 나도…… 다시 믿어볼래." },
+        { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "넷째 빛 여울, 각성! ……근데 저 배후, 점점 커지는 느낌이야." }
+      ]
+    },
+    { "id": "g05", "order": 5, "name": "???", "light": "잠든 빛", "locked": true },
+    { "id": "g06", "order": 6, "name": "???", "light": "잠든 빛", "locked": true },
+    { "id": "g07", "order": 7, "name": "???", "light": "잠든 빛", "locked": true },
+    { "id": "g08", "order": 8, "name": "???", "light": "잠든 빛", "locked": true },
+    { "id": "g09", "order": 9, "name": "???", "light": "잠든 빛", "locked": true },
+    { "id": "g10", "order": 10, "name": "???", "light": "잠든 빛", "locked": true },
+    { "id": "g11", "order": 11, "name": "???", "light": "잠든 빛", "locked": true },
+    { "id": "g12", "order": 12, "name": "???", "light": "잠든 빛", "locked": true },
+    { "id": "g13", "order": 13, "name": "???", "light": "결집의 빛", "locked": true }
+  ]
+}

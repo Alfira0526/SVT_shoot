@@ -44,15 +44,21 @@ export class TitleScene extends Phaser.Scene {
       );
     this.warn = this.add.text(GAME_WIDTH / 2, 440, '', { fontSize: '13px', color: PALETTE.dangerHex }).setOrigin(0.5);
 
-    // 메뉴 (§11) — 스토리(캠페인) / 엔들리스(무한 성장) 2모드
-    this._button(GAME_WIDTH / 2, 492, '스토리 모드', () => this._startStory(), { primary: true });
-    this._button(GAME_WIDTH / 2, 548, '엔들리스 모드', () => this._startEndless(), { accent: true });
-    this._button(GAME_WIDTH / 2, 602, '랭킹 보기', () => {
+    // 메뉴 (§11) — 스토리(캠페인) / 엔들리스(무한 성장) 2모드 + 수호자 도감
+    this._button(GAME_WIDTH / 2, 480, '스토리 모드', () => this._startStory(), { primary: true });
+    this._button(GAME_WIDTH / 2, 534, '엔들리스 모드', () => this._startEndless(), { accent: true });
+    const gCount = 1 + Save.getAwakenedGuardians().length; // 봉이 포함
+    this._button(GAME_WIDTH / 2, 588, `수호자 도감  ${gCount}/13`, () => {
+      Audio.unlock();
+      Audio.sfx('ui');
+      this.scene.start('Guardian');
+    });
+    this._button(GAME_WIDTH / 2, 638, '랭킹 보기', () => {
       Audio.unlock();
       Audio.sfx('ui');
       this.scene.start('Ranking', { viewOnly: true });
     });
-    this._button(GAME_WIDTH / 2, 654, '설정', () => {
+    this._button(GAME_WIDTH / 2, 688, '설정', () => {
       Audio.unlock();
       Audio.sfx('ui');
       this.scene.start('Settings');

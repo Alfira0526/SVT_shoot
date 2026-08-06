@@ -21,11 +21,15 @@ import dialogueW2 from '../config/dialogue01.json';
 import dialogueW3 from '../config/dialogue_w3.json';
 import dialogueW4 from '../config/dialogue_w4.json';
 import dialogueFinal from '../config/dialogue_final.json';
+import guardians from '../config/guardians.json';
 
 const STAGES = { w1: stageW1, w2: stageW2, w3: stageW3, w4: stageW4, final: stageFinal };
 const DIALOGUES = { w1: dialogueW1, w2: dialogueW2, w3: dialogueW3, w4: dialogueW4, final: dialogueFinal };
 // 캠페인 순서: W1 → W2 → W3 → W4(콘서트 현장) → Final(흑막전) → 에필로그 → 랭킹
 const NEXT = { w1: 'w2', w2: 'w3', w3: 'w4', w4: 'final', final: null };
+// 수호자 챕터: 각 스테이지 클리어 = 그 스테이지에 묶인 수호자 각성 (조우/각성 비트)
+const GUARDIAN_BY_STAGE = {};
+guardians.roster.forEach((g) => { if (g.stage) GUARDIAN_BY_STAGE[g.stage] = g; });
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -42,6 +46,7 @@ export class GameScene extends Phaser.Scene {
     this._carryApplied = false;
     this._midBarkShown = false;
     this._dev = Save.getDev(); // QA 개발자 모드 — 무제한 라이프(무적)
+    this._guardian = GUARDIAN_BY_STAGE[this.stageId] || null; // 이 스테이지의 수호자(챕터)
 
     // 플레이 시간 측정 시작점 (§6 서버 검증 ② score/play_ms). W1 진입 시 리셋.
     if (this.stageId === 'w1') this.registry.set('playStartMs', Date.now());
@@ -63,8 +68,20 @@ export class GameScene extends Phaser.Scene {
     this._showBanner(this.stage.title, this.stage.subtitle);
 
     this.time.delayedCall(900, () => {
-      this._dialogue('intro', () => this._startWaves());
+      // 수호자 챕터 '조우' 비트 — 아직 각성 전이면 스테이지 인트로 앞에 삽입
+      const gd = this._guardian;
+      if (gd && gd.encounter && !Save.isGuardianAwake(gd.id)) {
+        this._playLines(gd.encounter, () => this._dialogue('intro', () => this._startWaves()));
+      } else {
+        this._dialogue('intro', () => this._startWaves());
+      }
     });
+  }
+
+  // 임의 대사 라인 재생 (수호자 조우/각성 등 stageId 밖 대사)
+  _playLines(lines, onDone) {
+    if (!lines || lines.length === 0) { onDone?.(); return; }
+    this.scene.launch('Dialogue', { lines, nickname: this.nickname, onComplete: onDone });
   }
 
   // ── 배경 ────────────────────────────────────────────────
@@ -237,8 +254,47 @@ export class GameScene extends Phaser.Scene {
       this.cameras.main.flash(300, 255, 245, 200);
       this._confetti();
       this.time.delayedCall(1400, () => {
-        this._dialogue('outro', () => this._clear());
+        this._dialogue('outro', () => this._afterOutro());
       });
+    });
+  }
+
+  // 아웃트로 후 — 수호자 '각성' 비트(최초 1회) → 클리어
+  _afterOutro() {
+    const gd = this._guardian;
+    if (gd && gd.awaken && !Save.isGuardianAwake(gd.id)) {
+      this._playLines(gd.awaken, () => {
+        Save.awakenGuardian(gd.id);
+        this._awakenCelebrate(gd, () => this._clear());
+      });
+    } else {
+      this._clear();
+    }
+  }
+
+  // 각성 연출 — 수호자 초상화 상승 + 이름/빛 + 반짝임
+  _awakenCelebrate(gd, onDone) {
+    const c = this.add.container(GAME_WIDTH / 2, GAME_HEIGHT / 2).setDepth(45);
+    c.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0a0716, 0.82).setOrigin(0.5));
+    const count = 1 + Save.getAwakenedGuardians().length; // 봉이 포함
+    c.add(this.add.text(0, -170, '새로운 수호자 각성', { fontSize: '20px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0.5));
+    const port = this.add.image(0, -40, this.textures.exists(gd.portrait) ? gd.portrait : 'pt_bongi').setScale(1.4);
+    c.add(port);
+    c.add(this.add.text(0, 70, gd.name, { fontSize: '34px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5));
+    c.add(this.add.text(0, 108, gd.light, { fontSize: '16px', color: PALETTE.roseHex }).setOrigin(0.5));
+    c.add(this.add.text(0, 150, `수호자 ${count} / 13`, { fontSize: '13px', color: PALETTE.inkDim }).setOrigin(0.5));
+    const p = this.add.particles(0, -40, 'spark', {
+      speed: { min: 40, max: 160 }, scale: { start: 1, end: 0 }, lifespan: 900, frequency: 60,
+      tint: [PALETTE.light, PALETTE.rose, PALETTE.gold], blendMode: 'ADD',
+    });
+    c.add(p);
+    port.setScale(0.2).setAlpha(0);
+    this.tweens.add({ targets: port, scale: 1.4, alpha: 1, duration: 520, ease: 'Back.easeOut' });
+    c.setAlpha(0);
+    this.tweens.add({ targets: c, alpha: 1, duration: 300 });
+    Audio.sfx('powerup');
+    this.time.delayedCall(2600, () => {
+      this.tweens.add({ targets: c, alpha: 0, duration: 300, onComplete: () => { c.destroy(); onDone?.(); } });
     });
   }
 

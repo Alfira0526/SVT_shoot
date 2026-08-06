@@ -12,6 +12,7 @@ const DEFAULT_PROGRESS = {
   noMissClear: false,
   prologueSeen: false, // 재방문 시 프롤로그 스킵 (§11)
   tutorialSeen: false, // 첫 조작 안내 오버레이 1회 (§11)
+  awakenedGuardians: [], // 각성시킨 수호자 id (봉이는 데이터상 기본 각성)
 };
 const DEFAULT_SETTINGS = { bgm: true, sfx: true };
 
@@ -62,6 +63,21 @@ export const Save = {
     if (noMiss) p.noMissClear = true;
     write(STORAGE.progress, p);
     return p;
+  },
+
+  // ── 수호자 도감 (13인 각성 컬렉션) ──────────────────────
+  awakenGuardian(id) {
+    const p = this.getProgress();
+    p.awakenedGuardians = p.awakenedGuardians || [];
+    if (id && !p.awakenedGuardians.includes(id)) p.awakenedGuardians.push(id);
+    write(STORAGE.progress, p);
+    return p;
+  },
+  getAwakenedGuardians() {
+    return this.getProgress().awakenedGuardians || [];
+  },
+  isGuardianAwake(id) {
+    return this.getAwakenedGuardians().includes(id);
   },
 
   // 단발 플래그 (프롤로그·튜토리얼 시청 여부)
