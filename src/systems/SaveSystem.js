@@ -84,6 +84,21 @@ export const Save = {
     return !!on;
   },
 
+  // ── 엔들리스 모드 성장/기록 (드래곤 플라이트식 무한 루프) ──
+  // 별조각(totalGold)은 차기 업그레이드·13인 수호자 해금 재화로 사용.
+  getEndless() {
+    return { bestDistance: 0, totalGold: 0, runs: 0, ...read(STORAGE.endless, {}) };
+  },
+  recordEndless({ distance = 0, gold = 0 } = {}) {
+    const e = this.getEndless();
+    const dist = Math.floor(distance);
+    if (dist > e.bestDistance) e.bestDistance = dist;
+    e.totalGold = (e.totalGold || 0) + gold;
+    e.runs = (e.runs || 0) + 1;
+    write(STORAGE.endless, e);
+    return e;
+  },
+
   getSettings() {
     return { ...DEFAULT_SETTINGS, ...read(STORAGE.settings, {}) };
   },

@@ -44,14 +44,15 @@ export class TitleScene extends Phaser.Scene {
       );
     this.warn = this.add.text(GAME_WIDTH / 2, 440, '', { fontSize: '13px', color: PALETTE.dangerHex }).setOrigin(0.5);
 
-    // 메뉴 (§11)
-    this._button(GAME_WIDTH / 2, 500, '게임 시작', () => this._start(), { primary: true });
-    this._button(GAME_WIDTH / 2, 562, '랭킹 보기', () => {
+    // 메뉴 (§11) — 스토리(캠페인) / 엔들리스(무한 성장) 2모드
+    this._button(GAME_WIDTH / 2, 492, '스토리 모드', () => this._startStory(), { primary: true });
+    this._button(GAME_WIDTH / 2, 548, '엔들리스 모드', () => this._startEndless(), { accent: true });
+    this._button(GAME_WIDTH / 2, 602, '랭킹 보기', () => {
       Audio.unlock();
       Audio.sfx('ui');
       this.scene.start('Ranking', { viewOnly: true });
     });
-    this._button(GAME_WIDTH / 2, 624, '설정', () => {
+    this._button(GAME_WIDTH / 2, 654, '설정', () => {
       Audio.unlock();
       Audio.sfx('ui');
       this.scene.start('Settings');
@@ -160,7 +161,8 @@ export class TitleScene extends Phaser.Scene {
     this.tweens.add({ targets: t, alpha: 0, y: 96, duration: 1600, delay: 900, onComplete: () => t.destroy() });
   }
 
-  _start() {
+  // 닉네임 검증 후 저장·registry 반영 → 성공 시 name, 실패 시 null(경고 표시)
+  _resolveNick() {
     Audio.unlock(); // 브라우저 자동재생 정책 — 사용자 제스처에서 오디오 활성화
     const el = document.getElementById('nick');
     const raw = (el?.value || '').trim();
@@ -170,13 +172,24 @@ export class TitleScene extends Phaser.Scene {
       this.warn.setText(
         check.reason === 'banned' ? '사용할 수 없는 닉네임이야.' : `닉네임은 ${NICKNAME.min}~${NICKNAME.max}자로 입력해줘!`
       );
-      return;
+      return null;
     }
-    Audio.sfx('ui');
     const name = Save.setNickname(raw);
     this.registry.set('nickname', name);
+    return name;
+  }
+
+  _startStory() {
+    if (this._resolveNick() == null) return;
+    Audio.sfx('ui');
     // 프롤로그는 매번 재생 — 스토리 몰입 유지. 건너뛰기는 프롤로그 내 SKIP 버튼으로만.
     this.scene.start('Prologue');
+  }
+
+  _startEndless() {
+    if (this._resolveNick() == null) return;
+    Audio.sfx('ui');
+    this.scene.start('Endless');
   }
 
   // ── 연출 헬퍼 ────────────────────────────────────────────
@@ -203,20 +216,21 @@ export class TitleScene extends Phaser.Scene {
   }
 
   _button(x, y, label, cb, opts = {}) {
-    const w = opts.primary ? 220 : 190;
-    const h = opts.primary ? 56 : 46;
-    const fill = opts.primary ? PALETTE.rose : PALETTE.panel;
+    const big = opts.primary || opts.accent;
+    const w = big ? 220 : 190;
+    const h = big ? 56 : 46;
+    const fill = opts.primary ? PALETTE.rose : opts.accent ? PALETTE.serenity : PALETTE.panel;
     const g = this.add.graphics();
     g.fillStyle(fill, 1);
     g.fillRoundedRect(x - w / 2, y - h / 2, w, h, 14);
-    if (!opts.primary) {
+    if (!big) {
       g.lineStyle(2, PALETTE.serenity, 0.9);
       g.strokeRoundedRect(x - w / 2, y - h / 2, w, h, 14);
     }
     this.add
       .text(x, y, label, {
-        fontSize: opts.primary ? '22px' : '18px',
-        color: opts.primary ? '#2a1a2a' : PALETTE.ink,
+        fontSize: big ? '22px' : '18px',
+        color: big ? '#1a2230' : PALETTE.ink,
         fontStyle: 'bold',
       })
       .setOrigin(0.5);

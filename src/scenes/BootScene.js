@@ -33,6 +33,7 @@ export class BootScene extends Phaser.Scene {
     this._makeBossServer(); // boss_server 96×96 은 도트 미제작 — Graphics 유지
     this._makeBossMonopolist(); // 독점자(Final) — 도트 미제작, Graphics 생성
     this._makeFx();
+    this._makeCoin(); // 엔들리스 별조각(성장 재화)
     this._makeQueueNumber();
     this._makePortraits();
 
@@ -118,6 +119,23 @@ export class BootScene extends Phaser.Scene {
     g.fillStyle(0xffffff, 1);
     g.fillRect(0, 0, 2, 2);
     g.generateTexture('star', 2, 2);
+    g.destroy();
+  }
+
+  // ── 엔들리스 별조각(성장 재화) — 빛나는 다이아 조각 ──────
+  _makeCoin() {
+    const g = this._g();
+    g.fillStyle(PALETTE.gold, 1);
+    g.beginPath();
+    g.moveTo(9, 1); g.lineTo(17, 9); g.lineTo(9, 17); g.lineTo(1, 9);
+    g.closePath(); g.fillPath();
+    g.lineStyle(1.5, 0xbb8a2e, 1);
+    g.beginPath();
+    g.moveTo(9, 1); g.lineTo(17, 9); g.lineTo(9, 17); g.lineTo(1, 9);
+    g.closePath(); g.strokePath();
+    g.fillStyle(0xfff6cf, 1);
+    g.fillCircle(6, 6, 2.4);
+    g.generateTexture('coin', 18, 18);
     g.destroy();
   }
 

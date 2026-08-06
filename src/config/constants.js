@@ -91,6 +91,22 @@ export const STORAGE = {
   settings: 'fs_settings', // { bgm:true, sfx:true }
   localRanking: 'fs_ranking_stage', // v1 로컬 보드 [{ nickname, score, mode, play_ms, at }]
   dev: 'fs_dev', // QA 개발자 모드 on/off (무제한 라이프). 클라 전용 — 보안 아님
+  endless: 'fs_endless', // 엔들리스 모드 성장/기록 { bestDistance, totalGold }
+};
+
+// ── 엔들리스 모드 (드래곤 플라이트식 무한 상승 · 성장 루프) ──
+// 스토리 캠페인과 별개 모드. 거리(m)=점수, 별조각=성장 재화(펫·업그레이드는 차기).
+export const ENDLESS = {
+  scrollBase: 130, // 시작 스크롤 속도(px/s)
+  scrollMax: 300, // 최대 스크롤 속도
+  distancePerPx: 0.06, // 스크롤 1px당 누적 거리(m) 환산
+  spawnStartMs: 900, // 잡몹 스폰 간격 시작
+  spawnMinMs: 320, // 잡몹 스폰 간격 하한(난도 상승 수렴값)
+  rampDistance: 2000, // 이 거리에서 난도 램프가 최대에 근접
+  bossFirstAt: 400, // 첫 구간 보스 등장 거리
+  bossGap: 550, // 이후 보스 간 거리(점증)
+  coinRowMs: 2400, // 별조각 줄 스폰 간격
+  killCoinChance: 0.6, // 잡몹 처치 시 별조각 드랍 확률
 };
 
 // QA 개발자 모드 — 타이틀 숨김 버튼 + 패스워드로 진입. 무제한 라이프(무적).
