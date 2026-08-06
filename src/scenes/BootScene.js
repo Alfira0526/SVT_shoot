@@ -14,7 +14,9 @@ export class BootScene extends Phaser.Scene {
       'player_ship', 'enemy_macro', 'enemy_spinner', 'enemy_popup',
       'w3_macro', 'w3_spinner', 'w3_popup', // W3 잡몹 팔레트 스왑 스킨 (D34)
       'item_wand', 'item_seed', 'item_shield', 'bullet_player', 'bullet_enemy',
-      'boss_noise', 'boss_scalper',
+      'boss_noise', 'boss_scalper', 'boss_server', 'boss_monopolist', // 자체 도트(Pillow) 교체
+      'coin', // 엔들리스 별조각
+      'hero_rose', 'hero_serenity', 'hero_gold', 'hero_mint', 'hero_lavender', // 수호자 히어로(장착색)
     ];
     sprites.forEach((n) => this.load.image(n, `assets/sprites/${n}.png`));
     // 컷씬(D31) — 텍스처 키를 dialogue JSON 의 image 값과 동일하게
@@ -30,10 +32,8 @@ export class BootScene extends Phaser.Scene {
     this.input.mouse?.disableContextMenu();
 
     this._transparent('__none');
-    this._makeBossServer(); // boss_server 96×96 은 도트 미제작 — Graphics 유지
-    this._makeBossMonopolist(); // 독점자(Final) — 도트 미제작, Graphics 생성
+    // 보스/별조각은 자체 도트(Pillow)로 교체 — Graphics 생성 제거
     this._makeFx();
-    this._makeCoin(); // 엔들리스 별조각(성장 재화)
     this._makeQueueNumber();
     this._makePortraits();
 
@@ -53,60 +53,6 @@ export class BootScene extends Phaser.Scene {
     g.destroy();
   }
 
-  // ── 보스: 서버랙 (96×96 도트 미제작 — Graphics 유지) ─────
-  _makeBossServer() {
-    const g = this._g();
-    g.fillStyle(0x2b2f45, 1);
-    g.fillRoundedRect(8, 6, 80, 84, 8);
-    g.fillStyle(0x1a1d2e, 1);
-    for (let r = 0; r < 5; r++) {
-      g.fillRoundedRect(16, 14 + r * 15, 64, 11, 3);
-    }
-    // 상태 LED
-    for (let r = 0; r < 5; r++) {
-      g.fillStyle(r % 2 ? PALETTE.danger : PALETTE.ok, 1);
-      g.fillCircle(24, 19 + r * 15, 2.5);
-      g.fillStyle(PALETTE.serenity, 1);
-      g.fillCircle(32, 19 + r * 15, 2.5);
-    }
-    g.generateTexture('boss_server', 96, 96);
-    g.destroy();
-  }
-
-  // ── 보스: 독점자(Final) — 빛을 창살 뒤에 가둔 어둠의 프리즘 ─
-  _makeBossMonopolist() {
-    const g = this._g();
-    // 왕관 스파이크
-    g.fillStyle(0x2a2450, 1);
-    for (let i = 0; i < 5; i++) {
-      const x = 20 + i * 14;
-      g.fillTriangle(x, 14, x + 7, 14, x + 3.5, 2);
-    }
-    // 각진 어둠 몸체 (프리즘)
-    g.fillStyle(0x141024, 1);
-    g.fillTriangle(48, 8, 8, 42, 88, 42);
-    g.fillRect(10, 42, 76, 40);
-    g.fillTriangle(10, 82, 86, 82, 48, 94);
-    g.lineStyle(2, 0x3a2f5e, 1);
-    g.strokeTriangle(48, 8, 8, 42, 88, 42);
-    // 가둔 빛 코어
-    g.fillStyle(PALETTE.light, 1);
-    g.fillCircle(48, 54, 15);
-    g.fillStyle(0xffffff, 0.85);
-    g.fillCircle(44, 50, 5);
-    // 창살 (독점의 상징)
-    g.fillStyle(0x141024, 1);
-    g.fillRect(40, 40, 3, 30);
-    g.fillRect(47, 40, 3, 30);
-    g.fillRect(54, 40, 3, 30);
-    // 위험한 눈
-    g.fillStyle(PALETTE.danger, 1);
-    g.fillCircle(34, 34, 3);
-    g.fillCircle(62, 34, 3);
-    g.generateTexture('boss_monopolist', 96, 96);
-    g.destroy();
-  }
-
   // ── FX: 폭발 파티클/별 ───────────────────────────────────
   _makeFx() {
     let g = this._g();
@@ -119,23 +65,6 @@ export class BootScene extends Phaser.Scene {
     g.fillStyle(0xffffff, 1);
     g.fillRect(0, 0, 2, 2);
     g.generateTexture('star', 2, 2);
-    g.destroy();
-  }
-
-  // ── 엔들리스 별조각(성장 재화) — 빛나는 다이아 조각 ──────
-  _makeCoin() {
-    const g = this._g();
-    g.fillStyle(PALETTE.gold, 1);
-    g.beginPath();
-    g.moveTo(9, 1); g.lineTo(17, 9); g.lineTo(9, 17); g.lineTo(1, 9);
-    g.closePath(); g.fillPath();
-    g.lineStyle(1.5, 0xbb8a2e, 1);
-    g.beginPath();
-    g.moveTo(9, 1); g.lineTo(17, 9); g.lineTo(9, 17); g.lineTo(1, 9);
-    g.closePath(); g.strokePath();
-    g.fillStyle(0xfff6cf, 1);
-    g.fillCircle(6, 6, 2.4);
-    g.generateTexture('coin', 18, 18);
     g.destroy();
   }
 

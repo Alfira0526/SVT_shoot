@@ -77,7 +77,7 @@ export class EndlessScene extends Phaser.Scene {
     this.clouds = [];
     for (let i = 0; i < 4; i++) {
       const c = this.add
-        .rectangle(Phaser.Math.Between(0, GAME_WIDTH), i * 240 - 120, Phaser.Math.Between(160, 300), Phaser.Math.Between(50, 90), i % 2 ? PALETTE.rose : PALETTE.serenity, 0.06)
+        .ellipse(Phaser.Math.Between(0, GAME_WIDTH), i * 240 - 120, Phaser.Math.Between(220, 360), Phaser.Math.Between(80, 140), i % 2 ? PALETTE.rose : PALETTE.serenity, 0.05)
         .setDepth(-18);
       c.speed = 24 + i * 6;
       this.clouds.push(c);
