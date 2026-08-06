@@ -13,6 +13,8 @@ const DEFAULT_PROGRESS = {
   prologueSeen: false, // 재방문 시 프롤로그 스킵 (§11)
   tutorialSeen: false, // 첫 조작 안내 오버레이 1회 (§11)
   awakenedGuardians: [], // 각성시킨 수호자 id (봉이는 데이터상 기본 각성)
+  guardianExp: {}, // { [id]: 누적 EXP } — 교체 육성
+  equippedGuardian: 'bongi', // 함께 비행 중인 수호자(탄 색·패시브)
 };
 const DEFAULT_SETTINGS = { bgm: true, sfx: true };
 
@@ -78,6 +80,27 @@ export const Save = {
   },
   isGuardianAwake(id) {
     return this.getAwakenedGuardians().includes(id);
+  },
+
+  // 교체 육성 — 장착 수호자에 EXP 적립, 장착 슬롯 관리
+  getGuardianExp(id) {
+    return (this.getProgress().guardianExp || {})[id] || 0;
+  },
+  addGuardianExp(id, amount) {
+    const p = this.getProgress();
+    p.guardianExp = p.guardianExp || {};
+    p.guardianExp[id] = (p.guardianExp[id] || 0) + Math.max(0, Math.floor(amount || 0));
+    write(STORAGE.progress, p);
+    return p.guardianExp[id];
+  },
+  getEquipped() {
+    return this.getProgress().equippedGuardian || 'bongi';
+  },
+  setEquipped(id) {
+    const p = this.getProgress();
+    p.equippedGuardian = id || 'bongi';
+    write(STORAGE.progress, p);
+    return p.equippedGuardian;
   },
 
   // 단발 플래그 (프롤로그·튜토리얼 시청 여부)

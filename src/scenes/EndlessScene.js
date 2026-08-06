@@ -5,6 +5,8 @@ import { Enemy, createEnemyGroup } from '../entities/Enemy.js';
 import { Boss } from '../entities/Boss.js';
 import { createBulletGroup } from '../entities/Bullet.js';
 import { Save } from '../systems/SaveSystem.js';
+import { applyLoadout } from '../systems/Loadout.js';
+import { levelFromExp } from '../config/leveling.js';
 import { safeDisplayName } from '../systems/Filter.js';
 import { Audio } from '../systems/Audio.js';
 
@@ -57,7 +59,7 @@ export class EndlessScene extends Phaser.Scene {
     this._buildGroups();
 
     this.player = new Player(this, GAME_WIDTH / 2, GAME_HEIGHT - 150);
-    this.player.power = 1;
+    applyLoadout(this, this.player); // 장착 수호자 → 탄 색·파워·연사
 
     this._buildHud();
     this._buildCollisions();
@@ -180,7 +182,7 @@ export class EndlessScene extends Phaser.Scene {
     this.player.update(time, (points) => {
       for (const pt of points) {
         const b = this.playerBullets.get();
-        if (b) b.fire(pt.x, pt.y, pt.vx || 0, -560, 20, 'bullet_player');
+        if (b) { b.fire(pt.x, pt.y, pt.vx || 0, -560, 20, 'bullet_player'); b.setTint(this._bulletTint); }
       }
       Audio.sfx('shoot');
     });
@@ -410,6 +412,17 @@ export class EndlessScene extends Phaser.Scene {
     const dist = Math.floor(this.distance);
     const isBest = dist >= rec.bestDistance && dist > 0;
 
+    // 장착 수호자 육성 — 거리 비례 EXP
+    const lo = this._loadout;
+    const expGain = Phaser.Math.Clamp(Math.floor(dist / 12), 5, 400);
+    let expLine = '';
+    if (lo) {
+      const before = levelFromExp(Save.getGuardianExp(lo.id)).level;
+      Save.addGuardianExp(lo.id, expGain);
+      const after = levelFromExp(Save.getGuardianExp(lo.id)).level;
+      expLine = `${lo.guardian?.name || '수호자'}  +${expGain} EXP` + (after > before ? `  ·  Lv.${after}!` : '');
+    }
+
     this.time.delayedCall(700, () => {
       const c = this.add.container(0, 0).setDepth(60);
       c.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.72).setOrigin(0).setInteractive());
@@ -420,6 +433,7 @@ export class EndlessScene extends Phaser.Scene {
       c.add(this.add.text(GAME_WIDTH / 2, 352, `BEST ${rec.bestDistance} m`, { fontSize: '15px', color: PALETTE.inkDim }).setOrigin(0.5));
       c.add(this.add.image(GAME_WIDTH / 2 - 40, 398, 'coin').setScale(1.2));
       c.add(this.add.text(GAME_WIDTH / 2 - 20, 388, `+${this.gold}  (누적 ${rec.totalGold})`, { fontSize: '16px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0, 0));
+      if (expLine) c.add(this.add.text(GAME_WIDTH / 2, 430, expLine, { fontSize: '14px', color: PALETTE.serenityHex, fontStyle: 'bold' }).setOrigin(0.5));
       c.add(this._btn(GAME_WIDTH / 2, 470, '다시 도전', PALETTE.rose, '#2a1a2a', () => { Audio.sfx('ui'); this.scene.restart(); }));
       c.add(this._btn(GAME_WIDTH / 2, 534, '타이틀로', PALETTE.panel, PALETTE.ink, () => { Audio.sfx('ui'); this.scene.start('Title'); }));
     });

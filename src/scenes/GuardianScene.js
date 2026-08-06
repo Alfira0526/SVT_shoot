@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT, PALETTE } from '../config/constants.js';
 import { Save } from '../systems/SaveSystem.js';
 import { Audio } from '../systems/Audio.js';
+import { levelFromExp, stageFromLevel, STAGE_NAME, MAX_LEVEL } from '../config/leveling.js';
+import { guardianColorHex } from '../systems/Loadout.js';
 import guardians from '../config/guardians.json';
 
 // 수호자 도감 (13인 각성 컬렉션) — 각성한 빛은 초상화·이름·빛, 잠든 빛은 실루엣.
@@ -41,17 +43,29 @@ export class GuardianScene extends Phaser.Scene {
 
   _slot(cx, cy, g, awake) {
     const w = 118, h = 104;
+    const equipped = awake && Save.getEquipped() === g.id;
     const panel = this.add.graphics();
     panel.fillStyle(awake ? PALETTE.panel : 0x110f1e, 1);
     panel.fillRoundedRect(cx - w / 2, cy - h / 2, w, h, 12);
-    panel.lineStyle(2, awake ? PALETTE.serenity : 0x2a2540, 0.9);
+    panel.lineStyle(equipped ? 3 : 2, equipped ? PALETTE.gold : awake ? PALETTE.serenity : 0x2a2540, equipped ? 1 : 0.9);
     panel.strokeRoundedRect(cx - w / 2, cy - h / 2, w, h, 12);
 
     if (awake) {
+      const { level } = levelFromExp(Save.getGuardianExp(g.id));
+      const stage = stageFromLevel(level);
+      // 진화 오라 (단계별) — 초상화 뒤
+      if (stage >= 2) {
+        const aura = this.add.graphics();
+        aura.fillStyle(stage >= 3 ? PALETTE.gold : guardianColorHex(g), stage >= 3 ? 0.28 : 0.18);
+        aura.fillCircle(cx, cy - 14, stage >= 3 ? 30 : 26);
+      }
       const key = this.textures.exists(g.portrait) ? g.portrait : 'pt_bongi';
       this.add.image(cx, cy - 14, key).setScale(0.52);
-      this.add.text(cx, cy + 30, g.name, { fontSize: '15px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5);
-      this.add.text(cx, cy + 46, g.light, { fontSize: '10px', color: PALETTE.roseHex }).setOrigin(0.5);
+      // Lv 배지
+      this.add.text(cx - w / 2 + 8, cy - h / 2 + 6, `Lv.${level}`, { fontSize: '11px', color: PALETTE.goldHex, fontStyle: 'bold' });
+      if (equipped) this.add.text(cx + w / 2 - 8, cy - h / 2 + 6, '장착', { fontSize: '10px', color: PALETTE.gold ? PALETTE.goldHex : '#fff', fontStyle: 'bold' }).setOrigin(1, 0);
+      this.add.text(cx, cy + 28, g.name, { fontSize: '15px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5);
+      this.add.text(cx, cy + 44, `${g.light} · ${STAGE_NAME[stage]}`, { fontSize: '9px', color: PALETTE.roseHex }).setOrigin(0.5);
       this.add.zone(cx, cy, w, h).setInteractive({ useHandCursor: true })
         .on('pointerdown', () => { Audio.sfx('ui'); this._detail(g); });
     } else {
@@ -68,18 +82,51 @@ export class GuardianScene extends Phaser.Scene {
       .setInteractive().on('pointerdown', () => { c.destroy(); this._overlay = null; });
     c.add(dim);
     const key = this.textures.exists(g.portrait) ? g.portrait : 'pt_bongi';
-    c.add(this.add.image(GAME_WIDTH / 2, 250, key).setScale(1.5));
-    c.add(this.add.text(GAME_WIDTH / 2, 356, g.name, { fontSize: '32px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5));
-    c.add(this.add.text(GAME_WIDTH / 2, 392, g.light, { fontSize: '16px', color: PALETTE.roseHex, fontStyle: 'bold' }).setOrigin(0.5));
+    const st = levelFromExp(Save.getGuardianExp(g.id));
+    const stage = stageFromLevel(st.level);
+    // 진화 오라
+    if (stage >= 2) {
+      const aura = this.add.graphics();
+      aura.fillStyle(stage >= 3 ? PALETTE.gold : guardianColorHex(g), stage >= 3 ? 0.3 : 0.2);
+      aura.fillCircle(GAME_WIDTH / 2, 230, stage >= 3 ? 92 : 80);
+      c.add(aura);
+    }
+    c.add(this.add.image(GAME_WIDTH / 2, 230, key).setScale(1.5));
+    c.add(this.add.text(GAME_WIDTH / 2, 330, g.name, { fontSize: '30px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5));
+    c.add(this.add.text(GAME_WIDTH / 2, 364, `${g.light}  ·  Lv.${st.level} ${STAGE_NAME[stage]}`, { fontSize: '15px', color: PALETTE.roseHex, fontStyle: 'bold' }).setOrigin(0.5));
+
+    // EXP 바
+    const bw = 220, bx = GAME_WIDTH / 2 - bw / 2, by = 392;
+    const bar = this.add.graphics();
+    bar.fillStyle(0x000000, 0.5); bar.fillRoundedRect(bx, by, bw, 10, 5);
+    const ratio = st.max ? 1 : (st.need ? st.into / st.need : 0);
+    bar.fillStyle(PALETTE.gold, 1); bar.fillRoundedRect(bx, by, Math.max(3, bw * ratio), 10, 5);
+    c.add(bar);
+    c.add(this.add.text(GAME_WIDTH / 2, 410, st.max ? 'MAX' : `EXP ${st.into} / ${st.need}`, { fontSize: '11px', color: PALETTE.inkDim }).setOrigin(0.5));
+
     if (g.personality) {
-      c.add(this.add.text(GAME_WIDTH / 2, 440, g.personality, {
-        fontSize: '15px', color: PALETTE.inkDim, align: 'center', wordWrap: { width: GAME_WIDTH - 100 }, lineSpacing: 5,
+      c.add(this.add.text(GAME_WIDTH / 2, 452, g.personality, {
+        fontSize: '14px', color: PALETTE.inkDim, align: 'center', wordWrap: { width: GAME_WIDTH - 100 }, lineSpacing: 5,
       }).setOrigin(0.5));
     }
     if (g.shadow) {
-      c.add(this.add.text(GAME_WIDTH / 2, 512, `흐린 그림자 · ${g.shadow}`, { fontSize: '13px', color: PALETTE.dangerHex }).setOrigin(0.5));
+      c.add(this.add.text(GAME_WIDTH / 2, 508, `흐린 그림자 · ${g.shadow}`, { fontSize: '13px', color: PALETTE.dangerHex }).setOrigin(0.5));
     }
-    c.add(this.add.text(GAME_WIDTH / 2, 590, '탭하여 닫기', { fontSize: '13px', color: PALETTE.serenityHex }).setOrigin(0.5));
+
+    // 장착 버튼
+    const equipped = Save.getEquipped() === g.id;
+    const by2 = 556, bw2 = 200, bh2 = 48;
+    const eg = this.add.graphics();
+    eg.fillStyle(equipped ? PALETTE.panel : PALETTE.gold, 1);
+    eg.fillRoundedRect(GAME_WIDTH / 2 - bw2 / 2, by2 - bh2 / 2, bw2, bh2, 12);
+    if (equipped) { eg.lineStyle(2, PALETTE.gold, 0.9); eg.strokeRoundedRect(GAME_WIDTH / 2 - bw2 / 2, by2 - bh2 / 2, bw2, bh2, 12); }
+    c.add(eg);
+    c.add(this.add.text(GAME_WIDTH / 2, by2, equipped ? '장착됨' : '이 수호자로 장착', { fontSize: '17px', color: equipped ? PALETTE.goldHex : '#2a1a12', fontStyle: 'bold' }).setOrigin(0.5));
+    if (!equipped) {
+      c.add(this.add.zone(GAME_WIDTH / 2, by2, bw2, bh2).setInteractive({ useHandCursor: true })
+        .on('pointerdown', (p, lx, ly, ev) => { ev?.stopPropagation?.(); Audio.sfx('powerup'); Save.setEquipped(g.id); this.scene.restart(); }));
+    }
+    c.add(this.add.text(GAME_WIDTH / 2, 606, '빈 곳을 탭하면 닫기', { fontSize: '12px', color: PALETTE.serenityHex }).setOrigin(0.5));
     this._overlay = c;
   }
 

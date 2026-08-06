@@ -8,6 +8,8 @@ import { createBulletGroup } from '../entities/Bullet.js';
 import { ScoreSystem } from '../systems/ScoreSystem.js';
 import { WaveSpawner } from '../systems/WaveSpawner.js';
 import { Save } from '../systems/SaveSystem.js';
+import { applyLoadout } from '../systems/Loadout.js';
+import { levelFromExp } from '../config/leveling.js';
 import { safeDisplayName } from '../systems/Filter.js';
 import { Audio } from '../systems/Audio.js';
 
@@ -59,6 +61,7 @@ export class GameScene extends Phaser.Scene {
     this._buildGroups();
 
     this.player = new Player(this, GAME_WIDTH / 2, GAME_HEIGHT - 120);
+    applyLoadout(this, this.player); // 장착 수호자 → 탄 색·파워·연사
 
     this._buildHud();
     this._buildCollisions();
@@ -301,6 +304,7 @@ export class GameScene extends Phaser.Scene {
   _clear() {
     this.phase = 'clear';
     Save.markStageCleared(this.stageId);
+    this._awardGuardianExp(45); // 장착 수호자 육성
     const next = NEXT[this.stageId];
     // 최종 스테이지 클리어 & 에필로그 지정(D37) → 밤하늘 연출 + 에필로그 대사 후 랭킹
     if (!next && this.stage.epilogue) {
@@ -318,6 +322,22 @@ export class GameScene extends Phaser.Scene {
         this._toRanking(false);
       }
     });
+  }
+
+  // 장착 수호자 EXP 적립 + 레벨업 피드백 (비차단)
+  _awardGuardianExp(amount) {
+    const lo = this._loadout;
+    if (!lo) return;
+    const before = levelFromExp(Save.getGuardianExp(lo.id)).level;
+    Save.addGuardianExp(lo.id, amount);
+    const after = levelFromExp(Save.getGuardianExp(lo.id)).level;
+    const name = lo.guardian?.name || '수호자';
+    const msg = after > before ? `${name}  LEVEL UP!  Lv.${after}` : `${name}  +${amount} EXP`;
+    const t = this.add.text(GAME_WIDTH / 2, 130, msg, {
+      fontSize: '16px', color: after > before ? PALETTE.goldHex : PALETTE.serenityHex, fontStyle: 'bold',
+      backgroundColor: 'rgba(22,19,39,0.85)', padding: { x: 12, y: 6 },
+    }).setOrigin(0.5).setDepth(35);
+    this.tweens.add({ targets: t, y: 104, alpha: 0, duration: 1600, delay: 500, onComplete: () => t.destroy() });
   }
 
   // ── 에필로그 (D37) — 밤하늘·조용히 깜박이는 또 다른 빛(v3+ 떡밥) ──
@@ -621,7 +641,7 @@ export class GameScene extends Phaser.Scene {
     this.player.update(time, (points) => {
       for (const pt of points) {
         const b = this.playerBullets.get();
-        if (b) b.fire(pt.x, pt.y, pt.vx || 0, -520, 20, 'bullet_player');
+        if (b) { b.fire(pt.x, pt.y, pt.vx || 0, -520, 20, 'bullet_player'); b.setTint(this._bulletTint); }
       }
       Audio.sfx('shoot');
     });

@@ -16,6 +16,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.invincibleUntil = 0;
     this.shieldUntil = 0; // 단결 실드
     this.lastFire = 0;
+    this.fireIntervalMs = null; // 장착 수호자 진화 단계별 연사 오버라이드(null=기본)
 
     this.target = new Phaser.Math.Vector2(x, y);
     this._dragging = false;
@@ -94,8 +95,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     // 무적 깜빡임
     this.setAlpha(this.isInvincible(now) ? (Math.floor(now / 80) % 2 ? 0.35 : 1) : 1);
 
-    // 자동 발사
-    if (now - this.lastFire >= PLAYER.fireIntervalMs) {
+    // 자동 발사 (장착 수호자 연사 오버라이드 우선)
+    if (now - this.lastFire >= (this.fireIntervalMs || PLAYER.fireIntervalMs)) {
       this.lastFire = now;
       onFire(this.getFirePoints());
     }
