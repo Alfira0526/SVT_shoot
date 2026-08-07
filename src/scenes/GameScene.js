@@ -50,6 +50,16 @@ export class GameScene extends Phaser.Scene {
     this._world = data.worldId ? WORLDS_BY_ID[data.worldId] : null;
     this.stageId = this._world ? this._world.stageRef : (data.stageId || 'w2');
     this.stage = STAGES[this.stageId];
+    // 세계 난도 스케일 — 진행 순서대로 몹 HP·속도·탄속·보스HP 상승 (레벨 커브)
+    if (this._world) {
+      const d = this._world.difficulty || 1;
+      this._enemyHpMul = 1 + (d - 1) * 0.12;
+      this._enemySpdMul = 1 + (d - 1) * 0.05;
+      this._bulletSpdMul = 1 + (d - 1) * 0.05;
+      this._bossHp = 550 + d * 280; // diff1≈830 … diff7≈2510 (파워2 기준 5~14초)
+    } else {
+      this._enemyHpMul = 1; this._enemySpdMul = 1; this._bulletSpdMul = 1; this._bossHp = null;
+    }
     this.nickname = safeDisplayName(this.registry.get('nickname'));
     this.phase = 'intro'; // intro | fighting | boss_intro | boss | outro | clear | over
     // scene.start는 Game 인스턴스를 재사용 → 스테이지 전환 시 이월점수 적용 플래그를 반드시 리셋
@@ -262,7 +272,7 @@ export class GameScene extends Phaser.Scene {
   _startBoss() {
     this.phase = 'boss';
     this.physics.world.resume();
-    this.boss = new Boss(this, this.stage.boss);
+    this.boss = new Boss(this, this._bossHp ? { ...this.stage.boss, hp: this._bossHp } : this.stage.boss);
     this.physics.add.overlap(this.playerBullets, this.boss, this._hitBoss, null, this);
 
     this.bossNameText.setText(this._world ? this._world.threat : this.stage.boss.name).setVisible(true);
@@ -626,7 +636,8 @@ export class GameScene extends Phaser.Scene {
 
   enemyFireAt(x, y, vx, vy) {
     const b = this.enemyBullets.get();
-    if (b) b.fire(x, y, vx, vy, 1, 'bullet_enemy');
+    const m = this._bulletSpdMul || 1; // 세계 난도별 탄속
+    if (b) b.fire(x, y, vx * m, vy * m, 1, 'bullet_enemy');
   }
 
   spawnExplosion(x, y, scale = 1) {

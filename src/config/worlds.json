@@ -1,77 +1,151 @@
 {
   "_status": "다중세계 지도(전면 개편 척추) — 세계관 렌즈 = 여행할 세계. 스토리 바이블 그룹 산출 반영.",
   "_note": "stageRef=재사용 스테이지 레이아웃. spirits=클리어 시 각성 정령 id. entry: progression(순차) / combination(정령 조합 보유 시 개방). situation/objective/threatDesc=진입·보스 직관 브리핑(구체 서술). IP: 실존 미참조 오리지널.",
-  "progressionOrder": ["zombie", "android", "beast", "noir", "slice"],
+  "progressionOrder": [
+    "zombie",
+    "android",
+    "beast",
+    "noir",
+    "slice"
+  ],
   "worlds": [
     {
-      "id": "zombie", "name": "멈춰버린 광장", "sub": "감염 세계",
+      "id": "zombie",
+      "name": "멈춰버린 광장",
+      "sub": "감염 세계",
       "theme": "응원이 끊긴 폐허 도시. 소리를 잃은 군중이 잿빛 정적에 잠겼다.",
       "situation": "응원 소리가 끊긴 광장. 사람들이 목소리를 잃고 잿빛으로 굳어버렸다.",
       "objective": "노이즈를 정화하고, 잠든 정령 햇귀·반디를 깨워라.",
       "threat": "노이즈",
       "threatDesc": "응원과 목소리를 삼켜 사람들을 침묵시키는 잡음의 안개. 이 광장을 멈추게 한 장본인.",
-      "color": "danger", "stageRef": "w1",
-      "spirits": ["haetgwi", "bandi"], "entry": "progression", "combo": []
+      "color": "danger",
+      "stageRef": "w1",
+      "spirits": [
+        "haetgwi",
+        "bandi"
+      ],
+      "entry": "progression",
+      "combo": [],
+      "difficulty": 1
     },
     {
-      "id": "android", "name": "규격 도시 아르카", "sub": "안드로이드 세계",
+      "id": "android",
+      "name": "규격 도시 아르카",
+      "sub": "안드로이드 세계",
       "theme": "모든 감정이 수치로 관리되는 기계 도시. 팬심마저 비효율로 삭제된다.",
       "situation": "감정이 숫자로 관리되는 기계 도시. 팬심마저 '비효율'로 삭제된다.",
       "objective": "티켓팅 서버를 뚫고, 윤슬·달무리를 깨워라.",
       "threat": "티켓팅 서버",
       "threatDesc": "순번과 자격으로 팬을 걸러내는 거대 관제 시스템. 무한 대기열로 마음을 회수한다.",
-      "color": "serenity", "stageRef": "w2",
-      "spirits": ["yunseul", "dalmuri"], "entry": "progression", "combo": []
+      "color": "serenity",
+      "stageRef": "w2",
+      "spirits": [
+        "yunseul",
+        "dalmuri"
+      ],
+      "entry": "progression",
+      "combo": [],
+      "difficulty": 2
     },
     {
-      "id": "beast", "name": "울림의 숲", "sub": "동물 세계",
+      "id": "beast",
+      "name": "울림의 숲",
+      "sub": "동물 세계",
       "theme": "소리로 서로를 부르는 야생의 숲. 밀렵꾼에게 목소리를 빼앗긴 짐승 정령들.",
       "situation": "소리로 서로를 부르던 숲. 짐승들이 목소리를 빼앗겨 서로를 잃었다.",
       "objective": "암표 총책의 덫을 부수고, 여울·아지랑이를 깨워라.",
       "threat": "암표 총책",
       "threatDesc": "희귀한 울음을 포획해 되파는 밀렵 조직. 덫과 그물로 정령을 가둔다.",
-      "color": "mint", "stageRef": "w3",
-      "spirits": ["yeoul", "ajirangi"], "entry": "progression", "combo": []
+      "color": "mint",
+      "stageRef": "w3",
+      "spirits": [
+        "yeoul",
+        "ajirangi"
+      ],
+      "entry": "progression",
+      "combo": [],
+      "difficulty": 3
     },
     {
-      "id": "noir", "name": "뒷골목 네온시티", "sub": "느와르 세계",
+      "id": "noir",
+      "name": "뒷골목 네온시티",
+      "sub": "느와르 세계",
       "theme": "비 내리는 밤의 향락 도시. 암시장 뒤에서 사라진 진짜 티켓을 쫓는다.",
       "situation": "비 내리는 밤의 향락 도시. 진짜 티켓이 암시장 뒤로 사라졌다.",
       "objective": "지하 조직을 쫓아 이내·물비늘을 깨워라.",
       "threat": "암표 총책",
       "threatDesc": "도시 지하를 지배하는 범죄 두목. 위조 티켓과 매수된 하수인을 부린다.",
-      "color": "lavender", "stageRef": "w3",
-      "spirits": ["inae", "mulbineul"], "entry": "progression", "combo": []
+      "color": "lavender",
+      "stageRef": "w3",
+      "spirits": [
+        "inae",
+        "mulbineul"
+      ],
+      "entry": "progression",
+      "combo": [],
+      "difficulty": 4
     },
     {
-      "id": "slice", "name": "골목 끝 단골집", "sub": "일상 세계",
+      "id": "slice",
+      "name": "골목 끝 단골집",
+      "sub": "일상 세계",
       "theme": "평범한 동네의 작은 가게와 옥탑. 특별할 것 없는 하루 속 설렘과 위로.",
       "situation": "평범한 동네. 무기력과 악플이 조용히 하루를 무뎌지게 한다.",
       "objective": "일상에 스민 노이즈를 걷어내고, 노을·볕뉘를 깨워라.",
       "threat": "노이즈",
       "threatDesc": "악플과 무기력으로 스며드는 일상의 소음. 설렘과 위로를 식힌다.",
-      "color": "rose", "stageRef": "w1",
-      "spirits": ["noeul", "byeotnwi"], "entry": "progression", "combo": []
+      "color": "rose",
+      "stageRef": "w1",
+      "spirits": [
+        "noeul",
+        "byeotnwi"
+      ],
+      "entry": "progression",
+      "combo": [],
+      "difficulty": 5
     },
     {
-      "id": "cosmos", "name": "새벽과 황혼의 성좌", "sub": "우주 세계 · 조합 전용",
+      "id": "cosmos",
+      "name": "새벽과 황혼의 성좌",
+      "sub": "우주 세계 · 조합 전용",
       "theme": "새벽빛과 황혼빛이 맞닿을 때만 열리는 은하의 통로. 흩어진 별빛을 하나의 궤도로 잇는다.",
       "situation": "새벽빛과 황혼빛이 맞닿을 때만 열리는 은하 통로. 별빛들이 서로 닿지 못한 채 굳었다.",
       "objective": "독점자의 중력을 끊고, 조율가 미리내를 깨워라.",
       "threat": "독점자",
       "threatDesc": "성좌의 빛을 홀로 가두려는 존재. 블랙홀 중력으로 응원을 빨아들인다.",
-      "color": "serenity", "stageRef": "final",
-      "spirits": ["mirinae"], "entry": "combination", "combo": ["yunseul", "inae"]
+      "color": "serenity",
+      "stageRef": "final",
+      "spirits": [
+        "mirinae"
+      ],
+      "entry": "combination",
+      "combo": [
+        "yunseul",
+        "inae"
+      ],
+      "difficulty": 6
     },
     {
-      "id": "knight", "name": "맹세의 성 아르덴", "sub": "기사 세계 · 조합 전용",
+      "id": "knight",
+      "name": "맹세의 성 아르덴",
+      "sub": "기사 세계 · 조합 전용",
       "theme": "약속·용기·기다림의 세 서약이 갖춰져야 성문이 열리는 판타지 왕국.",
       "situation": "세 서약이 갖춰져야 열리는 왕국의 성. 폭군이 모든 좌석을 독차지했다.",
       "objective": "독점자를 몰아내고, 마지막 정령 별찌를 깨워라.",
       "threat": "독점자",
       "threatDesc": "왕좌와 모든 자리를 독점한 폭군. 다층 방벽으로 무대를 봉쇄한다.",
-      "color": "gold", "stageRef": "final",
-      "spirits": ["byeoljji"], "entry": "combination", "combo": ["yeoul", "haetgwi", "dalmuri"]
+      "color": "gold",
+      "stageRef": "final",
+      "spirits": [
+        "byeoljji"
+      ],
+      "entry": "combination",
+      "combo": [
+        "yeoul",
+        "haetgwi",
+        "dalmuri"
+      ],
+      "difficulty": 7
     }
   ]
 }

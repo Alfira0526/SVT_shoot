@@ -16,7 +16,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     const def = DEFS[type] || DEFS.macro;
     this.enemyType = type;
     this.def = def;
-    this.hp = def.hp;
+    // 세계 난도 스케일(월드 모드) — 없으면 1
+    const hpMul = this.scene._enemyHpMul || 1;
+    const spdMul = this.scene._enemySpdMul || 1;
+    this.hp = Math.round(def.hp * hpMul);
     this.score = def.score;
     this.bornAt = this.scene.time.now;
     this.state2 = 'move';
@@ -26,8 +29,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     const skinTex = skin && this.scene.textures.exists(`${skin}_${type}`) ? `${skin}_${type}` : def.texture;
     this.setTexture(skinTex);
     this.enableBody(true, x, y, true, true);
+    // 피격 판정 세밀화 — 겉보기(32px)보다 작은 몸통(근접 스침 공정)
+    this.body.setSize(20, 20);
+    this.body.setOffset(6, 6);
     this.setActive(true).setVisible(true);
-    this.setVelocity(0, def.vy);
+    this.setVelocity(0, def.vy * spdMul);
     this._nextShot = this.scene.time.now + 700;
     return this;
   }

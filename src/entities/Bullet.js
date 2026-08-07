@@ -10,6 +10,8 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
   fire(x, y, vx, vy, damage, texture) {
     if (texture && texture !== this.texture.key) this.setTexture(texture);
     this.enableBody(true, x, y, true, true);
+    // 피격 판정 세밀화 — 적탄은 겉보기(10px)보다 작은 원(공정한 회피)
+    if (this.texture.key === 'bullet_enemy') this.body.setCircle(4, this.width / 2 - 4, this.height / 2 - 4);
     this.setActive(true).setVisible(true);
     this.setVelocity(vx, vy);
     this.damage = damage;
