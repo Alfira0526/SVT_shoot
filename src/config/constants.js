@@ -4,7 +4,7 @@
 
 // ── 게임 제목 (T2 확정, 2026-07-30 — "덕질할 결심") ──
 export const GAME_TITLE = '덕질할 결심';
-export const GAME_SUBTITLE = '빛의 세계 · DIA';
+export const GAME_SUBTITLE = '빛의 세계 · 온빛';
 export const TITLE_CANDIDATES = ['티켓팅 워리어', '덕질 원정대']; // (참고) T2 이전 후보
 
 // ── 논리 해상도 (세로 모바일) ─────────────────────────────
@@ -19,13 +19,13 @@ export const PALETTE = {
   serenity: 0x9cc1e5,
   roseHex: '#f1c7d2',
   serenityHex: '#9cc1e5',
-  // 배경·심연 (DIA가 흐려진 세계)
+  // 배경·심연 (온빛이 흐려진 세계)
   deep: 0x0d0b1a,
   deepHex: '#0d0b1a',
   deepMid: 0x1a1730,
   panel: 0x161327,
   panelHex: '#161327',
-  // 빛(플레이어 탄·DIA 결정)
+  // 빛(플레이어 탄·온빛 결정)
   light: 0xfdf6c9,
   lightHex: '#fdf6c9',
   // 위험(적 탄·노이즈)

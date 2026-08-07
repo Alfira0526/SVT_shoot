@@ -14,7 +14,7 @@
     { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "가라 가~! ……{nickname}, 고마워. 오늘의 빛, 최고였어." }
   ],
   "epilogue": [
-    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "……근데 {nickname}, 이상하지 않아? DIA가 원래 13개였는데, 나 혼자 여기 있는 거." },
+    { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "……근데 {nickname}, 이상하지 않아? 온빛이 원래 13개였는데, 나 혼자 여기 있는 거." },
     { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "다른 빛들은…… 다 어디로 흩어진 걸까." },
     { "speaker": "", "portrait": "", "text": "(밤하늘 — 저 멀리 어딘가, 또 다른 빛 하나가 조용히 깜박인다.)", "effect": "narration" },
     { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "이건 시작에 불과했다. 어딘가에, 또 다른 우리가 있다." }

@@ -8,7 +8,7 @@ import { Audio } from '../systems/Audio.js';
 
 // 프롤로그 v2 (D30) — 유저 시점 콜드오픈. 컷씬 이미지 시스템(D31) 위에서 동작.
 // 비트 타입: caption / voice / tap_card / reveal / messenger / glitch / accident
-// 봉이 정체는 유예("???"), 창세 설명(DIA·요정)은 W1 이후 분산.
+// 봉이 정체는 유예("???"), 창세 설명(온빛·요정)은 W1 이후 분산.
 export class PrologueScene extends Phaser.Scene {
   constructor() {
     super('Prologue');
@@ -91,7 +91,7 @@ export class PrologueScene extends Phaser.Scene {
     if (this.textures.exists('card_back')) {
       back = this.add.image(0, 0, 'card_back').setDisplaySize(150, 234); // 도트 카드 뒷면(오리지널)
     } else {
-      // 폴백: 절차 다이아 무늬 카드
+      // 폴백: 절차 결정 무늬 카드
       back = this.add.graphics();
       back.fillStyle(0x2a2450, 1); back.fillRoundedRect(-70, -100, 140, 200, 16);
       back.lineStyle(3, PALETTE.serenity, 0.9); back.strokeRoundedRect(-70, -100, 140, 200, 16);
