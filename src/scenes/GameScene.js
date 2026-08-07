@@ -25,6 +25,7 @@ import dialogueW4 from '../config/dialogue_w4.json';
 import dialogueFinal from '../config/dialogue_final.json';
 import guardians from '../config/guardians.json';
 import worldsCfg from '../config/worlds.json';
+import worldDialogue from '../config/dialogue_worlds.json';
 
 const WORLDS_BY_ID = {};
 worldsCfg.worlds.forEach((w) => { WORLDS_BY_ID[w.id] = w; });
@@ -81,7 +82,7 @@ export class GameScene extends Phaser.Scene {
     else this._showBanner(this.stage.title, this.stage.subtitle);
 
     this.time.delayedCall(900, () => {
-      if (this._world) { this._startWaves(); return; } // 세계 인트로 대사는 후속(월드별 신규 대사)
+      if (this._world) { this._playWorldIntro(() => this._startWaves()); return; } // 세계 인트로 + 미각성 정령 조우
       // 수호자 챕터 '조우' 비트 — 아직 각성 전이면 스테이지 인트로 앞에 삽입
       const gd = this._guardian;
       if (gd && gd.encounter && !Save.isGuardianAwake(gd.id)) {
@@ -353,14 +354,32 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
-  // ── 다중세계: 세계 정화 → 정령 각성 → 지도 복귀 ─────────
+  // 세계 도착: 인트로 + 아직 못 만난 정령 조우 대사
+  _playWorldIntro(onDone) {
+    const wd = worldDialogue.worlds[this._world.id];
+    const lines = [];
+    if (wd) {
+      lines.push(...(wd.intro || []));
+      (this._world.spirits || []).forEach((sid) => {
+        if (!Save.isGuardianAwake(sid) && wd.spirits[sid]) lines.push(...(wd.spirits[sid].encounter || []));
+      });
+    }
+    this._playLines(lines, onDone);
+  }
+
+  // ── 다중세계: 세계 정화 → 각성 대사 → 정령 각성 연출 → 지도 복귀 ──
   _clearWorld() {
     Save.markWorldCleared(this._world.id);
     const newly = (this._world.spirits || []).filter((id) => !Save.isGuardianAwake(id));
+    const wd = worldDialogue.worlds[this._world.id];
+    const awakenLines = [];
+    newly.forEach((id) => { if (wd && wd.spirits[id]) awakenLines.push(...(wd.spirits[id].awaken || [])); });
     newly.forEach((id) => Save.awakenGuardian(id));
-    this._worldClearCelebrate(newly, () => {
-      this.cameras.main.fadeOut(500, 0, 0, 0);
-      this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Multiverse'));
+    this._playLines(awakenLines, () => {
+      this._worldClearCelebrate(newly, () => {
+        this.cameras.main.fadeOut(500, 0, 0, 0);
+        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Multiverse'));
+      });
     });
   }
 
