@@ -164,7 +164,7 @@ export class DialogueScene extends Phaser.Scene {
 
   _portraitKey(p) {
     const map = {
-      bongi: 'pt_bongi', player: 'pt_player', noise: 'pt_noise', server: 'pt_server',
+      bongi: 'pt_g_bongi', player: 'pt_player', noise: 'pt_noise', server: 'pt_server',
       monopolist: 'pt_monopolist', // Final 흑막(D37)
       // W3 암표 총책 감정곡선 (D34): 등장=sell / 균열=smug / 격파=crack
       scalper: 'pt_scalper_sell', scalper_sell: 'pt_scalper_sell',

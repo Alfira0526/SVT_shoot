@@ -281,7 +281,7 @@ export class GameScene extends Phaser.Scene {
     c.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0a0716, 0.82).setOrigin(0.5));
     const count = 1 + Save.getAwakenedGuardians().length; // 봉이 포함
     c.add(this.add.text(0, -170, '새로운 수호자 각성', { fontSize: '20px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0.5));
-    const port = this.add.image(0, -40, this.textures.exists(gd.portrait) ? gd.portrait : 'pt_bongi').setScale(1.4);
+    const port = this.add.image(0, -40, this.textures.exists(gd.portrait) ? gd.portrait : 'pt_g_bongi').setScale(1.4);
     c.add(port);
     c.add(this.add.text(0, 70, gd.name, { fontSize: '34px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5));
     c.add(this.add.text(0, 108, gd.light, { fontSize: '16px', color: PALETTE.roseHex }).setOrigin(0.5));

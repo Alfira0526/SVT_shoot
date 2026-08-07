@@ -25,6 +25,9 @@ export class BootScene extends Phaser.Scene {
     this.load.image('card_back', 'assets/cutscenes/card_back.png');
     // W3 암표 총책 초상화(D34 — v2 선반영, 감정곡선 sell/smug/crack)
     ['sell', 'smug', 'crack'].forEach((e) => this.load.image(`pt_scalper_${e}`, `assets/portraits/pt_scalper_${e}.png`));
+    // 자체 일러스트 버스트(Pillow) — 수호자 4종 + 적/플레이어 (Graphics 도형 대체)
+    ['pt_g_bongi', 'pt_g_noeul', 'pt_g_yunseul', 'pt_g_yeoul', 'pt_player', 'pt_noise', 'pt_server', 'pt_monopolist']
+      .forEach((n) => this.load.image(n, `assets/portraits/${n}.png`));
   }
 
   create() {
@@ -86,83 +89,10 @@ export class BootScene extends Phaser.Scene {
     rt.destroy();
   }
 
-  // ── 초상화 (오리지널 심볼릭 디자인) ──────────────────────
+  // ── 초상화 ───────────────────────────────────────────────
   _makePortraits() {
-    // 봉이 v2 — 둥근 정령형 초상화(표정·색 배리언트 포함). pt_bongi 키 그대로 생성.
+    // 봉이 색 배리언트/스프라이트(폴백·인게임용) 유지.
+    // 대사·도감 버스트는 자체 일러스트 PNG(pt_g_*, pt_player/noise/server/monopolist)를 로드해 사용.
     makeBongiPortraits(this);
-
-    // 플레이어: 응원봉 든 팬
-    let g = this._g();
-    g.fillStyle(PALETTE.panel, 1);
-    g.fillRoundedRect(0, 0, 110, 120, 12);
-    g.fillStyle(PALETTE.serenity, 1);
-    g.fillCircle(55, 46, 22);
-    g.fillStyle(PALETTE.rose, 1);
-    g.fillRoundedRect(34, 68, 42, 44, 10);
-    g.fillStyle(PALETTE.light, 1); // 응원봉
-    g.fillRect(82, 40, 5, 40);
-    g.fillCircle(84, 36, 7);
-    g.fillStyle(0x2a2a3a, 1);
-    g.fillCircle(48, 46, 3);
-    g.fillCircle(62, 46, 3);
-    g.generateTexture('pt_player', 110, 120);
-    g.destroy();
-
-    // 노이즈: 글리치 얼굴
-    g = this._g();
-    g.fillStyle(PALETTE.panel, 1);
-    g.fillRoundedRect(0, 0, 110, 120, 12);
-    g.fillStyle(0x39304f, 1);
-    g.fillRoundedRect(18, 24, 74, 74, 14);
-    g.fillStyle(PALETTE.danger, 0.9);
-    for (let i = 0; i < 6; i++) g.fillRect(22, 34 + i * 10, 66 - (i % 3) * 12, 3);
-    g.fillStyle(0xffffff, 1);
-    g.fillRect(38, 52, 10, 10);
-    g.fillRect(64, 52, 10, 10);
-    g.generateTexture('pt_noise', 110, 120);
-    g.destroy();
-
-    // 티켓팅 서버: 서버 얼굴
-    g = this._g();
-    g.fillStyle(PALETTE.panel, 1);
-    g.fillRoundedRect(0, 0, 110, 120, 12);
-    g.fillStyle(0x2b2f45, 1);
-    g.fillRoundedRect(20, 20, 70, 82, 10);
-    g.fillStyle(0x4be08a, 1);
-    g.fillCircle(38, 44, 5);
-    g.fillStyle(PALETTE.danger, 1);
-    g.fillCircle(72, 44, 5);
-    g.fillStyle(0x1a1d2e, 1);
-    g.fillRoundedRect(30, 66, 50, 8, 3);
-    g.fillRoundedRect(30, 80, 50, 8, 3);
-    g.generateTexture('pt_server', 110, 120);
-    g.destroy();
-
-    // 독점자(Final 흑막): 빛을 창살에 가둔 왕관 쓴 어둠 (D37)
-    g = this._g();
-    g.fillStyle(PALETTE.panel, 1);
-    g.fillRoundedRect(0, 0, 110, 120, 12);
-    // 왕관
-    g.fillStyle(0x2a2450, 1);
-    for (let i = 0; i < 5; i++) {
-      const x = 30 + i * 12;
-      g.fillTriangle(x, 26, x + 6, 26, x + 3, 14);
-    }
-    // 어둠 얼굴
-    g.fillStyle(0x141024, 1);
-    g.fillRoundedRect(24, 26, 62, 78, 12);
-    // 가둔 빛 코어 + 창살
-    g.fillStyle(PALETTE.light, 1);
-    g.fillCircle(55, 66, 18);
-    g.fillStyle(0xffffff, 0.85);
-    g.fillCircle(50, 61, 6);
-    g.fillStyle(0x141024, 1);
-    for (let i = 0; i < 4; i++) g.fillRect(42 + i * 9, 48, 3, 36);
-    // 위험한 눈
-    g.fillStyle(PALETTE.danger, 1);
-    g.fillCircle(40, 44, 4);
-    g.fillCircle(70, 44, 4);
-    g.generateTexture('pt_monopolist', 110, 120);
-    g.destroy();
   }
 }

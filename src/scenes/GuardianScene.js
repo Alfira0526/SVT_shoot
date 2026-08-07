@@ -59,7 +59,7 @@ export class GuardianScene extends Phaser.Scene {
         aura.fillStyle(stage >= 3 ? PALETTE.gold : guardianColorHex(g), stage >= 3 ? 0.28 : 0.18);
         aura.fillCircle(cx, cy - 14, stage >= 3 ? 30 : 26);
       }
-      const key = this.textures.exists(g.portrait) ? g.portrait : 'pt_bongi';
+      const key = this.textures.exists(g.portrait) ? g.portrait : 'pt_g_bongi';
       this.add.image(cx, cy - 14, key).setScale(0.52);
       // Lv 배지
       this.add.text(cx - w / 2 + 8, cy - h / 2 + 6, `Lv.${level}`, { fontSize: '11px', color: PALETTE.goldHex, fontStyle: 'bold' });
@@ -81,7 +81,7 @@ export class GuardianScene extends Phaser.Scene {
     const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.74).setOrigin(0)
       .setInteractive().on('pointerdown', () => { c.destroy(); this._overlay = null; });
     c.add(dim);
-    const key = this.textures.exists(g.portrait) ? g.portrait : 'pt_bongi';
+    const key = this.textures.exists(g.portrait) ? g.portrait : 'pt_g_bongi';
     const st = levelFromExp(Save.getGuardianExp(g.id));
     const stage = stageFromLevel(st.level);
     // 진화 오라
