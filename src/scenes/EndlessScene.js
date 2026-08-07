@@ -245,7 +245,7 @@ export class EndlessScene extends Phaser.Scene {
 
     const cfg = this._bossConfig(this._bossCount);
     this.boss = new Boss(this, cfg);
-    this.physics.add.overlap(this.playerBullets, this.boss, this._hitBoss, null, this);
+    this._bossCollider = this.physics.add.overlap(this.playerBullets, this.boss, this._hitBoss, null, this);
     this.bossNameText.setText(cfg.name).setVisible(true);
     this.bossHpBg.setVisible(true);
     this.bossHpBar.setVisible(true);
@@ -289,6 +289,9 @@ export class EndlessScene extends Phaser.Scene {
       // 다음 보스 거리(점증) → 비행 재개
       this._bossCount += 1;
       this._nextBossAt = Math.floor(this.distance) + ENDLESS.bossGap + this._bossCount * 120;
+      // 격파 보스 정리 — 스프라이트·물리바디·overlap 콜라이더 누수 방지 (런 내 누적 차단)
+      if (this._bossCollider) { this.physics.world.removeCollider(this._bossCollider); this._bossCollider = null; }
+      this.boss.destroy();
       this.boss = null;
       this.phase = 'flying';
       this._updateHud();

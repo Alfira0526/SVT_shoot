@@ -84,7 +84,7 @@ export class GameScene extends Phaser.Scene {
   // 임의 대사 라인 재생 (수호자 조우/각성 등 stageId 밖 대사)
   _playLines(lines, onDone) {
     if (!lines || lines.length === 0) { onDone?.(); return; }
-    this.scene.launch('Dialogue', { lines, nickname: this.nickname, onComplete: onDone });
+    this._launchDialogue(lines, onDone);
   }
 
   // ── 배경 ────────────────────────────────────────────────
@@ -170,7 +170,22 @@ export class GameScene extends Phaser.Scene {
       onDone?.();
       return;
     }
-    this.scene.launch('Dialogue', { lines, nickname: this.nickname, onComplete: onDone });
+    this._launchDialogue(lines, onDone);
+  }
+
+  // 대사 오버레이 공통 런처 — 대사 중 GameScene 입력을 끄고(탭이 플레이어 조준으로 새지 않게),
+  // 완료 시 입력 복구 + 조준을 현재 위치로 리셋(물리 재개 시 마지막 탭 위치로 순간이동 방지).
+  _launchDialogue(lines, onDone) {
+    this.input.enabled = false;
+    this.scene.launch('Dialogue', {
+      lines,
+      nickname: this.nickname,
+      onComplete: () => {
+        this.input.enabled = true;
+        if (this.player) this.player.target.set(this.player.x, this.player.y);
+        onDone?.();
+      },
+    });
   }
 
   _showBanner(title, subtitle) {

@@ -16,6 +16,7 @@ export class GuardianScene extends Phaser.Scene {
   }
 
   create() {
+    this._overlay = null; // 씬 재사용/restart(장착 후) 시 stale 참조 초기화 — 상세창 재개폐 보장
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PALETTE.deep).setOrigin(0);
     for (let i = 0; i < 40; i++) {
       this.add.image(Phaser.Math.Between(0, GAME_WIDTH), Phaser.Math.Between(0, GAME_HEIGHT), 'star')

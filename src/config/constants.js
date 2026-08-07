@@ -5,16 +5,16 @@
 // ── 게임 제목 (T2 확정, 2026-07-30 — "덕질할 결심") ──
 export const GAME_TITLE = '덕질할 결심';
 export const GAME_SUBTITLE = '빛의 세계 · DIA';
-export const TITLE_CANDIDATES = ['티켓팅 워리어', '덕질 원정대', '다이아 탄막', '13++']; // (참고) T2 이전 후보
+export const TITLE_CANDIDATES = ['티켓팅 워리어', '덕질 원정대']; // (참고) T2 이전 후보
 
 // ── 논리 해상도 (세로 모바일) ─────────────────────────────
 export const GAME_WIDTH = 480;
 export const GAME_HEIGHT = 800;
 
-// ── 팬덤 상징 색 팔레트 (§2.6 전면 노출 가능 등급, 전역 토큰) ──
+// ── UI 강조색 팔레트 (§2.6 전면 노출 가능 등급, 전역 토큰) ──
 // 색상값 자체는 저작권 보호 대상이 아님. UI·빛 이펙트 기본색으로 사용.
 export const PALETTE = {
-  // 상징색 2종 (로즈/세레니티 계열 — 빛 이펙트·UI 강조)
+  // 강조색 2종 (웜핑크/스카이블루 계열 — 빛 이펙트·UI 강조)
   rose: 0xf1c7d2,
   serenity: 0x9cc1e5,
   roseHex: '#f1c7d2',
@@ -45,10 +45,9 @@ export const PALETTE = {
   goldHex: '#ffd66b',
 };
 
-// ── 상징 숫자 (§2.6 / §4.2) — 보너스·연출 소품 ────────────
+// ── 연출·보너스 수치 (§2.6 / §4.2) ───────────────────────
 export const LUCKY = {
-  guardians: 13, // 13인의 수호자
-  seventeen: 17,
+  rosterSize: 13, // 수호자 도감 정원(연출 수치)
   ticketHour: 8, // 8:00 정각 티켓팅
 };
 
@@ -111,7 +110,7 @@ export const ENDLESS = {
 
 // QA 개발자 모드 — 타이틀 숨김 버튼 + 패스워드로 진입. 무제한 라이프(무적).
 // 주의: 클라이언트 번들에 노출되는 값이라 보안용 아님(캐주얼 차단용). 팀 공유 후 필요 시 교체.
-export const DEV_PASSWORD = 'dia13';
+export const DEV_PASSWORD = 'qa-guardian';
 
 // 닉네임 규칙 (인수인계 §6: scores.nickname 2~8자)
 export const NICKNAME = {
