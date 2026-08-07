@@ -9,6 +9,12 @@ import { applyLoadout } from '../systems/Loadout.js';
 import { levelFromExp } from '../config/leveling.js';
 import { safeDisplayName } from '../systems/Filter.js';
 import { Audio } from '../systems/Audio.js';
+import guardians from '../config/guardians.json';
+
+// 엔들리스 거리 마일스톤으로 해금되는 잠든 수호자 (거리 오름차순)
+const ENDLESS_UNLOCKS = guardians.roster
+  .filter((g) => typeof g.endlessUnlock === 'number')
+  .sort((a, b) => a.endlessUnlock - b.endlessUnlock);
 
 // 별조각(성장 재화) — 화면 아래로 흘러내리며 플레이어가 흡수.
 class Coin extends Phaser.Physics.Arcade.Sprite {
@@ -415,6 +421,15 @@ export class EndlessScene extends Phaser.Scene {
     const dist = Math.floor(this.distance);
     const isBest = dist >= rec.bestDistance && dist > 0;
 
+    // 거리 마일스톤 수호자 해금 — 최고 거리로 임계 넘긴 잠든 수호자 각성
+    const unlocked = [];
+    for (const g of ENDLESS_UNLOCKS) {
+      if (rec.bestDistance >= g.endlessUnlock && !Save.isGuardianAwake(g.id)) {
+        Save.awakenGuardian(g.id);
+        unlocked.push(g);
+      }
+    }
+
     // 장착 수호자 육성 — 거리 비례 EXP
     const lo = this._loadout;
     const expGain = Phaser.Math.Clamp(Math.floor(dist / 12), 5, 400);
@@ -436,9 +451,14 @@ export class EndlessScene extends Phaser.Scene {
       c.add(this.add.text(GAME_WIDTH / 2, 352, `BEST ${rec.bestDistance} m`, { fontSize: '15px', color: PALETTE.inkDim }).setOrigin(0.5));
       c.add(this.add.image(GAME_WIDTH / 2 - 40, 398, 'coin').setScale(1.2));
       c.add(this.add.text(GAME_WIDTH / 2 - 20, 388, `+${this.gold}  (누적 ${rec.totalGold})`, { fontSize: '16px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0, 0));
-      if (expLine) c.add(this.add.text(GAME_WIDTH / 2, 430, expLine, { fontSize: '14px', color: PALETTE.serenityHex, fontStyle: 'bold' }).setOrigin(0.5));
-      c.add(this._btn(GAME_WIDTH / 2, 470, '다시 도전', PALETTE.rose, '#2a1a2a', () => { Audio.sfx('ui'); this.scene.restart(); }));
-      c.add(this._btn(GAME_WIDTH / 2, 534, '타이틀로', PALETTE.panel, PALETTE.ink, () => { Audio.sfx('ui'); this.scene.start('Title'); }));
+      if (expLine) c.add(this.add.text(GAME_WIDTH / 2, 428, expLine, { fontSize: '14px', color: PALETTE.serenityHex, fontStyle: 'bold' }).setOrigin(0.5));
+      if (unlocked.length) {
+        c.add(this.add.text(GAME_WIDTH / 2, 450, `✦ 새 수호자 해금: ${unlocked.map((g) => g.name).join(', ')}`, {
+          fontSize: '15px', color: PALETTE.goldHex, fontStyle: 'bold', align: 'center', wordWrap: { width: GAME_WIDTH - 60 },
+        }).setOrigin(0.5));
+      }
+      c.add(this._btn(GAME_WIDTH / 2, 486, '다시 도전', PALETTE.rose, '#2a1a2a', () => { Audio.sfx('ui'); this.scene.restart(); }));
+      c.add(this._btn(GAME_WIDTH / 2, 550, '타이틀로', PALETTE.panel, PALETTE.ink, () => { Audio.sfx('ui'); this.scene.start('Title'); }));
     });
   }
 

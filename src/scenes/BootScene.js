@@ -31,8 +31,11 @@ export class BootScene extends Phaser.Scene {
     // W3 암표 총책 초상화(D34 — v2 선반영, 감정곡선 sell/smug/crack)
     ['sell', 'smug', 'crack'].forEach((e) => this.load.image(`pt_scalper_${e}`, `assets/portraits/pt_scalper_${e}.png`));
     // 자체 일러스트 버스트(Pillow) — 수호자 4종 + 적/플레이어 (Graphics 도형 대체)
-    ['pt_g_bongi', 'pt_g_noeul', 'pt_g_yunseul', 'pt_g_yeoul', 'pt_g_byeotnwi', 'pt_g_inae', 'pt_player', 'pt_noise', 'pt_server', 'pt_monopolist']
-      .forEach((n) => this.load.image(n, `assets/portraits/${n}.png`));
+    [
+      'pt_g_bongi', 'pt_g_noeul', 'pt_g_yunseul', 'pt_g_yeoul', 'pt_g_byeotnwi', 'pt_g_inae',
+      'pt_g_mirinae', 'pt_g_mulbineul', 'pt_g_haetgwi', 'pt_g_dalmuri', 'pt_g_bandi', 'pt_g_ajirangi', 'pt_g_byeoljji',
+      'pt_player', 'pt_noise', 'pt_server', 'pt_monopolist',
+    ].forEach((n) => this.load.image(n, `assets/portraits/${n}.png`));
   }
 
   create() {
