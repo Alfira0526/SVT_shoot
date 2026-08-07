@@ -1,22 +1,15 @@
 {
   "sceneId": "prologue",
-  "note": "D30/§2.9 확정 대사 — 유저 시점 콜드오픈. 봉이 정체 유예(창세 설명은 W1 이후). image 필드는 D31 컷씬(BootScene 로드, 미로드 시 절차 폴백).",
+  "note": "전면 개편 오프닝(스토리 바이블) — 공연 후 텅 빈 객석 → 잔광이 응원봉에 깃듦(씨앗 정령) → 다중세계의 문. 씨앗 정령 정체는 '???'로 유예.",
   "beats": [
-    { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "speaker": "유저", "text": "드디어 왔다……! 이 날을 얼마나 기다렸는데." },
-    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "유저", "text": "제발 이번엔 럭키카드… 제발 진짜ㅠㅠ 🙏" },
-    { "type": "tap_card", "cut": "c2", "text": "카드를 탭해서 뒤집어 보자" },
-    { "type": "reveal", "cut": "c3", "image": "cutscenes/c3_reveal.png", "speaker": "유저", "text": "?!?!?!  13장… 전부 다?!" },
-    { "type": "messenger", "cut": "msg", "chat": [
-      { "from": "me", "text": "야 나 방금 13장 전체 뽑음" },
-      { "from": "me", "text": "실화임" },
-      { "from": "me", "text": "손 떨려서 사진 못 찍음" },
-      { "from": "friend", "name": "친구A", "text": "주작ㅋㅋㅋ" },
-      { "from": "friend", "name": "친구B", "text": "사진 없으면 무효" },
-      { "from": "friend", "name": "친구C", "text": "부스 좌표 찍어 당장" },
-      { "from": "friend", "name": "친구A", "text": "야 근데 방금 하늘이▒▒▒▒", "glitch": true }
-    ] },
-    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "유저", "text": "……읽씹도 아니고 뭐야 이거." },
-    { "type": "accident", "cut": "c4", "image": "cutscenes/c4_accident.png", "speaker": "???", "text": "위험해!!", "effect": "shake" },
-    { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "???", "text": "……잡았다. 휴우. 폰 보면서 걸으면 어떡해, 너." }
+    { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "speaker": "유저", "text": "공연이 끝났다. 다들 돌아갔는데… 나만 아직 객석에 남아 있어." },
+    { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "speaker": "유저", "text": "무대의 마지막 불빛 하나가… 아직 안 꺼졌네." },
+    { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "speaker": "유저", "text": "어? 그 잔광이… 불티가 되어 내 응원봉 쪽으로 흘러와?" },
+    { "type": "tap_card", "cut": "c1", "text": "응원봉을 꼭 쥐어 보자 — 탭" },
+    { "type": "reveal", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "유저", "text": "응원봉이… 뛴다. 심장처럼." },
+    { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "???", "text": "……드디어, 불렀구나. 네 빛이." },
+    { "type": "glitch", "cut": "c5", "text": "발밑에 빛의 문양이 번진다 —" },
+    { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "???", "text": "흩어진 빛들이 여러 세계에 잠들어 있어. 네 응원봉이, 그 세계로 가는 문이야.", "effect": "shake" },
+    { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "???", "text": "함께 데리러 가자. 흔들어 — 네 빛으로." }
   ]
 }

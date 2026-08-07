@@ -15,6 +15,7 @@ const DEFAULT_PROGRESS = {
   awakenedGuardians: [], // 각성시킨 수호자 id (봉이는 데이터상 기본 각성)
   guardianExp: {}, // { [id]: 누적 EXP } — 교체 육성
   equippedGuardian: 'bongi', // 함께 비행 중인 수호자(탄 색·패시브)
+  worldsCleared: [], // 클리어한 다중세계 id (진행 게이팅)
 };
 const DEFAULT_SETTINGS = { bgm: true, sfx: true };
 
@@ -80,6 +81,18 @@ export const Save = {
   },
   isGuardianAwake(id) {
     return this.getAwakenedGuardians().includes(id);
+  },
+
+  // 다중세계 진행 (게이팅용)
+  getWorldsCleared() {
+    return this.getProgress().worldsCleared || [];
+  },
+  markWorldCleared(id) {
+    const p = this.getProgress();
+    p.worldsCleared = p.worldsCleared || [];
+    if (id && !p.worldsCleared.includes(id)) p.worldsCleared.push(id);
+    write(STORAGE.progress, p);
+    return p;
   },
 
   // 교체 육성 — 장착 수호자에 EXP 적립, 장착 슬롯 관리

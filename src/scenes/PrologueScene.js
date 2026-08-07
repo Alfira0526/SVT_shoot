@@ -63,7 +63,7 @@ export class PrologueScene extends Phaser.Scene {
     this._done = true;
     Save.setFlag('prologueSeen'); // 시청 여부 기록용(현재 스킵 미연동 — 프롤로그는 매번 재생)
     this.cameras.main.fadeOut(500, 0, 0, 0);
-    this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Game', { stageId: 'w1' }));
+    this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Multiverse'));
   }
 
   _setCut(cutId, imageKey) {

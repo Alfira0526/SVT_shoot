@@ -24,6 +24,12 @@ import dialogueW3 from '../config/dialogue_w3.json';
 import dialogueW4 from '../config/dialogue_w4.json';
 import dialogueFinal from '../config/dialogue_final.json';
 import guardians from '../config/guardians.json';
+import worldsCfg from '../config/worlds.json';
+
+const WORLDS_BY_ID = {};
+worldsCfg.worlds.forEach((w) => { WORLDS_BY_ID[w.id] = w; });
+const GUARDIAN_NAME = {};
+guardians.roster.forEach((g) => { GUARDIAN_NAME[g.id] = g.name; });
 
 const STAGES = { w1: stageW1, w2: stageW2, w3: stageW3, w4: stageW4, final: stageFinal };
 const DIALOGUES = { w1: dialogueW1, w2: dialogueW2, w3: dialogueW3, w4: dialogueW4, final: dialogueFinal };
@@ -39,7 +45,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   init(data) {
-    this.stageId = data.stageId || 'w2';
+    // 다중세계 모드: worldId → 세계의 stageRef 레이아웃 사용, 클리어 시 세계 정령 각성
+    this._world = data.worldId ? WORLDS_BY_ID[data.worldId] : null;
+    this.stageId = this._world ? this._world.stageRef : (data.stageId || 'w2');
     this.stage = STAGES[this.stageId];
     this.nickname = safeDisplayName(this.registry.get('nickname'));
     this.phase = 'intro'; // intro | fighting | boss_intro | boss | outro | clear | over
@@ -48,7 +56,8 @@ export class GameScene extends Phaser.Scene {
     this._carryApplied = false;
     this._midBarkShown = false;
     this._dev = Save.getDev(); // QA 개발자 모드 — 무제한 라이프(무적)
-    this._guardian = GUARDIAN_BY_STAGE[this.stageId] || null; // 이 스테이지의 수호자(챕터)
+    // 세계 모드는 세계 정령을 클리어 시 각성(조우 대사 미사용). 구 선형 스테이지만 챕터 수호자 사용.
+    this._guardian = this._world ? null : (GUARDIAN_BY_STAGE[this.stageId] || null);
 
     // 플레이 시간 측정 시작점 (§6 서버 검증 ② score/play_ms). W1 진입 시 리셋.
     if (this.stageId === 'w1') this.registry.set('playStartMs', Date.now());
@@ -68,9 +77,11 @@ export class GameScene extends Phaser.Scene {
 
     // 씬 시작: 물리 정지 후 인트로 대사
     this.physics.world.pause();
-    this._showBanner(this.stage.title, this.stage.subtitle);
+    if (this._world) this._showBanner(this._world.name, this._world.sub);
+    else this._showBanner(this.stage.title, this.stage.subtitle);
 
     this.time.delayedCall(900, () => {
+      if (this._world) { this._startWaves(); return; } // 세계 인트로 대사는 후속(월드별 신규 대사)
       // 수호자 챕터 '조우' 비트 — 아직 각성 전이면 스테이지 인트로 앞에 삽입
       const gd = this._guardian;
       if (gd && gd.encounter && !Save.isGuardianAwake(gd.id)) {
@@ -240,6 +251,7 @@ export class GameScene extends Phaser.Scene {
     this.phase = 'boss_intro';
     // 남은 잡몹 정리 대기 없이 바로 보스 대사
     this.physics.world.pause();
+    if (this._world) { this._startBoss(); return; } // 세계 보스 대사는 후속
     this._dialogue('boss', () => this._startBoss());
   }
 
@@ -272,7 +284,8 @@ export class GameScene extends Phaser.Scene {
       this.cameras.main.flash(300, 255, 245, 200);
       this._confetti();
       this.time.delayedCall(1400, () => {
-        this._dialogue('outro', () => this._afterOutro());
+        if (this._world) this._afterOutro();
+        else this._dialogue('outro', () => this._afterOutro());
       });
     });
   }
@@ -318,8 +331,9 @@ export class GameScene extends Phaser.Scene {
 
   _clear() {
     this.phase = 'clear';
-    Save.markStageCleared(this.stageId);
     this._awardGuardianExp(45); // 장착 수호자 육성
+    if (this._world) { this._clearWorld(); return; } // 다중세계 모드 → 정령 각성 후 지도로
+    Save.markStageCleared(this.stageId);
     const next = NEXT[this.stageId];
     // 최종 스테이지 클리어 & 에필로그 지정(D37) → 밤하늘 연출 + 에필로그 대사 후 랭킹
     if (!next && this.stage.epilogue) {
@@ -336,6 +350,50 @@ export class GameScene extends Phaser.Scene {
       } else {
         this._toRanking(false);
       }
+    });
+  }
+
+  // ── 다중세계: 세계 정화 → 정령 각성 → 지도 복귀 ─────────
+  _clearWorld() {
+    Save.markWorldCleared(this._world.id);
+    const newly = (this._world.spirits || []).filter((id) => !Save.isGuardianAwake(id));
+    newly.forEach((id) => Save.awakenGuardian(id));
+    this._worldClearCelebrate(newly, () => {
+      this.cameras.main.fadeOut(500, 0, 0, 0);
+      this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Multiverse'));
+    });
+  }
+
+  _worldClearCelebrate(spiritIds, onDone) {
+    const c = this.add.container(GAME_WIDTH / 2, GAME_HEIGHT / 2).setDepth(45);
+    c.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0a0716, 0.86).setOrigin(0.5));
+    c.add(this.add.text(0, -168, `${this._world.name} 정화`, { fontSize: '24px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0.5));
+    if (!spiritIds.length) {
+      c.add(this.add.text(0, -120, '이미 이 세계의 빛은 되찾았다', { fontSize: '15px', color: PALETTE.inkDim }).setOrigin(0.5));
+    } else {
+      c.add(this.add.text(0, -128, '정령 각성', { fontSize: '15px', color: PALETTE.serenityHex }).setOrigin(0.5));
+      spiritIds.forEach((id, i) => {
+        const px = spiritIds.length === 1 ? 0 : (i - (spiritIds.length - 1) / 2) * 130;
+        const key = this.textures.exists(`pt_g_${id}`) ? `pt_g_${id}` : 'pt_g_bongi';
+        const port = c.add ? this.add.image(px, -40, key).setScale(1.1) : null;
+        c.add(port);
+        port.setScale(0.3).setAlpha(0);
+        this.tweens.add({ targets: port, scale: 1.1, alpha: 1, duration: 460, delay: 200 + i * 160, ease: 'Back.easeOut' });
+        c.add(this.add.text(px, 66, GUARDIAN_NAME[id] || id, { fontSize: '20px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5));
+      });
+    }
+    const count = 1 + Save.getAwakenedGuardians().length;
+    c.add(this.add.text(0, 130, `정령 ${count} / 13`, { fontSize: '13px', color: PALETTE.inkDim }).setOrigin(0.5));
+    const p = this.add.particles(0, -40, 'spark', {
+      speed: { min: 40, max: 150 }, scale: { start: 1, end: 0 }, lifespan: 900, frequency: 70,
+      tint: [PALETTE.light, PALETTE.rose, PALETTE.gold], blendMode: 'ADD',
+    });
+    c.add(p);
+    c.setAlpha(0);
+    this.tweens.add({ targets: c, alpha: 1, duration: 300 });
+    Audio.sfx('powerup');
+    this.time.delayedCall(2800, () => {
+      this.tweens.add({ targets: c, alpha: 0, duration: 300, onComplete: () => { c.destroy(); onDone?.(); } });
     });
   }
 
@@ -426,9 +484,10 @@ export class GameScene extends Phaser.Scene {
     c.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.68).setOrigin(0).setInteractive());
     c.add(this.add.text(GAME_WIDTH / 2, 250, '일시정지', { fontSize: '30px', fontStyle: 'bold', color: PALETTE.ink }).setOrigin(0.5));
     c.add(this._menuButton(GAME_WIDTH / 2, 340, '계속하기', PALETTE.rose, () => this._resume()));
-    c.add(this._menuButton(GAME_WIDTH / 2, 404, '재시작', PALETTE.serenity, () => {
+    c.add(this._menuButton(GAME_WIDTH / 2, 404, this._world ? '세계 재도전' : '재시작', PALETTE.serenity, () => {
       Audio.sfx('ui');
-      this.scene.start('Game', { stageId: 'w1' });
+      if (this._world) this.scene.start('Game', { worldId: this._world.id });
+      else this.scene.start('Game', { stageId: 'w1' });
     }));
     c.add(this._menuButton(GAME_WIDTH / 2, 468, '타이틀로', PALETTE.panel, () => {
       Audio.sfx('ui');
