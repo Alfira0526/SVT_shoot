@@ -1,151 +1,284 @@
 {
-  "_status": "다중세계 지도(전면 개편 척추) — 세계관 렌즈 = 여행할 세계. 스토리 바이블 그룹 산출 반영.",
-  "_note": "stageRef=재사용 스테이지 레이아웃. spirits=클리어 시 각성 정령 id. entry: progression(순차) / combination(정령 조합 보유 시 개방). situation/objective/threatDesc=진입·보스 직관 브리핑(구체 서술). IP: 실존 미참조 오리지널.",
-  "progressionOrder": [
-    "zombie",
-    "android",
-    "beast",
-    "noir",
-    "slice"
-  ],
+  "_status": "다중세계 지도 v2 — 팬덤 경험 의인화 13세계(정령 1/세계) + 완결의 문(무결). 개별 코인 해금(비연쇄).",
+  "_note": "entry=unlock: unlockCost 코인으로 개별 해금(하나 열어도 다른 세계는 안 열림). finale: 13세계 클리어 시 개방. IP 무참조 오리지널.",
+  "firstWorld": "w_pollin",
   "worlds": [
     {
-      "id": "zombie",
-      "name": "멈춰버린 광장",
-      "sub": "감염 세계",
-      "theme": "응원이 끊긴 폐허 도시. 소리를 잃은 군중이 잿빛 정적에 잠겼다.",
-      "situation": "응원 소리가 끊긴 광장. 사람들이 목소리를 잃고 잿빛으로 굳어버렸다.",
-      "objective": "노이즈를 정화하고, 잠든 정령 햇귀·반디를 깨워라.",
-      "threat": "노이즈",
-      "threatDesc": "응원과 목소리를 삼켜 사람들을 침묵시키는 잡음의 안개. 이 광장을 멈추게 한 장본인.",
-      "color": "danger",
-      "stageRef": "w1",
-      "spirits": [
-        "haetgwi",
-        "bandi"
-      ],
-      "entry": "progression",
-      "combo": [],
-      "difficulty": 1
-    },
-    {
-      "id": "android",
-      "name": "규격 도시 아르카",
-      "sub": "안드로이드 세계",
-      "theme": "모든 감정이 수치로 관리되는 기계 도시. 팬심마저 비효율로 삭제된다.",
-      "situation": "감정이 숫자로 관리되는 기계 도시. 팬심마저 '비효율'로 삭제된다.",
-      "objective": "티켓팅 서버를 뚫고, 윤슬·달무리를 깨워라.",
-      "threat": "티켓팅 서버",
-      "threatDesc": "순번과 자격으로 팬을 걸러내는 거대 관제 시스템. 무한 대기열로 마음을 회수한다.",
-      "color": "serenity",
-      "stageRef": "w2",
-      "spirits": [
-        "yunseul",
-        "dalmuri"
-      ],
-      "entry": "progression",
-      "combo": [],
-      "difficulty": 2
-    },
-    {
-      "id": "beast",
-      "name": "울림의 숲",
-      "sub": "동물 세계",
-      "theme": "소리로 서로를 부르는 야생의 숲. 밀렵꾼에게 목소리를 빼앗긴 짐승 정령들.",
-      "situation": "소리로 서로를 부르던 숲. 짐승들이 목소리를 빼앗겨 서로를 잃었다.",
-      "objective": "암표 총책의 덫을 부수고, 여울·아지랑이를 깨워라.",
-      "threat": "암표 총책",
-      "threatDesc": "희귀한 울음을 포획해 되파는 밀렵 조직. 덫과 그물로 정령을 가둔다.",
-      "color": "mint",
-      "stageRef": "w3",
-      "spirits": [
-        "yeoul",
-        "ajirangi"
-      ],
-      "entry": "progression",
-      "combo": [],
-      "difficulty": 3
-    },
-    {
-      "id": "noir",
-      "name": "뒷골목 네온시티",
-      "sub": "느와르 세계",
-      "theme": "비 내리는 밤의 향락 도시. 암시장 뒤에서 사라진 진짜 티켓을 쫓는다.",
-      "situation": "비 내리는 밤의 향락 도시. 진짜 티켓이 암시장 뒤로 사라졌다.",
-      "objective": "지하 조직을 쫓아 이내·물비늘을 깨워라.",
-      "threat": "암표 총책",
-      "threatDesc": "도시 지하를 지배하는 범죄 두목. 위조 티켓과 매수된 하수인을 부린다.",
-      "color": "lavender",
-      "stageRef": "w3",
-      "spirits": [
-        "inae",
-        "mulbineul"
-      ],
-      "entry": "progression",
-      "combo": [],
-      "difficulty": 4
-    },
-    {
-      "id": "slice",
-      "name": "골목 끝 단골집",
-      "sub": "일상 세계",
-      "theme": "평범한 동네의 작은 가게와 옥탑. 특별할 것 없는 하루 속 설렘과 위로.",
-      "situation": "평범한 동네. 무기력과 악플이 조용히 하루를 무뎌지게 한다.",
-      "objective": "일상에 스민 노이즈를 걷어내고, 노을·볕뉘를 깨워라.",
-      "threat": "노이즈",
-      "threatDesc": "악플과 무기력으로 스며드는 일상의 소음. 설렘과 위로를 식힌다.",
+      "id": "w_pollin",
+      "name": "쿵",
+      "sub": "입덕·낙하",
+      "theme": "알고리즘에 걸린 영상 하나에 심장이 쿵 내려앉고 밤새 정주행하는 입덕 순간 — 그리고 그 첫 설렘만 좇다 금방 다음 얼굴로 갈아타는 마음의 의인화.",
+      "situation": "발이 땅에 닿으면 안 되는 세계. 아래에서 새 얼굴이 자꾸 올라와 계속 떨어진다.",
+      "objective": "정령 '폴린'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "끝없는 낙하",
+      "threatDesc": "착지하면 설렘이 끝난다며 영영 떨어지게 만드는 중력. 첫 쿵만 좇게 한다.",
       "color": "rose",
       "stageRef": "w1",
       "spirits": [
-        "noeul",
-        "byeotnwi"
+        "pollin"
       ],
-      "entry": "progression",
-      "combo": [],
-      "difficulty": 5
+      "entry": "unlock",
+      "unlockCost": 0,
+      "reward": 3,
+      "difficulty": 1,
+      "order": 1
     },
     {
-      "id": "cosmos",
-      "name": "새벽과 황혼의 성좌",
-      "sub": "우주 세계 · 조합 전용",
-      "theme": "새벽빛과 황혼빛이 맞닿을 때만 열리는 은하의 통로. 흩어진 별빛을 하나의 궤도로 잇는다.",
-      "situation": "새벽빛과 황혼빛이 맞닿을 때만 열리는 은하 통로. 별빛들이 서로 닿지 못한 채 굳었다.",
-      "objective": "독점자의 중력을 끊고, 조율가 미리내를 깨워라.",
-      "threat": "독점자",
-      "threatDesc": "성좌의 빛을 홀로 가두려는 존재. 블랙홀 중력으로 응원을 빨아들인다.",
+      "id": "w_pick",
+      "name": "뽑기장",
+      "sub": "포카·뽑기",
+      "theme": "랜덤 포토카드 뽑기. 원카는 안 나오고 중복만 쌓이는 콜렉트북, 봉투 뜯기 전 0.5초의 도박 — 꽝과 중복의 서러움을 뒤집어쓴 확률의 의인화.",
+      "situation": "봉투가 산더미. 뜯는 소리와 한숨 사이에서 무언가 자꾸 얼굴을 바꾼다.",
+      "objective": "정령 '픽'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "꽝의 반복",
+      "threatDesc": "원하는 건 절대 처음에 안 나오고, 멈추는 법은 아무도 안 알려주는 확률의 늪.",
       "color": "serenity",
-      "stageRef": "final",
+      "stageRef": "w2",
       "spirits": [
-        "mirinae"
+        "pick"
       ],
-      "entry": "combination",
-      "combo": [
-        "yunseul",
-        "inae"
-      ],
-      "difficulty": 6
+      "entry": "unlock",
+      "unlockCost": 2,
+      "reward": 3,
+      "difficulty": 1,
+      "order": 2
     },
     {
-      "id": "knight",
-      "name": "맹세의 성 아르덴",
-      "sub": "기사 세계 · 조합 전용",
-      "theme": "약속·용기·기다림의 세 서약이 갖춰져야 성문이 열리는 판타지 왕국.",
-      "situation": "세 서약이 갖춰져야 열리는 왕국의 성. 폭군이 모든 좌석을 독차지했다.",
-      "objective": "독점자를 몰아내고, 마지막 정령 별찌를 깨워라.",
-      "threat": "독점자",
-      "threatDesc": "왕좌와 모든 자리를 독점한 폭군. 다층 방벽으로 무대를 봉쇄한다.",
-      "color": "gold",
-      "stageRef": "final",
+      "id": "w_saerok",
+      "name": "무한로비",
+      "sub": "새로고침·대기열",
+      "theme": "포카·티켓 판매 오픈런 대기열에서 광클하고 새로고침하며 순번이 안 오는 무한 대기의 의인화. '멈추면 지금까지 기다린 게 아깝다'는 그 손가락의 관성.",
+      "situation": "일어서면 순번이 뒤로 밀려 아무도 안 움직이는 로비. 벽엔 시계가 없다.",
+      "objective": "정령 '새록'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "무한 대기열",
+      "threatDesc": "멈추면 잃을까 봐 못 멈추는데, 멈추지 않으면 결국 아무 데도 못 가는 대기의 방.",
+      "color": "serenity",
+      "stageRef": "w3",
       "spirits": [
-        "byeoljji"
+        "saerok"
       ],
-      "entry": "combination",
-      "combo": [
-        "yeoul",
-        "haetgwi",
-        "dalmuri"
+      "entry": "unlock",
+      "unlockCost": 2,
+      "reward": 3,
+      "difficulty": 2,
+      "order": 3
+    },
+    {
+      "id": "w_bitjang",
+      "name": "뒤틀린 관문",
+      "sub": "보안문자·인증",
+      "theme": "티켓팅 보안문자·캡차 관문에서 사람인데 봇 취급당하며 계속 튕기는 경험의 의인화. '너 사람 맞아?'를 하도 들어서 스스로도 의심하게 된 마음.",
+      "situation": "글자가 볼 때마다 다시 뒤틀리고, 틀리면 처음 문으로 돌아가는 관문.",
+      "objective": "정령 '빗장'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "뒤틀린 관문",
+      "threatDesc": "통과하려면 결백을 증명해야 하는데, 애쓸수록 더 수상해 보이는 문.",
+      "color": "danger",
+      "stageRef": "w4",
+      "spirits": [
+        "bitjang"
       ],
-      "difficulty": 7
+      "entry": "unlock",
+      "unlockCost": 2,
+      "reward": 3,
+      "difficulty": 2,
+      "order": 4
+    },
+    {
+      "id": "w_ulrim",
+      "name": "떼창홀",
+      "sub": "떼창·스밍",
+      "theme": "떼창과 스밍의 의인화. 삼천 명이 한 소절을 같이 부르는 순간, 그리고 목 아파도 같은 곡을 밤새 돌려 스밍하는 반복노동 — '나 하나로는 안 들린다'는 감각이 사람 모양이 된 것.",
+      "situation": "소리가 멈추면 발밑이 꺼지는 홀. 혼자 낸 소리는 벽을 못 넘는다.",
+      "objective": "정령 '울림'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "볼륨의 벽",
+      "threatDesc": "벽을 넘으려면 남과 겹쳐야 하는데, 겹칠수록 자기 목소리는 사라지는 홀.",
+      "color": "mint",
+      "stageRef": "w1",
+      "spirits": [
+        "ulrim"
+      ],
+      "entry": "unlock",
+      "unlockCost": 2,
+      "reward": 3,
+      "difficulty": 3,
+      "order": 5
+    },
+    {
+      "id": "w_semi",
+      "name": "마감이 안 오는 방",
+      "sub": "총공·투표",
+      "theme": "총공과 투표 노동의 의인화. 새벽까지 표 돌리고 순위표 새로고침하고 스프레드시트로 집계하는 그 노동 — '내가 멈추면 진다'는 압박이 사람 모양이 된 것.",
+      "situation": "숫자를 멈추면 전부 0으로 리셋되는 방. 마감이 오지 않아 못 쉰다.",
+      "objective": "정령 '셈이'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "멈추지 않는 순위표",
+      "threatDesc": "이겨야 문이 열리는데, 이기려 셀수록 애초에 왜 좋아했는지를 잊게 하는 방.",
+      "color": "lavender",
+      "stageRef": "w2",
+      "spirits": [
+        "semi"
+      ],
+      "entry": "unlock",
+      "unlockCost": 2,
+      "reward": 3,
+      "difficulty": 4,
+      "order": 6
+    },
+    {
+      "id": "w_yeongsu",
+      "name": "텅장상점가",
+      "sub": "굿즈·텅장",
+      "theme": "굿즈 지르고 텅장 되는 경험, 완판 임박 알림과 '이번 시즌까지만'의 무한 반복, 사라질 걸 알면서도 결제하는 지출 강박의 의인화",
+      "situation": "산 물건은 하루면 사라지고 영수증만 남는 상점가. 잔고가 0이 되어야 문이 열린다.",
+      "objective": "정령 '영수'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "완판의 유혹",
+      "threatDesc": "완판 임박 알림이 계속 울리는데 잔고는 이미 0에 닿은 상점가. 사랑을 지출로 증명하게 한다.",
+      "color": "gold",
+      "stageRef": "w3",
+      "spirits": [
+        "yeongsu"
+      ],
+      "entry": "unlock",
+      "unlockCost": 2,
+      "reward": 3,
+      "difficulty": 3,
+      "order": 7
+    },
+    {
+      "id": "w_chalna",
+      "name": "리플레이 협곡",
+      "sub": "직캠·기록",
+      "theme": "콘서트에서 직캠 찍느라 정작 맨눈으로 그 순간을 못 본 경험, 배터리 1%와 앵콜 사이의 초조함, 찰나를 원본으로 남기려는 기록 강박의 의인화",
+      "situation": "딱 3초씩만 흐르고 처음으로 되감기는 협곡. 렌즈로 본 것만 세계에 남는다.",
+      "objective": "정령 '찰나'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "되감기 협곡",
+      "threatDesc": "남기려 찍는 순간 그 자리에 없던 사람이 되는 3초짜리 루프. 사는 대신 저장하게 한다.",
+      "color": "danger",
+      "stageRef": "w4",
+      "spirits": [
+        "chalna"
+      ],
+      "entry": "unlock",
+      "unlockCost": 2,
+      "reward": 3,
+      "difficulty": 4,
+      "order": 8
+    },
+    {
+      "id": "w_diwon",
+      "name": "영원한 전날",
+      "sub": "컴백·기다림",
+      "theme": "컴백·기다림 — D-7, D-1 카운트다운 세며 티저에 목매고 발매일만 기다리던 그 몇 주. '곧 온다'는 말에 자꾸 미뤄지고, 정작 그날이 와도 실감이 안 나던 경험.",
+      "situation": "카운트다운이 D-1에서 안 줄고, 새 티저는 무한히 뜨는데 본편은 안 나오는 광장.",
+      "objective": "정령 '디원'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "영원한 D-1",
+      "threatDesc": "D-1이 안 끝나 설렘도 안 끝나는 대신, 영원히 그날을 못 만나게 하는 전날.",
+      "color": "gold",
+      "stageRef": "w1",
+      "spirits": [
+        "diwon"
+      ],
+      "entry": "unlock",
+      "unlockCost": 2,
+      "reward": 3,
+      "difficulty": 3,
+      "order": 9
+    },
+    {
+      "id": "w_nesi",
+      "name": "네 시에서 멈춘 밤",
+      "sub": "새벽감성·불면",
+      "theme": "새벽 감성·불면 — 밤새 폰 붙잡고 최애 사진 넘기다가 새벽 3~5시에 갑자기 울컥 감정 과부하 걸리는 그 시간대. 낮엔 멀쩡하다가 불만 끄면 별게 다 서러워지는 경험.",
+      "situation": "시계가 4시 44분에서 안 넘어가는 밤. 하고 싶은 말이 낮보다 두 배로 커진다.",
+      "objective": "정령 '네시'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "4시 44분",
+      "threatDesc": "끝나길 바라면서 안 끝나길 바라는 밤. 여기서만 솔직해질 수 있어 못 떠난다.",
+      "color": "lavender",
+      "stageRef": "w2",
+      "spirits": [
+        "nesi"
+      ],
+      "entry": "unlock",
+      "unlockCost": 2,
+      "reward": 3,
+      "difficulty": 2,
+      "order": 10
+    },
+    {
+      "id": "w_yeobaek",
+      "name": "앙코르 뒤, 셋째 열",
+      "sub": "최애상실·졸업",
+      "theme": "최애가 활동을 마치거나 그룹을 떠나 '졸업'하고, 남은 팬이 그 옆자리를 마주하는 경험의 의인화. 인사도 못 하고 끝난 마지막의 감각.",
+      "situation": "공연이 끝나면 의자가 다 접히는데, 누가 기다리는 자리만 안 접히는 셋째 열.",
+      "objective": "정령 '여백'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "빈 예약석",
+      "threatDesc": "그 자리를 접어야 나갈 수 있는데, 접는 순간 진짜로 보내는 게 돼버리는 객석.",
+      "color": "lavender",
+      "stageRef": "w3",
+      "spirits": [
+        "yeobaek"
+      ],
+      "entry": "unlock",
+      "unlockCost": 2,
+      "reward": 3,
+      "difficulty": 3,
+      "order": 11
+    },
+    {
+      "id": "w_seupjak",
+      "name": "덜 마른 화첩",
+      "sub": "팬창작·2차",
+      "theme": "최애와 무대를 잊지 않으려 팬이 직접 그리고 쓰고 만드는 2차 창작의 마음. 원본을 가질 수 없으니 제 손으로 다시 만드는 사람.",
+      "situation": "완성을 선언하면 그림이 사라지는 화첩. 기억으로 그린 삐뚠 선만 진하게 남는다.",
+      "objective": "정령 '습작'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "미완의 화첩",
+      "threatDesc": "완성하면 사라지는 그림. 똑같이 그리려 할수록 흐려지고, 미완으로 남겨야 남는다.",
+      "color": "mint",
+      "stageRef": "w4",
+      "spirits": [
+        "seupjak"
+      ],
+      "entry": "unlock",
+      "unlockCost": 2,
+      "reward": 3,
+      "difficulty": 2,
+      "order": 12
+    },
+    {
+      "id": "w_janbul",
+      "name": "식은 재의 공터",
+      "sub": "버티기·현타",
+      "theme": "실망과 현타를 겪고도 '그럼에도' 남아 버티는 마음. 크게 데인 뒤 화력은 줄었지만 끝내 안 꺼지는 불씨.",
+      "situation": "흔들어야 겨우 깜빡이는 응원봉. 온 데가 식은 재인데 주황 불씨 하나가 안 꺼진다.",
+      "objective": "정령 '잔불'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+      "threat": "식은 재",
+      "threatDesc": "그냥 끄면 편한데 끄면 끝. 미지근한 채로 밤새 지켜야 하나 매 순간 갈등하게 하는 공터.",
+      "color": "gold",
+      "stageRef": "w1",
+      "spirits": [
+        "janbul"
+      ],
+      "entry": "unlock",
+      "unlockCost": 2,
+      "reward": 3,
+      "difficulty": 4,
+      "order": 13
+    },
+    {
+      "id": "mugyeol",
+      "name": "완결의 문",
+      "sub": "최종 · 완결의 유혹",
+      "theme": "모든 빛을 되찾은 뒤 마지막으로 마주하는 문. 여기서 접으면 아무도 안 아프다고 속삭인다.",
+      "situation": "열셋을 다 깨우자 열린 마지막 문. 루멘을 닮은 그림자가 리본을 들고 기다린다.",
+      "objective": "'잘 끝났잖아'라는 완결의 유혹을 끊고, 마침표를 쉼표로 바꿔라.",
+      "threat": "무결",
+      "threatDesc": "완결·만족의 의인화. 루멘의 그림자. 가장 다정한 목소리로 \"여한 없지?\"라며 덕질을 끝내게 한다.",
+      "color": "rose",
+      "stageRef": "final",
+      "spirits": [],
+      "entry": "finale",
+      "difficulty": 6,
+      "isFinale": true,
+      "reward": 0
     }
   ]
 }

@@ -336,13 +336,13 @@ export class GameScene extends Phaser.Scene {
   _awakenCelebrate(gd, onDone) {
     const c = this.add.container(GAME_WIDTH / 2, GAME_HEIGHT / 2).setDepth(45);
     c.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0a0716, 0.82).setOrigin(0.5));
-    const count = 1 + Save.getAwakenedGuardians().length; // 봉이 포함
+    const count = 1 + Save.getAwakenedGuardians().length; // 루멘 포함
     c.add(this.add.text(0, -170, '새로운 수호자 각성', { fontSize: '20px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0.5));
     const port = this.add.image(0, -40, this.textures.exists(gd.portrait) ? gd.portrait : 'pt_g_bongi').setScale(1.4);
     c.add(port);
     c.add(this.add.text(0, 70, gd.name, { fontSize: '34px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5));
     c.add(this.add.text(0, 108, gd.light, { fontSize: '16px', color: PALETTE.roseHex }).setOrigin(0.5));
-    c.add(this.add.text(0, 150, `수호자 ${count} / 13`, { fontSize: '13px', color: PALETTE.inkDim }).setOrigin(0.5));
+    c.add(this.add.text(0, 150, `수호자 ${count} / 14`, { fontSize: '13px', color: PALETTE.inkDim }).setOrigin(0.5));
     const p = this.add.particles(0, -40, 'spark', {
       speed: { min: 40, max: 160 }, scale: { start: 1, end: 0 }, lifespan: 900, frequency: 60,
       tint: [PALETTE.light, PALETTE.rose, PALETTE.gold], blendMode: 'ADD',
@@ -430,9 +430,15 @@ export class GameScene extends Phaser.Scene {
 
   // ── 다중세계: 세계 정화 → 각성 대사 → 정령 각성 연출 → 지도 복귀 ──
   _clearWorld() {
-    Save.markWorldCleared(this._world.id);
-    const newly = (this._world.spirits || []).filter((id) => !Save.isGuardianAwake(id));
-    const wd = worldDialogue.worlds[this._world.id];
+    const w = this._world;
+    const already = Save.getWorldsCleared().includes(w.id);
+    Save.markWorldCleared(w.id);
+    if (!already && w.reward) Save.addUnlockCoins(w.reward); // 클리어 보상 코인(최초 1회) → 다른 세계 해금 재화
+
+    if (w.isFinale) { this._finaleClear(); return; } // 무결 — 정령 각성 대신 종결 연출
+
+    const newly = (w.spirits || []).filter((id) => !Save.isGuardianAwake(id));
+    const wd = worldDialogue.worlds[w.id];
     const awakenLines = [];
     newly.forEach((id) => { if (wd && wd.spirits[id]) awakenLines.push(...(wd.spirits[id].awaken || [])); });
     newly.forEach((id) => Save.awakenGuardian(id));
@@ -441,6 +447,38 @@ export class GameScene extends Phaser.Scene {
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Multiverse'));
       });
+    });
+  }
+
+  // 무결 피날레 — 완결의 유혹을 거절하는 종결 대사 → '쉼표' 엔딩 → 지도 복귀
+  _finaleClear() {
+    const wd = worldDialogue.worlds[this._world.id];
+    const lines = (wd && wd.clear) || [];
+    Save.setFlag('storyComplete');
+    this._playLines(lines, () => {
+      this._finaleCelebrate(() => {
+        this.cameras.main.fadeOut(700, 0, 0, 0);
+        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Multiverse'));
+      });
+    });
+  }
+
+  _finaleCelebrate(onDone) {
+    const c = this.add.container(GAME_WIDTH / 2, GAME_HEIGHT / 2).setDepth(46);
+    c.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0a0716, 0.9).setOrigin(0.5));
+    c.add(this.add.text(0, -70, '마침표 대신,', { fontSize: '22px', color: PALETTE.inkDim, fontStyle: 'bold' }).setOrigin(0.5));
+    c.add(this.add.text(0, -18, '쉼표', { fontSize: '54px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0.5));
+    c.add(this.add.text(0, 46, '이야기는 다음 회차로 이어진다', { fontSize: '14px', color: PALETTE.roseHex }).setOrigin(0.5));
+    const p = this.add.particles(0, -18, 'spark', {
+      speed: { min: 40, max: 170 }, scale: { start: 1, end: 0 }, lifespan: 1100, frequency: 50,
+      tint: [PALETTE.light, PALETTE.rose, PALETTE.gold, PALETTE.serenity], blendMode: 'ADD',
+    });
+    c.add(p);
+    c.setAlpha(0);
+    this.tweens.add({ targets: c, alpha: 1, duration: 400 });
+    Audio.sfx('powerup');
+    this.time.delayedCall(3200, () => {
+      this.tweens.add({ targets: c, alpha: 0, duration: 400, onComplete: () => { c.destroy(); onDone?.(); } });
     });
   }
 

@@ -16,6 +16,8 @@ const DEFAULT_PROGRESS = {
   guardianExp: {}, // { [id]: 누적 EXP } — 교체 육성
   equippedGuardian: 'bongi', // 함께 비행 중인 수호자(탄 색·패시브)
   worldsCleared: [], // 클리어한 다중세계 id (진행 게이팅)
+  unlockCoins: 0, // 해금 코인(세계 클리어로 획득 → 다른 세계 개별 해금). 비연쇄 진행.
+  unlockedWorlds: [], // 코인으로 개별 해금한 다중세계 id (firstWorld는 항상 개방)
 };
 const DEFAULT_SETTINGS = { bgm: true, sfx: true };
 
@@ -93,6 +95,34 @@ export const Save = {
     if (id && !p.worldsCleared.includes(id)) p.worldsCleared.push(id);
     write(STORAGE.progress, p);
     return p;
+  },
+
+  // ── 해금 코인 · 개별 세계 해금 (비연쇄 진행) ──────────────
+  // 세계 클리어로 코인을 얻고, 그 코인으로 잠긴 세계를 하나씩 골라 연다.
+  // "하나 열면 다른 데도 열리는" 연쇄 개방 문제를 없애기 위한 명시적 구매식 해금.
+  getUnlockCoins() {
+    return this.getProgress().unlockCoins || 0;
+  },
+  addUnlockCoins(n) {
+    const p = this.getProgress();
+    p.unlockCoins = Math.max(0, (p.unlockCoins || 0) + Math.floor(n || 0));
+    write(STORAGE.progress, p);
+    return p.unlockCoins;
+  },
+  // 코인이 충분하면 차감하고 해당 세계를 개방. 성공 여부 반환.
+  unlockWorld(id, cost) {
+    const p = this.getProgress();
+    p.unlockedWorlds = p.unlockedWorlds || [];
+    if (p.unlockedWorlds.includes(id)) return true;
+    const c = Math.max(0, Math.floor(cost || 0));
+    if ((p.unlockCoins || 0) < c) return false;
+    p.unlockCoins = (p.unlockCoins || 0) - c;
+    p.unlockedWorlds.push(id);
+    write(STORAGE.progress, p);
+    return true;
+  },
+  isWorldUnlocked(id) {
+    return (this.getProgress().unlockedWorlds || []).includes(id);
   },
 
   // 교체 육성 — 장착 수호자에 EXP 적립, 장착 슬롯 관리

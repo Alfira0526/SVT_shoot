@@ -29,13 +29,13 @@ export class GuardianScene extends Phaser.Scene {
     const count = guardians.roster.filter(isAwake).length;
 
     this.add.text(GAME_WIDTH / 2, 40, '수호자 도감', { fontSize: '30px', fontStyle: 'bold', color: PALETTE.ink }).setOrigin(0.5);
-    this.add.text(GAME_WIDTH / 2, 74, `흩어진 빛을 되찾는 중  ·  ${count} / 13`, { fontSize: '14px', color: PALETTE.goldHex }).setOrigin(0.5);
+    this.add.text(GAME_WIDTH / 2, 74, `흩어진 빛을 되찾는 중  ·  ${count} / ${guardians.roster.length}`, { fontSize: '14px', color: PALETTE.goldHex }).setOrigin(0.5);
 
-    // 3열 × 5행 그리드
+    // 3열 그리드 (루멘 + 13정령 = 14)
     const cols = 3;
     const x0 = 88, dx = (GAME_WIDTH - x0 * 2) / (cols - 1);
-    const y0 = 148, dy = 118;
-    guardians.roster.slice(0, 13).forEach((g, i) => {
+    const y0 = 132, dy = 108;
+    guardians.roster.forEach((g, i) => {
       const cx = x0 + (i % cols) * dx;
       const cy = y0 + Math.floor(i / cols) * dy;
       this._slot(cx, cy, g, isAwake(g));

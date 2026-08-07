@@ -32,8 +32,9 @@ export class BootScene extends Phaser.Scene {
     ['sell', 'smug', 'crack'].forEach((e) => this.load.image(`pt_scalper_${e}`, `assets/portraits/pt_scalper_${e}.png`));
     // 자체 일러스트 버스트(Pillow) — 수호자 4종 + 적/플레이어 (Graphics 도형 대체)
     [
-      'pt_g_bongi', 'pt_g_noeul', 'pt_g_yunseul', 'pt_g_yeoul', 'pt_g_byeotnwi', 'pt_g_inae',
-      'pt_g_mirinae', 'pt_g_mulbineul', 'pt_g_haetgwi', 'pt_g_dalmuri', 'pt_g_bandi', 'pt_g_ajirangi', 'pt_g_byeoljji',
+      // 14정령 v2 — 루멘(bongi) + 팬덤 경험 정령 13
+      'pt_g_bongi', 'pt_g_pollin', 'pt_g_pick', 'pt_g_saerok', 'pt_g_bitjang', 'pt_g_ulrim', 'pt_g_semi',
+      'pt_g_yeongsu', 'pt_g_chalna', 'pt_g_diwon', 'pt_g_nesi', 'pt_g_yeobaek', 'pt_g_seupjak', 'pt_g_janbul',
       'pt_player', 'pt_noise', 'pt_server', 'pt_monopolist',
     ].forEach((n) => this.load.image(n, `assets/portraits/${n}.png`));
   }

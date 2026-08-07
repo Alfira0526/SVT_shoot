@@ -161,20 +161,23 @@ def player():
 def out(im,name): im.resize((W,H),Image.LANCZOS).save(os.path.join(OUT,name+'.png'))
 
 def main():
+    # 14정령 v2 — 루멘(가이드, id 'bongi') + 팬덤 경험 정령 13. 색·왕관·엠블럼·표정으로 구별.
+    # (임시 플레이스홀더 버스트: 캐논의 상세 디자인 컨셉[로딩 스피너/관문/이퀄라이저 등]은 후속 아트 과제.)
     guards={
-        'pt_g_bongi': fairy(0xf1c7d2,'star5','wand','open'),
-        'pt_g_noeul': fairy(0xffd66b,'heart','heart','excited'),
-        'pt_g_yunseul': fairy(0x9cc1e5,'spark6','sun','calm'),
-        'pt_g_yeoul': fairy(0x8fdcc2,'ring','rings','gentle'),
-        'pt_g_byeotnwi': fairy(0xf0c98a,'spark6','heart','gentle'),
-        'pt_g_inae': fairy(0x9a8fd6,'ring','sun','calm'),
-        'pt_g_mirinae': fairy(0x6a7fd6,'spark6','rings','calm'),
-        'pt_g_mulbineul': fairy(0x7fd6c9,'ring','sun','gentle'),
-        'pt_g_haetgwi': fairy(0xffb07a,'star5','sun','excited'),
-        'pt_g_dalmuri': fairy(0xbca9e0,'ring','heart','calm'),
-        'pt_g_bandi': fairy(0xd6e08a,'heart','heart','open'),
-        'pt_g_ajirangi': fairy(0xf0a8c4,'heart','sun','excited'),
-        'pt_g_byeoljji': fairy(0x8fb0f0,'star5','wand','open'),
+        'pt_g_bongi':    fairy(0xfdf6c9,'star5','wand','open'),     # 루멘(가이드)
+        'pt_g_pollin':   fairy(0xff8fa3,'heart','heart','excited'),  # 입덕·낙하
+        'pt_g_pick':     fairy(0x9a8fd6,'spark6','rings','gentle'),  # 포카·뽑기
+        'pt_g_saerok':   fairy(0x9cc1e5,'ring','rings','calm'),      # 새로고침·대기열
+        'pt_g_bitjang':  fairy(0xff5d73,'star5','sun','open'),       # 보안문자·인증
+        'pt_g_ulrim':    fairy(0x8fdcc2,'spark6','sun','excited'),   # 떼창·스밍
+        'pt_g_semi':     fairy(0xc9b8e8,'ring','rings','calm'),      # 총공·투표
+        'pt_g_yeongsu':  fairy(0xffd66b,'heart','sun','open'),       # 굿즈·텅장
+        'pt_g_chalna':   fairy(0xff8a5d,'star5','wand','excited'),   # 직캠·기록
+        'pt_g_diwon':    fairy(0xf0c98a,'spark6','wand','open'),     # 컴백·기다림
+        'pt_g_nesi':     fairy(0x6a7fd6,'ring','sun','calm'),        # 새벽·불면
+        'pt_g_yeobaek':  fairy(0xbca9e0,'ring','heart','gentle'),    # 최애상실·졸업
+        'pt_g_seupjak':  fairy(0x8fb0f0,'spark6','rings','gentle'),  # 팬창작·2차
+        'pt_g_janbul':   fairy(0xffb07a,'heart','sun','calm'),       # 버티기·현타
     }
     others={'pt_noise':antagonist_noise(),'pt_server':antagonist_server(),
             'pt_monopolist':antagonist_monopolist(),'pt_player':player()}
