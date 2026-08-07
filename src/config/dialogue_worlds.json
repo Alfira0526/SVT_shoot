@@ -7,19 +7,19 @@
           "speaker": "{nickname}",
           "portrait": "player",
           "side": "right",
-          "text": "응원봉이 혼자 떨렸다."
+          "text": "응원봉이 혼자 떨려."
         },
         {
           "speaker": "{nickname}",
           "portrait": "player",
           "side": "right",
-          "text": "발밑이 없었다. 계속 아래로."
+          "text": "발밑이 없어. 계속 아래로."
         },
         {
           "speaker": "{nickname}",
           "portrait": "player",
           "side": "right",
-          "text": "뭔가가 웃으면서 떨어지고 있었다."
+          "text": "뭔가가 웃으면서 떨어지고 있어."
         }
       ],
       "spirits": {
@@ -79,7 +79,7 @@
           "speaker": "{nickname}",
           "portrait": "player",
           "side": "right",
-          "text": "봉투가 산더미였다."
+          "text": "봉투가 산더미네. 이거 다 안 깐 거야?"
         },
         {
           "speaker": "{nickname}",
@@ -91,7 +91,7 @@
           "speaker": "{nickname}",
           "portrait": "player",
           "side": "right",
-          "text": "그 틈에서 뭔가 자꾸 얼굴을 바꿨다."
+          "text": "봉투 틈에서 뭔가 자꾸 얼굴을 바꿔."
         }
       ],
       "spirits": {
