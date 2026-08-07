@@ -53,9 +53,19 @@
     { "id": "mirinae", "order": 5, "name": "미리내", "light": "은하수의 빛", "locked": true, "shadow": "티켓팅 서버",
       "personality": "말수는 적지만 흩어진 사람들을 조용히 한 줄로 모으는 조율가.",
       "hook": "수천 개의 응원봉 불빛이 뿔뿔이 끊길 때, 미리내가 그 점들을 은하수로 이어 다운된 서버 너머로 다시 흐르게 한다." },
-    { "id": "byeotnwi", "order": 6, "name": "볕뉘", "light": "위로의 빛", "locked": true, "shadow": "노이즈",
+    { "id": "byeotnwi", "order": 6, "name": "볕뉘", "light": "위로의 빛", "shadow": "노이즈 군체",
+      "color": "gold", "portrait": "pt_g_byeotnwi", "stage": "w4",
       "personality": "가장 뒤로 밀려난 사람 곁에 먼저 앉는, 낮고 따뜻한 마음.",
-      "hook": "'너는 못 봤잖아'라는 노이즈가 마음을 덮을 때, 볕뉘는 가장 구석 자리에도 닿는 볕 한 줌으로 소외된 팬을 다시 밝힌다." },
+      "hook": "'너는 못 봤잖아'라는 노이즈가 마음을 덮을 때, 볕뉘는 가장 구석 자리에도 닿는 볕 한 줌으로 소외된 팬을 다시 밝힌다.",
+      "encounter": [
+        { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "여긴 소리가 너무 많아…… 근데 그 소음에 파묻혀 꺼져가는 빛이 하나 있어." },
+        { "speaker": "볕뉘", "portrait": "pt_g_byeotnwi", "side": "right", "text": "……어차피 아무도, 내가 여기 있는 줄도 몰라." },
+        { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "내가 알아. 방금 봤잖아. 그 소음, 내가 걷어줄게." }
+      ],
+      "awaken": [
+        { "speaker": "볕뉘", "portrait": "pt_g_byeotnwi", "side": "right", "text": "……구석까지, 빛이 닿네. 이런 거였구나. 위로라는 게." },
+        { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "위로의 빛 볕뉘, 각성! 이제 다섯이야." }
+      ] },
     { "id": "mulbineul", "order": 7, "name": "물비늘", "light": "물결의 빛", "locked": true, "shadow": "암표 총책",
       "personality": "잔잔해 보여도 한번 움직이면 파동처럼 끝까지 번지는 끈질긴 실행가.",
       "hook": "암표 총책이 값을 부풀려 물길을 막을 때, 물비늘은 수면의 빛을 잔물결로 퍼뜨려 정직한 자리들이 서로 손잡게 만든다." },
@@ -74,8 +84,18 @@
     { "id": "byeoljji", "order": 12, "name": "별찌", "light": "소원의 빛", "locked": true, "shadow": "티켓팅 서버",
       "personality": "순간의 승부에 강한 반사신경형, 한 번의 기회를 놓치지 않는 승부사.",
       "hook": "예매창이 0.1초 만에 닫히는 그 찰나, 별찌는 별똥별처럼 궤적을 그어 마지막 한 자리에 소원을 꽂는다." },
-    { "id": "inae", "order": 13, "name": "이내", "light": "황혼의 빛", "locked": true, "shadow": "독점자",
+    { "id": "inae", "order": 13, "name": "이내", "light": "황혼의 빛", "shadow": "독점자",
+      "color": "lavender", "portrait": "pt_g_inae", "stage": "final",
       "personality": "하루의 끝을 담담히 정리하는 사색가, 소란이 끝난 뒤 마지막까지 남는 뒷정리 담당.",
-      "hook": "독점자가 빛을 저 혼자 다 가두고 무대를 어둠으로 끝내려 할 때, 이내는 남빛 황혼으로 '오늘의 빛은 모두의 것'이라는 마지막 장면을 되돌려 놓는다." }
+      "hook": "독점자가 빛을 저 혼자 다 가두고 무대를 어둠으로 끝내려 할 때, 이내는 남빛 황혼으로 '오늘의 빛은 모두의 것'이라는 마지막 장면을 되돌려 놓는다.",
+      "encounter": [
+        { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "마지막이야. 저 독점자가 가둔 빛들 사이…… 이내가 있어." },
+        { "speaker": "이내", "portrait": "pt_g_inae", "side": "right", "text": "빛은 결국 누군가 혼자 갖게 돼. 그럼…… 나눠서 뭐 해." },
+        { "speaker": "{nickname}", "portrait": "player", "side": "right", "text": "혼자 가지면 꺼져. 나눠야 오래 빛나. 오늘, 그걸 보여줄게." }
+      ],
+      "awaken": [
+        { "speaker": "이내", "portrait": "pt_g_inae", "side": "right", "text": "……남빛 하늘에도, 빛은 남는구나. 모두의 것으로." },
+        { "speaker": "봉이", "portrait": "bongi", "side": "left", "text": "황혼의 빛 이내까지! ……열셋을 향한, 진짜 시작이야." }
+      ] }
   ]
 }

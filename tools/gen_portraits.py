@@ -166,6 +166,8 @@ def main():
         'pt_g_noeul': fairy(0xffd66b,'heart','heart','excited'),
         'pt_g_yunseul': fairy(0x9cc1e5,'spark6','sun','calm'),
         'pt_g_yeoul': fairy(0x8fdcc2,'ring','rings','gentle'),
+        'pt_g_byeotnwi': fairy(0xf0c98a,'spark6','heart','gentle'),
+        'pt_g_inae': fairy(0x9a8fd6,'ring','sun','calm'),
     }
     others={'pt_noise':antagonist_noise(),'pt_server':antagonist_server(),
             'pt_monopolist':antagonist_monopolist(),'pt_player':player()}
