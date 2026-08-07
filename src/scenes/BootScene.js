@@ -16,9 +16,14 @@ export class BootScene extends Phaser.Scene {
       'item_wand', 'item_seed', 'item_shield', 'bullet_player', 'bullet_enemy',
       'boss_noise', 'boss_scalper', 'boss_server', 'boss_monopolist', // 자체 도트(Pillow) 교체
       'coin', // 엔들리스 별조각
-      'hero_rose', 'hero_serenity', 'hero_gold', 'hero_mint', 'hero_lavender', // 수호자 히어로(장착색)
     ];
     sprites.forEach((n) => this.load.image(n, `assets/sprites/${n}.png`));
+    // 수호자 히어로(장착색 × 진화 3단계: 각성/성장/만개)
+    ['rose', 'serenity', 'gold', 'mint', 'lavender'].forEach((c) => {
+      this.load.image(`hero_${c}`, `assets/sprites/hero_${c}.png`);
+      this.load.image(`hero_${c}_2`, `assets/sprites/hero_${c}_2.png`);
+      this.load.image(`hero_${c}_3`, `assets/sprites/hero_${c}_3.png`);
+    });
     // 컷씬(D31) — 텍스처 키를 dialogue JSON 의 image 값과 동일하게
     ['c1_concert', 'c2_booth', 'c3_reveal', 'c4_accident', 'c5_wand']
       .forEach((n) => this.load.image(`cutscenes/${n}.png`, `assets/cutscenes/${n}.png`));

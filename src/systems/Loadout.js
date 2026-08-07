@@ -41,9 +41,12 @@ export function applyLoadout(scene, player) {
   const lo = getEquippedLoadout();
   player.power = lo.stage >= 2 ? 2 : 1; // 성장부터 기본 2열
   player.fireIntervalMs = lo.stage >= 3 ? 170 : null; // 만개 = 연사 강화
-  // 플레이어 = 장착 수호자 히어로 스프라이트(장착색). 없으면 기본 유지.
-  const heroKey = `hero_${lo.guardian && lo.guardian.color ? lo.guardian.color : 'rose'}`;
+  // 플레이어 = 장착 수호자 히어로(장착색 × 진화 단계). 없으면 하위 단계로 폴백.
+  const col = lo.guardian && lo.guardian.color ? lo.guardian.color : 'rose';
+  const suffix = lo.stage >= 3 ? '_3' : lo.stage >= 2 ? '_2' : '';
+  const heroKey = `hero_${col}${suffix}`;
   if (scene.textures.exists(heroKey)) player.setTexture(heroKey);
+  else if (scene.textures.exists(`hero_${col}`)) player.setTexture(`hero_${col}`);
   scene._bulletTint = lo.color;
   scene._loadout = lo;
   return lo;

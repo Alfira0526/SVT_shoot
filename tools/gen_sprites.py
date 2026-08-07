@@ -30,46 +30,83 @@ def star_points(cx, cy, R, r, n=5, rot=-90):
         pts.append((cx+math.cos(ang)*rad, cy+math.sin(ang)*rad))
     return pts
 
-def draw_hero(color_int):
+def draw_hero(color_int, stage=1):
+    """수호자 히어로 — 진화 단계(1 각성 / 2 성장 / 3 만개)별로 모습이 자란다."""
     base=hx(color_int)
     hi=mix(base, WHITE, 0.55)
     sh=mix(base, INK, 0.30)
     cheek=mix(base, PINK, 0.55)
+    halo=mix(base, WHITE, 0.5)
     im=Image.new('RGBA',(32,32),(0,0,0,0))
     d=ImageDraw.Draw(im)
 
-    # 별 안테나 (gold) + 줄기
+    # 진화 후광 (성장부터) — 몸 뒤 빛 고리
+    if stage>=2:
+        d.ellipse([2,7,29,32], outline=halo, width=1)
+    if stage>=3:
+        d.ellipse([0,5,31,31], outline=GOLD, width=1)
+
+    # 날개 — 단계가 오를수록 커짐
+    wl, wr = (6,25)
+    if stage==1:
+        d.polygon([(6,15),(2,13),(4,19)], fill=mix(LIGHT,WHITE,0.3))
+        d.polygon([(25,15),(29,13),(27,19)], fill=mix(LIGHT,WHITE,0.3))
+    else:
+        wg = mix(LIGHT, WHITE, 0.4 if stage==2 else 0.6)
+        d.polygon([(7,14),(0,10),(1,15),(3,20)], fill=wg)   # 좌 날개 확장
+        d.polygon([(24,14),(31,10),(30,15),(28,20)], fill=wg)  # 우 날개 확장
+        if stage>=3:
+            d.polygon([(8,18),(2,20),(4,24)], fill=wg)      # 아래 보조 날개
+            d.polygon([(23,18),(29,20),(27,24)], fill=wg)
+
+    # 별 안테나 (gold) + 줄기 — 만개면 별이 커짐
     d.line([(16,9),(16,5)], fill=INK, width=2)
     d.line([(16,9),(16,6)], fill=GOLD, width=1)
-    sp=star_points(16,4,4.2,1.8)
+    sp=star_points(16,4, 4.2 if stage<3 else 5.4, 1.8 if stage<3 else 2.3)
     d.polygon(sp, fill=GOLD, outline=GOLD_D)
 
-    # 몸통 아웃라인(살짝 큰 실루엣) → 베이스
-    d.ellipse([6,11,25,29], fill=INK)          # 아웃라인 실루엣
-    d.ellipse([7,12,24,28], fill=base)         # 베이스 바디
-    d.ellipse([8,13,19,22], fill=hi)           # 하이라이트(좌상)
-    d.ellipse([9,20,22,27], fill=sh)           # 하단 그림자 살짝
-    d.ellipse([7,12,24,28], outline=INK)       # 재아웃라인 살짝
+    # 진화 왕관 (만개) — 머리 둘레 작은 별 2개
+    if stage>=3:
+        for cx in (10,22):
+            cs=star_points(cx,8,2.4,1.0)
+            d.polygon(cs, fill=GOLD)
+
+    # 몸통 아웃라인 → 베이스
+    d.ellipse([6,11,25,29], fill=INK)
+    d.ellipse([7,12,24,28], fill=base)
+    d.ellipse([8,13,19,22], fill=hi)
+    if stage>=2: d.ellipse([9,14,17,20], fill=mix(hi,WHITE,0.4))  # 더 밝은 하이라이트
+    d.ellipse([9,20,22,27], fill=sh)
+    d.ellipse([7,12,24,28], outline=INK)
 
     # 스터비 팔
     for ax in (5,26):
         d.ellipse([ax-1,19,ax+3,23], fill=INK)
         d.ellipse([ax,20,ax+2,22], fill=base)
 
-    # 작은 날개(빛) 뒤쪽
-    d.polygon([(6,15),(2,13),(4,19)], fill=mix(LIGHT,WHITE,0.3))
-    d.polygon([(25,15),(29,13),(27,19)], fill=mix(LIGHT,WHITE,0.3))
-
-    # 얼굴 — 큰 눈 2 + 하이라이트 + 미소 + 볼터치
+    # 얼굴
     for ex in (13,19):
-        d.ellipse([ex-2,16,ex+1,20], fill=INK)       # 눈
-        d.point((ex-1,17), fill=WHITE)               # 눈 하이라이트
-    d.ellipse([11,21,13,23], fill=cheek)             # 볼
+        d.ellipse([ex-2,16,ex+1,20], fill=INK)
+        d.point((ex-1,17), fill=WHITE)
+    d.ellipse([11,21,13,23], fill=cheek)
     d.ellipse([19,21,21,23], fill=cheek)
-    d.arc([14,20,18,24], 20, 160, fill=INK, width=1) # 미소
+    d.arc([14,20,18,24], 20, 160, fill=INK, width=1)
 
-    # 가슴 코어 반짝
+    # 가슴 코어 — 단계별로 강해짐
     d.point((16,24), fill=LIGHT)
+    if stage>=2:
+        d.ellipse([14,22,18,26], outline=LIGHT)
+    if stage>=3:
+        d.ellipse([13,21,19,27], outline=mix(GOLD,WHITE,0.4))
+
+    # 반짝 — 단계별 개수 증가
+    spk=[(29,10),(3,26)]
+    if stage>=2: spk += [(28,24),(4,9)]
+    if stage>=3: spk += [(16,2),(26,28),(6,22)]
+    for (sx,sy) in spk:
+        d.point((sx,sy), fill=LIGHT)
+        d.point((sx,sy-1), fill=mix(LIGHT,WHITE,0.5)); d.point((sx,sy+1), fill=mix(LIGHT,WHITE,0.5))
+        d.point((sx-1,sy), fill=mix(LIGHT,WHITE,0.5)); d.point((sx+1,sy), fill=mix(LIGHT,WHITE,0.5))
     return im
 
 def draw_spinner():
@@ -169,7 +206,10 @@ def save(im, name, scale_note=''):
 def main():
     heroes={}
     for name,c in GUARD_COLORS.items():
-        im=draw_hero(c); save(im, f'hero_{name}'); heroes[name]=im
+        for st in (1,2,3):
+            im=draw_hero(c, st)
+            key = f'hero_{name}' if st==1 else f'hero_{name}_{st}'
+            save(im, key); heroes[f'{name}{st}']=im
     save(draw_spinner(), 'enemy_spinner')
     save(draw_boss_noise(), 'boss_noise')
     save(draw_boss_server_png:=draw_boss_server(), 'boss_server')
@@ -178,7 +218,7 @@ def main():
 
     # 미리보기 몽타주
     scale=7; pad=10
-    row1=[('hero_'+n, heroes[n]) for n in GUARD_COLORS]
+    row1=[(f'rose s{st}', heroes[f'rose{st}']) for st in (1,2,3)] + [(f'gold s{st}', heroes[f'gold{st}']) for st in (1,2,3)]
     row2=[('spinner',draw_spinner()),('coin',draw_coin())]
     row3=[('boss_noise',draw_boss_noise()),('boss_server',draw_boss_server()),('boss_monopolist',draw_boss_monopolist())]
     def strip(items):
