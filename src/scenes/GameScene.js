@@ -82,7 +82,7 @@ export class GameScene extends Phaser.Scene {
     else this._showBanner(this.stage.title, this.stage.subtitle);
 
     this.time.delayedCall(900, () => {
-      if (this._world) { this._playWorldIntro(() => this._startWaves()); return; } // 세계 인트로 + 미각성 정령 조우
+      if (this._world) { this._worldBriefing(() => this._playWorldIntro(() => this._startWaves())); return; } // 브리핑 → 인트로/조우
       // 수호자 챕터 '조우' 비트 — 아직 각성 전이면 스테이지 인트로 앞에 삽입
       const gd = this._guardian;
       if (gd && gd.encounter && !Save.isGuardianAwake(gd.id)) {
@@ -103,13 +103,16 @@ export class GameScene extends Phaser.Scene {
   _buildBackground() {
     const tint = PALETTE[this.stage.bgTint] || PALETTE.deep;
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, tint).setOrigin(0).setDepth(-10);
+    // 세계별 색 정체성 — 은은한 색 워시 + 별 색조로 각 세계를 다르게 (몰입)
+    const wc = this._world ? (PALETTE[this._world.color] || PALETTE.serenity) : null;
+    if (wc) this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, wc, 0.12).setOrigin(0).setDepth(-9.6);
     this.stars = [];
     for (let i = 0; i < 60; i++) {
       const s = this.add
         .image(Phaser.Math.Between(0, GAME_WIDTH), Phaser.Math.Between(0, GAME_HEIGHT), 'star')
         .setDepth(-9)
         .setAlpha(Phaser.Math.FloatBetween(0.2, 0.8))
-        .setTint(i % 3 === 0 ? PALETTE.rose : PALETTE.serenity);
+        .setTint(wc ? (i % 3 === 0 ? wc : PALETTE.light) : (i % 3 === 0 ? PALETTE.rose : PALETTE.serenity));
       s.speed = Phaser.Math.Between(20, 70);
       this.stars.push(s);
     }
@@ -262,12 +265,27 @@ export class GameScene extends Phaser.Scene {
     this.boss = new Boss(this, this.stage.boss);
     this.physics.add.overlap(this.playerBullets, this.boss, this._hitBoss, null, this);
 
-    this.bossNameText.setText(this.stage.boss.name).setVisible(true);
+    this.bossNameText.setText(this._world ? this._world.threat : this.stage.boss.name).setVisible(true);
     this.bossHpBg.setVisible(true);
     this.bossHpBar.setVisible(true);
     this.bossHpText.setVisible(true);
 
     this.boss.enter();
+    if (this._world) this._bossMeaningCard(); // 이 세계 위협의 정체를 직관적으로
+  }
+
+  // 보스 등장 시 '정체' 명패 — 무엇이고 왜 이 세계의 위협인지 (직관적 이해)
+  _bossMeaningCard() {
+    const w = this._world;
+    const c = this.add.container(GAME_WIDTH / 2, 150).setDepth(24).setScrollFactor(0);
+    const g = this.add.graphics();
+    g.fillStyle(0x161327, 0.94); g.fillRoundedRect(-GAME_WIDTH / 2 + 24, -46, GAME_WIDTH - 48, 92, 12);
+    g.lineStyle(2, PALETTE.danger, 0.85); g.strokeRoundedRect(-GAME_WIDTH / 2 + 24, -46, GAME_WIDTH - 48, 92, 12);
+    c.add(g);
+    c.add(this.add.text(0, -28, `⚠ ${w.threat}`, { fontSize: '19px', color: PALETTE.dangerHex, fontStyle: 'bold' }).setOrigin(0.5));
+    c.add(this.add.text(0, 8, w.threatDesc, { fontSize: '12px', color: PALETTE.ink, align: 'center', wordWrap: { width: GAME_WIDTH - 84 }, lineSpacing: 4 }).setOrigin(0.5));
+    c.setAlpha(0);
+    this.tweens.add({ targets: c, alpha: 1, duration: 300, yoyo: true, hold: 2800, onComplete: () => c.destroy() });
   }
 
   _bossDefeated() {
@@ -352,6 +370,39 @@ export class GameScene extends Phaser.Scene {
         this._toRanking(false);
       }
     });
+  }
+
+  // 세계 진입 브리핑 — 상황·위협·목표를 명확히(직관적 이해 + 진입 몰입)
+  _worldBriefing(onDone) {
+    const w = this._world;
+    const accentHex = { danger: PALETTE.dangerHex, serenity: PALETTE.serenityHex, mint: '#8fdcc2', lavender: '#c9b8e8', rose: PALETTE.roseHex, gold: PALETTE.goldHex }[w.color] || PALETTE.serenityHex;
+    const accent = PALETTE[w.color] || PALETTE.serenity;
+    const c = this.add.container(GAME_WIDTH / 2, GAME_HEIGHT / 2).setDepth(42);
+    const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0a0716, 0.92).setOrigin(0.5).setInteractive();
+    c.add(dim);
+    const g = this.add.graphics();
+    g.lineStyle(2, accent, 0.8); g.strokeRoundedRect(-GAME_WIDTH / 2 + 28, -210, GAME_WIDTH - 56, 420, 16);
+    c.add(g);
+    c.add(this.add.text(0, -178, w.sub, { fontSize: '13px', color: accentHex }).setOrigin(0.5));
+    c.add(this.add.text(0, -150, w.name, { fontSize: '30px', fontStyle: 'bold', color: PALETTE.ink }).setOrigin(0.5));
+    c.add(this.add.text(0, -92, w.situation, { fontSize: '15px', color: PALETTE.ink, align: 'center', wordWrap: { width: GAME_WIDTH - 100 }, lineSpacing: 6 }).setOrigin(0.5));
+    c.add(this.add.text(0, 2, `⚠ 위협 · ${w.threat}`, { fontSize: '15px', color: PALETTE.dangerHex, fontStyle: 'bold' }).setOrigin(0.5));
+    c.add(this.add.text(0, 30, w.threatDesc, { fontSize: '12px', color: PALETTE.inkDim, align: 'center', wordWrap: { width: GAME_WIDTH - 100 }, lineSpacing: 5 }).setOrigin(0.5));
+    c.add(this.add.text(0, 104, '목표', { fontSize: '12px', color: accentHex, fontStyle: 'bold' }).setOrigin(0.5));
+    c.add(this.add.text(0, 130, w.objective, { fontSize: '15px', color: PALETTE.ink, fontStyle: 'bold', align: 'center', wordWrap: { width: GAME_WIDTH - 100 }, lineSpacing: 5 }).setOrigin(0.5));
+    const tap = this.add.text(0, 188, '탭하여 진입 ▶', { fontSize: '14px', color: accentHex, fontStyle: 'bold' }).setOrigin(0.5);
+    c.add(tap);
+    this.tweens.add({ targets: tap, alpha: 0.3, duration: 600, yoyo: true, repeat: -1 });
+    let done = false;
+    const go = () => {
+      if (done) return; done = true;
+      if (this.player) this.player.target.set(this.player.x, this.player.y); // 진입 탭이 조준으로 새지 않게
+      this.tweens.add({ targets: c, alpha: 0, duration: 250, onComplete: () => { c.destroy(); onDone?.(); } });
+    };
+    dim.on('pointerdown', go);
+    c.setAlpha(0); this.tweens.add({ targets: c, alpha: 1, duration: 300 });
+    this.time.delayedCall(8000, go); // 미조작 시 자동 진입
+    Audio.sfx('ui');
   }
 
   // 세계 도착: 인트로 + 아직 못 만난 정령 조우 대사
