@@ -168,6 +168,13 @@ def main():
         'pt_g_yeoul': fairy(0x8fdcc2,'ring','rings','gentle'),
         'pt_g_byeotnwi': fairy(0xf0c98a,'spark6','heart','gentle'),
         'pt_g_inae': fairy(0x9a8fd6,'ring','sun','calm'),
+        'pt_g_mirinae': fairy(0x6a7fd6,'spark6','rings','calm'),
+        'pt_g_mulbineul': fairy(0x7fd6c9,'ring','sun','gentle'),
+        'pt_g_haetgwi': fairy(0xffb07a,'star5','sun','excited'),
+        'pt_g_dalmuri': fairy(0xbca9e0,'ring','heart','calm'),
+        'pt_g_bandi': fairy(0xd6e08a,'heart','heart','open'),
+        'pt_g_ajirangi': fairy(0xf0a8c4,'heart','sun','excited'),
+        'pt_g_byeoljji': fairy(0x8fb0f0,'star5','wand','open'),
     }
     others={'pt_noise':antagonist_noise(),'pt_server':antagonist_server(),
             'pt_monopolist':antagonist_monopolist(),'pt_player':player()}
