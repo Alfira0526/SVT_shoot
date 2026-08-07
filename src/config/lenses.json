@@ -1,0 +1,13 @@
+{
+  "_status": "세계관 렌즈(캐해) — 오리지널 수호자에 장르 트로프 렌즈를 씌워 다른 이야기를 본다. 실존 IP 미참조.",
+  "_note": "unlockLevel = 해당 수호자가 그 레벨에 도달하면 렌즈 해금. 육성과 연결. (콘텐츠 그룹 산출 반영)",
+  "lenses": [
+    { "id": "zombie", "name": "라스트 앙코르: 좀비 아포칼립스", "concept": "떼창마저 끊긴 폐허 도시, 마지막 스탠딩석을 지키는 생존 응원단", "motif": "danger", "unlockLevel": 1 },
+    { "id": "android", "name": "설렘 신호기: 안드로이드", "concept": "감정 데이터가 지워진 기계 도시에서 홀로 오작동하는 빛", "motif": "serenity", "unlockLevel": 2 },
+    { "id": "beast", "name": "야수 유랑단: 동물의 숲", "concept": "숲속 축제를 떠도는 동물 악단, 울음소리가 곧 응원가가 되는 세계", "motif": "mint", "unlockLevel": 3 },
+    { "id": "slice", "name": "골목 끝의 하루: 일상", "concept": "평범한 하루 속, 작은 설렘과 위로를 지키는 이야기", "motif": "rose", "unlockLevel": 4 },
+    { "id": "noir", "name": "자정의 표값: 느와르", "concept": "암표와 뒷거래가 판치는 도시의 밤, 진짜 티켓을 되찾는 탐정", "motif": "lavender", "unlockLevel": 6 },
+    { "id": "cosmos", "name": "궤도의 새벽: 우주 SF", "concept": "신호가 닿지 않는 은하 끝, 동트는 주파수를 중계하는 심우주 등대", "motif": "serenity", "unlockLevel": 8 },
+    { "id": "knight", "name": "약속의 기사단: 판타지 기사", "concept": "깨진 왕국에서 팬과의 맹세를 지키려 검을 든 빛의 기사단", "motif": "gold", "unlockLevel": 10 }
+  ]
+}

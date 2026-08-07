@@ -5,6 +5,8 @@ import { Audio } from '../systems/Audio.js';
 import { levelFromExp, stageFromLevel, STAGE_NAME, MAX_LEVEL } from '../config/leveling.js';
 import { guardianColorHex } from '../systems/Loadout.js';
 import guardians from '../config/guardians.json';
+import lensesCfg from '../config/lenses.json';
+import lensContent from '../config/lens_content.json';
 
 // 수호자 도감 (13인 각성 컬렉션) — 각성한 빛은 초상화·이름·빛, 잠든 빛은 실루엣.
 // 스토리 모드에서 각 스테이지 클리어로 한 명씩 각성 → 여기 채워진다.
@@ -105,17 +107,28 @@ export class GuardianScene extends Phaser.Scene {
     c.add(this.add.text(GAME_WIDTH / 2, 410, st.max ? 'MAX' : `EXP ${st.into} / ${st.need}`, { fontSize: '11px', color: PALETTE.inkDim }).setOrigin(0.5));
 
     if (g.personality) {
-      c.add(this.add.text(GAME_WIDTH / 2, 452, g.personality, {
+      c.add(this.add.text(GAME_WIDTH / 2, 446, g.personality, {
         fontSize: '14px', color: PALETTE.inkDim, align: 'center', wordWrap: { width: GAME_WIDTH - 100 }, lineSpacing: 5,
       }).setOrigin(0.5));
     }
     if (g.shadow) {
-      c.add(this.add.text(GAME_WIDTH / 2, 508, `흐린 그림자 · ${g.shadow}`, { fontSize: '13px', color: PALETTE.dangerHex }).setOrigin(0.5));
+      c.add(this.add.text(GAME_WIDTH / 2, 494, `흐린 그림자 · ${g.shadow}`, { fontSize: '13px', color: PALETTE.dangerHex }).setOrigin(0.5));
     }
+
+    // 세계관 렌즈(캐해) 버튼 — 해금 수 표시
+    const unlocked = lensesCfg.lenses.filter((l) => st.level >= l.unlockLevel).length;
+    const lb = 528;
+    const lg = this.add.graphics();
+    lg.fillStyle(PALETTE.panel, 1); lg.fillRoundedRect(GAME_WIDTH / 2 - 110, lb - 22, 220, 44, 12);
+    lg.lineStyle(2, PALETTE.lavender || PALETTE.serenity, 0.9); lg.strokeRoundedRect(GAME_WIDTH / 2 - 110, lb - 22, 220, 44, 12);
+    c.add(lg);
+    c.add(this.add.text(GAME_WIDTH / 2, lb, `🌀 세계관 렌즈  ${unlocked}/${lensesCfg.lenses.length}`, { fontSize: '15px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5));
+    c.add(this.add.zone(GAME_WIDTH / 2, lb, 220, 44).setInteractive({ useHandCursor: true })
+      .on('pointerdown', (p, lx, ly, ev) => { ev?.stopPropagation?.(); Audio.sfx('ui'); this._lensOverlay(g, st.level); }));
 
     // 장착 버튼
     const equipped = Save.getEquipped() === g.id;
-    const by2 = 556, bw2 = 200, bh2 = 48;
+    const by2 = 588, bw2 = 200, bh2 = 46;
     const eg = this.add.graphics();
     eg.fillStyle(equipped ? PALETTE.panel : PALETTE.gold, 1);
     eg.fillRoundedRect(GAME_WIDTH / 2 - bw2 / 2, by2 - bh2 / 2, bw2, bh2, 12);
@@ -126,8 +139,58 @@ export class GuardianScene extends Phaser.Scene {
       c.add(this.add.zone(GAME_WIDTH / 2, by2, bw2, bh2).setInteractive({ useHandCursor: true })
         .on('pointerdown', (p, lx, ly, ev) => { ev?.stopPropagation?.(); Audio.sfx('powerup'); Save.setEquipped(g.id); this.scene.restart(); }));
     }
-    c.add(this.add.text(GAME_WIDTH / 2, 606, '빈 곳을 탭하면 닫기', { fontSize: '12px', color: PALETTE.serenityHex }).setOrigin(0.5));
+    c.add(this.add.text(GAME_WIDTH / 2, 632, '빈 곳을 탭하면 닫기', { fontSize: '12px', color: PALETTE.serenityHex }).setOrigin(0.5));
     this._overlay = c;
+  }
+
+  // 세계관 렌즈 목록 — 해금(레벨)된 렌즈는 탭 가능, 잠금은 해금 레벨 표시
+  _lensOverlay(g, level) {
+    const c = this.add.container(0, 0).setDepth(50);
+    c.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.82).setOrigin(0)
+      .setInteractive().on('pointerdown', () => c.destroy()));
+    c.add(this.add.text(GAME_WIDTH / 2, 60, `${g.name}의 세계관 렌즈`, { fontSize: '22px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5));
+    c.add(this.add.text(GAME_WIDTH / 2, 90, '캐해 — 같은 빛, 다른 세계', { fontSize: '13px', color: PALETTE.lavender ? '#c9b8e8' : PALETTE.serenityHex }).setOrigin(0.5));
+    lensesCfg.lenses.forEach((lens, i) => {
+      const y = 140 + i * 92;
+      const open = level >= lens.unlockLevel;
+      const has = !!(lensContent[g.id] && lensContent[g.id][lens.id]);
+      const card = this.add.graphics();
+      card.fillStyle(open ? PALETTE.panel : 0x110f1e, 1);
+      card.fillRoundedRect(30, y, GAME_WIDTH - 60, 78, 12);
+      card.lineStyle(2, open ? (PALETTE.lavender || PALETTE.serenity) : 0x2a2540, 0.9);
+      card.strokeRoundedRect(30, y, GAME_WIDTH - 60, 78, 12);
+      c.add(card);
+      if (open) {
+        c.add(this.add.text(50, y + 14, lens.name, { fontSize: '17px', color: PALETTE.ink, fontStyle: 'bold' }));
+        c.add(this.add.text(50, y + 40, lens.concept, { fontSize: '12px', color: PALETTE.inkDim, wordWrap: { width: GAME_WIDTH - 130 } }));
+        c.add(this.add.text(GAME_WIDTH - 50, y + 39, has ? '▶' : '곧', { fontSize: '16px', color: has ? PALETTE.goldHex : PALETTE.inkDim }).setOrigin(1, 0.5));
+        c.add(this.add.zone(GAME_WIDTH / 2, y + 39, GAME_WIDTH - 60, 78).setInteractive({ useHandCursor: true })
+          .on('pointerdown', (p, lx, ly, ev) => { ev?.stopPropagation?.(); Audio.sfx('ui'); this._vignetteOverlay(g, lens); }));
+      } else {
+        c.add(this.add.text(50, y + 14, '🔒 ???', { fontSize: '17px', color: '#3a3358', fontStyle: 'bold' }));
+        c.add(this.add.text(50, y + 42, `Lv.${lens.unlockLevel} 에 해금`, { fontSize: '12px', color: PALETTE.inkDim }));
+      }
+    });
+  }
+
+  // 렌즈 비네트(캐해 '만약 …라면')
+  _vignetteOverlay(g, lens) {
+    const v = lensContent[g.id] && lensContent[g.id][lens.id];
+    const c = this.add.container(0, 0).setDepth(60);
+    c.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.9).setOrigin(0)
+      .setInteractive().on('pointerdown', () => c.destroy()));
+    c.add(this.add.text(GAME_WIDTH / 2, 130, `${g.name} × ${lens.name}`, { fontSize: '15px', color: PALETTE.lavender ? '#c9b8e8' : PALETTE.serenityHex }).setOrigin(0.5));
+    if (v) {
+      c.add(this.add.text(GAME_WIDTH / 2, 175, v.title, { fontSize: '24px', color: PALETTE.gold ? PALETTE.goldHex : PALETTE.ink, fontStyle: 'bold', align: 'center', wordWrap: { width: GAME_WIDTH - 80 } }).setOrigin(0.5));
+      c.add(this.add.text(GAME_WIDTH / 2, 260, v.lines.join('\n\n'), {
+        fontSize: '16px', color: PALETTE.ink, align: 'center', lineSpacing: 6, wordWrap: { width: GAME_WIDTH - 70 },
+      }).setOrigin(0.5, 0));
+    } else {
+      c.add(this.add.text(GAME_WIDTH / 2, 300, '이 수호자의 이 세계관 이야기는\n곧 밝혀진다…', {
+        fontSize: '18px', color: PALETTE.inkDim, align: 'center', lineSpacing: 8,
+      }).setOrigin(0.5));
+    }
+    c.add(this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 60, '탭하여 닫기', { fontSize: '13px', color: PALETTE.serenityHex }).setOrigin(0.5));
   }
 
   _backButton() {
