@@ -1,15 +1,19 @@
 {
   "sceneId": "prologue",
-  "note": "전면 개편 오프닝(스토리 바이블) — 공연 후 텅 빈 객석 → 잔광이 응원봉에 깃듦(씨앗 정령) → 다중세계의 문. 씨앗 정령 정체는 '???'로 유예.",
+  "note": "전면 개편 오프닝(스토리 캐논) — 랜덤 포카 뽑기 → 럭키카드(최고옵션) → 루멘이 응원봉에 깃듦. 친구는 부추기는 톤+밈. 정체(루멘)·다중세계 설명은 이후 분산.",
   "beats": [
-    { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "speaker": "유저", "text": "공연이 끝났다. 다들 돌아갔는데… 나만 아직 객석에 남아 있어." },
-    { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "speaker": "유저", "text": "무대의 마지막 불빛 하나가… 아직 안 꺼졌네." },
-    { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "speaker": "유저", "text": "어? 그 잔광이… 불티가 되어 내 응원봉 쪽으로 흘러와?" },
-    { "type": "tap_card", "cut": "c1", "text": "응원봉을 꼭 쥐어 보자 — 탭" },
-    { "type": "reveal", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "유저", "text": "응원봉이… 뛴다. 심장처럼." },
-    { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "???", "text": "……드디어, 불렀구나. 네 빛이." },
-    { "type": "glitch", "cut": "c5", "text": "발밑에 빛의 문양이 번진다 —" },
-    { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "???", "text": "흩어진 빛들이 여러 세계에 잠들어 있어. 네 응원봉이, 그 세계로 가는 문이야.", "effect": "shake" },
-    { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "???", "text": "함께 데리러 가자. 흔들어 — 네 빛으로." }
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "친구", "text": "포장 뜯는 손 왜 떨어. 응원봉이야 폭탄이야." },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "나", "text": "이거 마지막 한 장이야." },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "친구", "text": "확률? 알빠노. 까. 안 까면 내가 깜." },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "나", "text": "세 박스 째다. 이번에도 꽝이면 나 진짜…" },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "친구", "text": "손이 먼저 나갔네 뭐. 인정하고 까라고." },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "나", "text": "…최고 옵션 나오면 어떡하지." },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "친구", "text": "울지 마 화장 번져. (근데 카메라는 켤게)" },
+    { "type": "tap_card", "cut": "c2", "text": "카드를 뒤집어 보자 — 탭" },
+    { "type": "caption", "cut": "c3", "image": "cutscenes/c3_reveal.png", "speaker": "나", "text": "……떴다. 최고 옵션. 럭키카드. 진짜로 떴어." },
+    { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "", "text": "켠 적도 없는 응원봉에, 불이 들어온다.", "effect": "shake" },
+    { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "???", "text": "……드디어. 누가 날 봤네." },
+    { "type": "caption", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "나", "text": "방금 뭐라 그랬어?" },
+    { "type": "caption", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "친구", "text": "뭐가. 나 입도 안 뗐는데." }
   ]
 }
