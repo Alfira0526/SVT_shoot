@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME_WIDTH, GAME_HEIGHT, PALETTE, PLAYER, SCORE, theoreticalMaxScore } from '../config/constants.js';
+import { GAME_WIDTH, GAME_HEIGHT, PALETTE, PLAYER, SCORE, DROP, LEVELUP_UNLOCK_COIN, theoreticalMaxScore } from '../config/constants.js';
 import { Player } from '../entities/Player.js';
 import { Enemy, createEnemyGroup } from '../entities/Enemy.js';
 import { Boss } from '../entities/Boss.js';
@@ -133,7 +133,7 @@ export class GameScene extends Phaser.Scene {
     this.playerBullets = createBulletGroup(this, 'bullet_player', 200);
     this.enemyBullets = createBulletGroup(this, 'bullet_enemy', 400);
     this.enemies = createEnemyGroup(this, 48);
-    this.items = createItemGroup(this, 10);
+    this.items = createItemGroup(this, 16);
   }
 
   // ── HUD ─────────────────────────────────────────────────
@@ -523,7 +523,12 @@ export class GameScene extends Phaser.Scene {
     Save.addGuardianExp(lo.id, amount);
     const after = levelFromExp(Save.getGuardianExp(lo.id)).level;
     const name = lo.guardian?.name || '수호자';
-    const msg = after > before ? `${name}  LEVEL UP!  Lv.${after}` : `${name}  +${amount} EXP`;
+    // 레벨업 시 해금 코인 지급 — 플레이 성장이 곧 세계 해금 진행(레벨업 또는 코인)
+    const gained = Math.max(0, after - before);
+    if (gained > 0) Save.addUnlockCoins(gained * LEVELUP_UNLOCK_COIN);
+    const msg = after > before
+      ? `${name}  LEVEL UP!  Lv.${after}  ·  🪙+${gained * LEVELUP_UNLOCK_COIN}`
+      : `${name}  +${amount} EXP`;
     const t = this.add.text(GAME_WIDTH / 2, 130, msg, {
       fontSize: '16px', color: after > before ? PALETTE.goldHex : PALETTE.serenityHex, fontStyle: 'bold',
       backgroundColor: 'rgba(22,19,39,0.85)', padding: { x: 12, y: 6 },
@@ -713,10 +718,27 @@ export class GameScene extends Phaser.Scene {
     if (enemy.takeDamage(20)) {
       this.spawnExplosion(enemy.x, enemy.y, 0.8);
       Audio.sfx('hitEnemy');
+      const dx = enemy.x, dy = enemy.y;
       enemy.deactivate();
       this.score.addMobKill();
       this._syncScore();
+      this._rollDrop(dx, dy); // 잡몹 처치 → 확률적 아이템 드롭
     }
+  }
+
+  // 잡몹 처치 위치에서 확률 테이블로 아이템 1개 드롭 (없을 수도 있음)
+  _rollDrop(x, y) {
+    let r = Math.random();
+    for (const kind of ['wand', 'coin', 'shield', 'seed']) {
+      const p = DROP[kind] || 0;
+      if (r < p) { this._spawnItemAt(kind, x, y); return; }
+      r -= p;
+    }
+  }
+
+  _spawnItemAt(kind, x, y) {
+    const it = this.items.get();
+    if (it) it.spawn(kind, Phaser.Math.Clamp(x, 16, GAME_WIDTH - 16), y);
   }
 
   _hitBoss(a, b) {
@@ -785,8 +807,12 @@ export class GameScene extends Phaser.Scene {
     } else if (kind === 'shield') {
       this.player.addShield(3000);
       Audio.sfx('shield');
+    } else if (kind === 'coin') {
+      Save.addUnlockCoins(1); // 빛조각 → 해금 코인
+      Audio.sfx('powerup');
     }
-    this._floatText(item.x, item.y, kind === 'wand' ? 'POWER UP' : kind === 'seed' ? 'LIFE +1' : 'SHIELD');
+    const label = { wand: 'POWER UP', seed: 'LIFE +1', shield: 'SHIELD', coin: '빛조각 +1' }[kind] || '';
+    this._floatText(item.x, item.y, label);
   }
 
   _floatText(x, y, msg) {
