@@ -12,6 +12,7 @@ import { applyLoadout } from '../systems/Loadout.js';
 import { levelFromExp } from '../config/leveling.js';
 import { safeDisplayName } from '../systems/Filter.js';
 import { Audio } from '../systems/Audio.js';
+import { WorldBackdrop } from '../systems/WorldBackdrop.js';
 
 import stageW1 from '../config/stage_w1.json';
 import stageW2 from '../config/stage01.json';
@@ -113,15 +114,19 @@ export class GameScene extends Phaser.Scene {
   _buildBackground() {
     const tint = PALETTE[this.stage.bgTint] || PALETTE.deep;
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, tint).setOrigin(0).setDepth(-10);
-    // 세계별 색 정체성 — 은은한 색 워시 + 별 색조로 각 세계를 다르게 (몰입)
     const wc = this._world ? (PALETTE[this._world.color] || PALETTE.serenity) : null;
-    if (wc) this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, wc, 0.12).setOrigin(0).setDepth(-9.6);
+    // 세계별 특색 배경(Phase D) — 있으면 절차적 배경, 없으면 기존 색 워시로 폴백.
+    const hasBackdrop = this._world && WorldBackdrop.has(this._world.id);
+    if (hasBackdrop) WorldBackdrop.render(this, this._world.id);
+    else if (wc) this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, wc, 0.12).setOrigin(0).setDepth(-9.6);
+    // 별 — 특색 배경이 있는 세계는 개수·밝기를 줄여 가독성·분위기 보호
     this.stars = [];
-    for (let i = 0; i < 60; i++) {
+    const nStars = hasBackdrop ? 26 : 60;
+    for (let i = 0; i < nStars; i++) {
       const s = this.add
         .image(Phaser.Math.Between(0, GAME_WIDTH), Phaser.Math.Between(0, GAME_HEIGHT), 'star')
         .setDepth(-9)
-        .setAlpha(Phaser.Math.FloatBetween(0.2, 0.8))
+        .setAlpha(Phaser.Math.FloatBetween(0.15, hasBackdrop ? 0.5 : 0.8))
         .setTint(wc ? (i % 3 === 0 ? wc : PALETTE.light) : (i % 3 === 0 ? PALETTE.rose : PALETTE.serenity));
       s.speed = Phaser.Math.Between(20, 70);
       this.stars.push(s);
