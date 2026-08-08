@@ -35,7 +35,7 @@ const SCENES = {
   // 쿵 — 입덕·낙하. 위로 흐르는 바람선 + 아래에서 올라오는 얼굴 실루엣.
   w_pollin(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x2a1424, 0x0d0713);
+    grad(g, 0x4a2a4e, 0x241238);
     g.lineStyle(2, PALETTE.rose, 0.10);
     for (let i = 0; i < 14; i++) { const x = (i * 41) % W; g.lineBetween(x, 0, x + 30, H); } // 낙하 바람선
     // 아래에서 떠오르는 얼굴(둥근 실루엣들)
@@ -47,7 +47,7 @@ const SCENES = {
   // 뽑기장 — 포카·뽑기. 겹쳐 쌓인 봉투/카드 실루엣 + 홀로 반짝.
   w_pick(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x1c2340, 0x0a0c18);
+    grad(g, 0x35406e, 0x1a1d3a);
     g.fillStyle(0x9a8fd6, 0.08);
     for (let i = 0; i < 7; i++) { const x = 20 + (i * 63) % (W - 40); const y = H - 120 + (i % 3) * 40; g.fillRoundedRect(x, y, 44, 64, 5); } // 봉투 더미(하단)
     g.lineStyle(1, 0xffffff, 0.06);
@@ -58,7 +58,7 @@ const SCENES = {
   // 무한로비 — 새로고침·대기열. 흰 글레어 + 떠다니는 로딩 스피너 링 + 대기 실루엣.
   w_saerok(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x243040, 0x0c1018);
+    grad(g, 0x3e4d68, 0x1e2434);
     g.fillStyle(0xffffff, 0.05); g.fillRect(0, 0, W, H); // 눈 시린 흰 화면 기운
     g.lineStyle(2.5, PALETTE.serenity, 0.14);
     [[80, 150, 26], [W - 70, 240, 20], [W / 2, 120, 16]].forEach(([x, y, r]) => {
@@ -71,7 +71,7 @@ const SCENES = {
   // 뒤틀린 관문 — 보안문자·인증. 세로 개찰구/문 격자 + 붉은 경고 명멸.
   w_bitjang(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x2a1420, 0x0d0710);
+    grad(g, 0x4c2640, 0x241020);
     g.lineStyle(3, PALETTE.danger, 0.12);
     for (let x = 30; x < W; x += 60) g.lineBetween(x, 60, x, H - 40); // 세로 창살
     g.lineStyle(1.5, 0xffffff, 0.05);
@@ -83,7 +83,7 @@ const SCENES = {
   // 떼창홀 — 떼창·스밍. 하단 이퀄라이저 바 + 물결 파문 + 떼창 인파.
   w_ulrim(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x123028, 0x08120e);
+    grad(g, 0x255446, 0x122c22);
     g.fillStyle(PALETTE.mint || 0x8fdcc2, 0.14);
     const hs = [30, 60, 90, 50, 110, 70, 40, 95, 55, 80];
     for (let i = 0; i < hs.length; i++) { const x = 12 + i * 46; g.fillRect(x, H - hs[i], 30, hs[i]); } // EQ 바
@@ -94,7 +94,7 @@ const SCENES = {
   // 마감이 안 오는 방 — 총공·투표. 흐르는 숫자열 + 순위표 + 새벽3시 형광.
   w_semi(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x241f3a, 0x0b0a16);
+    grad(g, 0x3c3568, 0x1c1734);
     g.fillStyle(PALETTE.lavender || 0xc9b8e8, 0.06);
     for (let i = 0; i < 10; i++) { const x = (i * 53) % W; for (let y = (i * 37) % 80; y < H; y += 80) g.fillRect(x, y, 3, 14); } // 흐르는 숫자
     g.lineStyle(1.5, PALETTE.lavender || 0xc9b8e8, 0.12); g.strokeRect(W - 130, 70, 110, 120); // 순위표
@@ -105,7 +105,7 @@ const SCENES = {
   // 텅장상점가 — 굿즈·텅장. 상점 진열대 + 매달린 영수증 리본 + SOLD.
   w_yeongsu(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x2e2718, 0x100c06);
+    grad(g, 0x4e4326, 0x261d0e);
     g.fillStyle(PALETTE.gold, 0.07);
     for (let i = 0; i < 3; i++) g.fillRect(20, 120 + i * 90, W - 40, 10); // 진열 선반
     g.fillStyle(0xffffff, 0.06);
@@ -116,7 +116,7 @@ const SCENES = {
   // 리플레이 협곡 — 직캠·기록. 협곡 벽 + 되감기 화살표 + REC 프레임.
   w_chalna(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x2a1a18, 0x0d0908);
+    grad(g, 0x4a2c26, 0x221410);
     g.fillStyle(0x000000, 0.3); // 협곡 양벽
     g.fillTriangle(0, 0, 90, 0, 0, H); g.fillTriangle(W, 0, W - 90, 0, W, H);
     g.lineStyle(3, PALETTE.danger, 0.10);
@@ -128,7 +128,7 @@ const SCENES = {
   // 영원한 전날 — 컴백·기다림. 거대 카운트다운 보드 D-1 + 목 뺀 인파.
   w_diwon(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x2c2410, 0x100c05);
+    grad(g, 0x4a3e1e, 0x22190a);
     g.fillStyle(0x000000, 0.4); g.fillRoundedRect(W / 2 - 90, 70, 180, 90, 8); // 전광판
     g.lineStyle(2, PALETTE.gold, 0.18); g.strokeRoundedRect(W / 2 - 90, 70, 180, 90, 8);
     g.fillStyle(PALETTE.gold, 0.5); // D-1 (도형)
@@ -140,7 +140,7 @@ const SCENES = {
   // 네 시에서 멈춘 밤 — 새벽·불면. 어중간한 파란 창 + 폰빛 + 멈춘 4:44.
   w_nesi(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x141d33, 0x070a14);
+    grad(g, 0x263a60, 0x101628);
     g.fillStyle(0x2a3a63, 0.5); g.fillRoundedRect(W - 150, 60, 120, 150, 6); // 창(어중간한 색)
     g.lineStyle(2, 0x1a2440, 1); g.strokeRoundedRect(W - 150, 60, 120, 150, 6);
     g.lineBetween(W - 90, 60, W - 90, 210); g.lineBetween(W - 150, 135, W - 30, 135);
@@ -152,7 +152,7 @@ const SCENES = {
   // 앙코르 뒤, 셋째 열 — 상실·졸업. 접힌 객석 줄 + 한 자리 예약석 스포트.
   w_yeobaek(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x241b34, 0x0c0913);
+    grad(g, 0x3c2e56, 0x1a1332);
     g.fillStyle(PALETTE.lavender || 0xc9b8e8, 0.05);
     for (let r = 0; r < 4; r++) for (let s = 0; s < 6; s++) { const x = 24 + s * 74, y = H - 150 + r * 34; g.fillRoundedRect(x, y, 40, 16, 4); } // 접힌 좌석 줄
     // 안 접힌 예약석(스포트)
@@ -163,7 +163,7 @@ const SCENES = {
   // 덜 마른 화첩 — 팬창작·2차. 겹친 밑그림 선 + 지우개 가루 + 미완 초상 벽.
   w_seupjak(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x1a2338, 0x0a0d16);
+    grad(g, 0x2c3c5e, 0x141a2c);
     g.lineStyle(1.5, 0x8fb0f0, 0.10);
     for (let i = 0; i < 8; i++) { const x = 30 + i * 54; g.lineBetween(x, 60, x - 10 + (i % 3) * 8, H - 80); } // 겹친 밑그림 선
     g.lineStyle(1.5, 0xf6c9a0, 0.08);
@@ -174,7 +174,7 @@ const SCENES = {
   // 식은 재의 공터 — 버티기·현타. 온통 회색 재 + 흩어진 꺼진 봉 + 주황 불씨 하나.
   w_janbul(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x1c1a20, 0x0a090c);
+    grad(g, 0x302c3a, 0x16141c);
     g.fillStyle(0x3a3540, 0.5); g.fillRect(0, H - 90, W, 90); // 재 바닥
     g.fillStyle(0x2a2630, 0.6); for (let i = 0; i < 14; i++) g.fillCircle((i * 37) % W, H - 70 + (i % 3) * 20, 6 + (i % 3) * 3); // 재 무더기
     const ember = glow(scene, c, W * 0.72, H - 70, 26, 0xffb07a, 0.4); // 안 꺼진 불씨 하나
@@ -184,7 +184,7 @@ const SCENES = {
   // 완결의 문 — 무결. 닫혀가는 문 + 리본 + 삼켜지는 빛(피날레 무대).
   mugyeol(scene, c) {
     const g = gfx(scene, c);
-    grad(g, 0x1a1226, 0x07050c);
+    grad(g, 0x30234a, 0x140c22);
     g.fillStyle(0x000000, 0.4); g.fillTriangle(0, 0, 130, 0, 0, H); g.fillTriangle(W, 0, W - 130, 0, W, H); // 닫혀가는 문
     g.lineStyle(2.5, 0xd9a63e, 0.14); g.lineBetween(20, H * 0.4, W - 20, H * 0.55); g.lineBetween(20, H * 0.55, W - 20, H * 0.4); // 완결 리본
     glow(scene, c, W / 2, H * 0.3, 120, PALETTE.light, 0.10); // 삼켜지는 빛

@@ -92,11 +92,15 @@ def build(canon):
     for i, m in enumerate(MAP):
         c = by_name[m['canon']]
         w = c['world']
+        br = c.get('brief', {})  # 라이트&위트 리라이트 브리핑(있으면 우선)
+        situation = br.get('situation', m['situation'])
+        threat = br.get('threat', m['threat'])
+        threatDesc = br.get('threatDesc', m['threatDesc'])
         worlds.append({
             'id': m['world'], 'name': w['name'].split(' — ')[0].split(' - ')[0].strip(),
             'sub': m['sub'], 'theme': c['fandomExp'],
-            'situation': m['situation'], 'objective': f"정령 '{m['canon']}'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
-            'threat': m['threat'], 'threatDesc': m['threatDesc'],
+            'situation': situation, 'objective': f"정령 '{m['canon']}'의 빛을 깨우고, 이 세계의 거짓을 끊어라.",
+            'threat': threat, 'threatDesc': threatDesc,
             'color': m['accent'], 'stageRef': m['stage'], 'spirits': [m['id']],
             'entry': 'unlock', 'unlockCost': 0 if i == 0 else UNLOCK_COST,
             'reward': CLEAR_REWARD, 'difficulty': m['diff'], 'order': i + 1,

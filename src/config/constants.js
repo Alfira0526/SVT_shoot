@@ -13,34 +13,46 @@ export const GAME_HEIGHT = 800;
 
 // ── UI 강조색 팔레트 (§2.6 전면 노출 가능 등급, 전역 토큰) ──
 // 색상값 자체는 저작권 보호 대상이 아님. UI·빛 이펙트 기본색으로 사용.
+// 팔레트 리프레시(2026-08) — "너무 어둡다" 피드백 반영: 그림다크 → 가볍고 위트있는
+// 트와일라잇 캔디 팝. 베이스는 새벽보라(near-black 탈피), 강조는 채도 높은 팝 컬러.
+// 게임플레이 대비(탄/몹 가독성) 유지 위해 베이스는 여전히 중간 어둠 유지.
 export const PALETTE = {
-  // 강조색 2종 (웜핑크/스카이블루 계열 — 빛 이펙트·UI 강조)
-  rose: 0xf1c7d2,
-  serenity: 0x9cc1e5,
-  roseHex: '#f1c7d2',
-  serenityHex: '#9cc1e5',
-  // 배경·심연 (온빛이 흐려진 세계)
-  deep: 0x0d0b1a,
-  deepHex: '#0d0b1a',
-  deepMid: 0x1a1730,
-  panel: 0x161327,
-  panelHex: '#161327',
+  // 강조색 (캔디핑크 / 스카이블루 — 밝고 팝하게)
+  rose: 0xff9ecb,
+  serenity: 0x86c8ff,
+  roseHex: '#ff9ecb',
+  serenityHex: '#86c8ff',
+  // 배경·심연 (near-black → 새벽보라. 덜 무겁게)
+  deep: 0x1e1b3a,
+  deepHex: '#1e1b3a',
+  deepMid: 0x2c2758,
+  panel: 0x272250,
+  panelHex: '#272250',
   // 빛(플레이어 탄·온빛 결정)
-  light: 0xfdf6c9,
-  lightHex: '#fdf6c9',
-  // 위험(적 탄·노이즈)
-  danger: 0xff5d73,
-  dangerHex: '#ff5d73',
-  // 적 계열·성공/아이템 (도트 에셋 팔레트 승격 — 기존 BootScene 하드코딩분)
-  noise: 0x6e63a8,
-  ok: 0x4be08a,
-  okHex: '#4be08a',
-  // 봉이 배리언트 파생색 (BongiPortrait 조화 파생)
-  mint: 0x8fdcc2,
-  lavender: 0xc9b8e8,
+  light: 0xfff3c4,
+  lightHex: '#fff3c4',
+  // 위험(적 탄·노이즈) — 살짝 밝은 코랄
+  danger: 0xff6b8a,
+  dangerHex: '#ff6b8a',
+  // 적 계열·성공/아이템
+  noise: 0x8a7fe0,
+  ok: 0x5cf0a0,
+  okHex: '#5cf0a0',
+  // 파생·팝 포인트
+  mint: 0x7fe6c6,
+  lavender: 0xcfa8ff,
+  // 신규 팝 포인트 컬러(위트있는 강조용)
+  coral: 0xff8a5c,
+  coralHex: '#ff8a5c',
+  lemon: 0xffe066,
+  lemonHex: '#ffe066',
+  grape: 0xb18cff,
+  grapeHex: '#b18cff',
+  sky: 0x86c8ff,
+  candy: 0xff9ecb,
   // 텍스트
-  ink: '#f6f2ff',
-  inkDim: '#b9b2d6',
+  ink: '#fbf7ff',
+  inkDim: '#c8c0ea',
   gold: 0xffd66b,
   goldHex: '#ffd66b',
 };

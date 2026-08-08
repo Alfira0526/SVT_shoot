@@ -145,177 +145,158 @@ def antagonist_monopolist():
     return im
 
 # ══════════════════════════════════════════════════════════════════
-# 14정령 최종 디자인 — 캐논 designConcept 반영, 실루엣·모티프를 서로 겹치지 않게.
-# 각 함수는 110×120 프레임 버스트를 반환. 상단 2/3에 피사체(하단은 대사창).
+# 14정령 — 귀엽게 재디자인(2026-08). '못생김' 피드백 반영.
+# 공통 큐트 베이스(큰 반짝 눈·볼터치·둥근 몸) + 정령별 시그니처 소품/색으로 구별.
+# (임시 인하우스 아트. 최종본은 PixelLab 프롬프트로 별도 렌더 예정.)
 # ══════════════════════════════════════════════════════════════════
-def _mouth(d, cx, cy, w, kind='smile'):
-    if kind=='smile': d.arc([S(cx-w),S(cy-w*0.7),S(cx+w),S(cy+w*0.9)],15,165,fill=INK,width=S(1.7))
-    elif kind=='flat': d.line([(S(cx-w),S(cy)),(S(cx+w),S(cy))],fill=INK,width=S(1.6))
-    elif kind=='open': d.ellipse([S(cx-w*0.6),S(cy-w*0.5),S(cx+w*0.6),S(cy+w*0.9)],fill=INK)
-    elif kind=='frown': d.arc([S(cx-w),S(cy+w*0.5),S(cx+w),S(cy+w*1.5)],195,345,fill=INK,width=S(1.6))
+CHEEK = hx(0xff9db0)
 
-def spirit_lumen():  # 루멘 — 응원봉에 처음 불을 켠 빛(가이드). 밝은 빛구체 + 응원봉.
-    base=LIGHT; im,d=canvas(); frame(d,base)
-    glow(d,55,52,38,LIGHT)
-    circ(d,55,55,25,fill=mix(base,WHITE,0.35)); circ(d,55,55,25,outline=GOLD_D,ow=1.4)
-    ell(d,47,47,11,8,fill=WHITE)
-    d.line([(S(80),S(94)),(S(86),S(48))],fill=GOLD,width=S(2.4)); glow(d,86,44,11,LIGHT); star(d,86,43,6,2.4,5,fill=LIGHT,outline=GOLD_D)
-    eyes(d,48,62,53,'excited'); _mouth(d,55,62,5,'smile')
-    ell(d,43,59,5,3,fill=hx(0xff9db0)); ell(d,67,59,5,3,fill=hx(0xff9db0))
+def cutie(base, eyes='star', mouth='smile', blush=True):
+    """귀여운 정령 공통 베이스 — (im,d) 반환해 소품을 이어 그림."""
+    im, d = canvas(); frame(d, base)
+    hi = mix(base, WHITE, 0.5); sh = mix(base, INK, 0.22)
+    ell(d, 55, 85, 15, 11, fill=sh)                      # 작은 몸
+    circ(d, 55, 54, 26, fill=INK); circ(d, 55, 54, 24.5, fill=base)  # 큰 머리
+    ell(d, 46, 45, 11, 8, fill=hi)                       # 하이라이트
+    for ax in (31, 79):                                  # 작고 둥근 팔
+        circ(d, ax, 73, 5.2, fill=INK); circ(d, ax, 73, 4, fill=base)
+    if blush:
+        ell(d, 41, 60, 5, 3.2, fill=CHEEK); ell(d, 69, 60, 5, 3.2, fill=CHEEK)
+    _eyes(d, eyes); _cmouth(d, mouth)
+    return im, d
+
+def _eyes(d, kind):
+    if kind == 'star':
+        for ex in (46, 64):
+            circ(d, ex, 52, 5.6, fill=INK); circ(d, ex-1.8, 50, 2.4, fill=WHITE); circ(d, ex+1.5, 54, 1.1, fill=WHITE)
+    elif kind == 'sleepy':
+        for ex in (46, 64):
+            d.arc([S(ex-4.5), S(50), S(ex+4.5), S(58)], 185, 355, fill=INK, width=S(2.2))
+    elif kind == 'wink':
+        circ(d, 46, 52, 5.6, fill=INK); circ(d, 44.2, 50, 2.4, fill=WHITE)
+        d.arc([S(59.5), S(50), S(68.5), S(58)], 185, 355, fill=INK, width=S(2.2))
+    elif kind == 'heart':
+        for ex in (46, 64):
+            for dx in (-1.7, 1.7): circ(d, ex+dx, 51, 2.2, fill=RED)
+            d.polygon([(S(ex-3.4), S(51.5)), (S(ex+3.4), S(51.5)), (S(ex), S(56))], fill=RED)
+    elif kind == 'sparkle':  # 큰 눈 + 큰 반짝
+        for ex in (46, 64):
+            circ(d, ex, 52, 6, fill=INK); circ(d, ex-2, 49.5, 2.8, fill=WHITE); circ(d, ex+1.8, 54, 1.3, fill=WHITE)
+
+def _cmouth(d, kind):
+    if kind == 'smile': d.arc([S(50), S(58), S(60), S(66)], 15, 165, fill=INK, width=S(1.7))
+    elif kind == 'open': d.ellipse([S(52), S(59), S(58), S(65)], fill=INK); ell(d, 55, 63, 1.8, 1, fill=CHEEK)
+    elif kind == 'cat': d.line([(S(51), S(61)), (S(55), S(63)), (S(59), S(61))], fill=INK, width=S(1.5), joint='curve')
+    elif kind == 'ohh': d.ellipse([S(53), S(60), S(57), S(64)], fill=INK)
+
+def _hairtuft(d, base, xs):  # 머리 위 작은 뿔/삐침
+    hi = mix(base, WHITE, 0.5)
+    for x in xs: d.polygon([(S(x-3), S(30)), (S(x+3), S(30)), (S(x), S(22))], fill=hi)
+
+def spirit_lumen():  # 루멘(가이드) — 응원봉 + 별. 밝고 따뜻.
+    im, d = cutie(LIGHT, 'sparkle', 'smile')
+    d.line([(S(78), S(90)), (S(84), S(46))], fill=GOLD, width=S(2.4)); glow(d, 84, 42, 11, LIGHT); star(d, 84, 41, 6, 2.4, 5, fill=LIGHT, outline=GOLD_D)
+    star(d, 55, 16, 6.5, 2.6, 5, fill=GOLD, outline=GOLD_D)  # 머리 위 별
     return im
 
-def spirit_saerok():  # 새록 — 로딩스피너 후광 겹침 + 웅크림 + 눈=로딩바 + F5 잔상 팔.
-    base=hx(0x9cc1e5); im,d=canvas(); frame(d,base)
-    for k,rr in enumerate((30,24,18)):  # 여러 겹 스피너 링(끊긴 호)
-        col=mix(base,WHITE,0.1+0.2*k)
-        d.arc([S(55-rr),S(54-rr),S(55+rr),S(54+rr)], 20+k*40, 200+k*40, fill=col, width=S(2.2))
-        d.arc([S(55-rr),S(54-rr),S(55+rr),S(54+rr)], 220+k*40, 340+k*40, fill=col, width=S(2.2))
-    circ(d,55,58,17,fill=base); circ(d,55,58,17,outline=INK,ow=1.2)  # 웅크린 몸
-    for ax in (40,70):  # F5 잔상 팔(반투명 겹침)
-        for j in range(3): circ(d,ax+j*2,68,4,fill=(base[0],base[1],base[2],90))
-    # 눈=차오르는 로딩바
-    for ex in (48,62):
-        box(d,ex-4,55,ex+4,59,1,outline=INK,ow=1); d.rectangle([S(ex-3),S(56),S(ex+0),S(58)],fill=INK)
-    _mouth(d,55,64,4,'flat')
+def spirit_pollin():  # 폴린(입덕) — 하트 눈 + 통통 튀는 하트.
+    im, d = cutie(hx(0xff8fb0), 'heart', 'open')
+    for hx0, hy, r in ((22, 40, 3), (86, 46, 2.4), (74, 26, 2)):  # 떠다니는 하트
+        for dx in (-r*0.7, r*0.7): circ(d, hx0+dx, hy, r*0.7, fill=RED)
+        d.polygon([(S(hx0-r), S(hy)), (S(hx0+r), S(hy)), (S(hx0), S(hy+r*1.4))], fill=RED)
+    _hairtuft(d, hx(0xff8fb0), (49, 55, 61))
     return im
 
-def spirit_bitjang():  # 빗장 — 세로 문(門) + 얼굴=뒤틀린 보안문자 + 붉은 X 도장 + 개찰구 격자.
-    base=hx(0xff5d73); im,d=canvas(); frame(d,base)
-    box(d,36,30,74,98,3,fill=mix(base,INK,0.4),outline=base,ow=2)  # 문틀
-    d.line([(S(55),S(30)),(S(55),S(98))],fill=base,width=S(1.4))   # 여닫이 경계
-    for gy in range(40,92,10): d.line([(S(38),S(gy)),(S(72),S(gy))],fill=(base[0],base[1],base[2],90),width=S(1))  # 개찰구 격자
-    # 얼굴 칸 — 뒤틀린 보안문자(찌그러진 글리프)
-    box(d,42,44,68,64,2,fill=hx(0x1a0a10))
-    for i,gx in enumerate((46,53,60)):
-        d.line([(S(gx),S(48+((i*3)%4))),(S(gx+3),S(60-((i*2)%4)))],fill=mix(base,WHITE,0.5),width=S(1.4))
-        d.arc([S(gx-2),S(50),S(gx+3),S(58)],30,300,fill=mix(base,WHITE,0.4),width=S(1))
-    # 붉은 X 도장
-    d.line([(S(62),S(70)),(S(74),S(82))],fill=RED,width=S(2.4)); d.line([(S(74),S(70)),(S(62),S(82))],fill=RED,width=S(2.4))
+def spirit_pick():  # 픽(뽑기) — 포토카드 한 장 들고 홀로 반짝.
+    base = hx(0xb18cff); im, d = cutie(base, 'star', 'cat')
+    box(d, 68, 60, 86, 88, 3, fill=mix(base, WHITE, 0.4), outline=WHITE, ow=1)  # 든 카드
+    d.line([(S(70), S(64)), (S(84), S(84))], fill=(255, 255, 255, 120), width=S(1.2))
+    star(d, 20, 40, 3, 1.2, 4, fill=WHITE); star(d, 90, 34, 2.4, 1, 4, fill=WHITE)
     return im
 
-def spirit_ulrim():  # 울림 — 이퀄라이저 세로바 몸 + 물결 번짐(윤곽선 없음).
-    base=hx(0x8fdcc2); im,d=canvas(); frame(d,base)
-    heights=[10,20,32,24,38,22,14]
-    for i,h in enumerate(heights):
-        x=32+i*6.5; col=mix(base,WHITE,0.1+0.1*(i%3))
-        box(d,x,70-h,x+4,72,1.5,fill=col)
-    for rr in (16,24,32):  # 물수제비 파문
-        d.ellipse([S(55-rr),S(60-rr*0.5),S(55+rr),S(60+rr*0.5)],outline=(base[0],base[1],base[2],70),width=S(1))
-    circ(d,48,44,3,fill=INK); circ(d,62,44,3,fill=INK)  # 눈(작게 떠 있음)
-    d.arc([S(50),S(48),S(60),S(55)],20,160,fill=INK,width=S(1.4))
+def spirit_saerok():  # 새록(새로고침) — 머리 위 로딩 도넛 + 졸린 눈.
+    base = hx(0x86c8ff); im, d = cutie(base, 'sleepy', 'smile')
+    circ(d, 55, 18, 8, outline=mix(base, WHITE, 0.5), ow=2.4)  # 로딩 링
+    d.arc([S(47), S(10), S(63), S(26)], 30, 140, fill=WHITE, width=S(2.4))
+    circ(d, 62, 22, 1.6, fill=WHITE)
     return im
 
-def spirit_semi():  # 셈이 — 正자 격자 장부 몸 + 심장=깜빡 커서 + 다크서클 + 굽은 등.
-    base=hx(0xc9b8e8); im,d=canvas(); frame(d,base)
-    box(d,36,34,74,92,4,fill=mix(base,INK,0.25),outline=base,ow=1.5)  # 장부 몸
-    for r in range(4):  # 正자 바(정자 흘려)
-        y=42+r*12
-        for c in range(3):
-            x=42+c*10; d.line([(S(x),S(y)),(S(x),S(y+7))],fill=mix(base,WHITE,0.4),width=S(1)); d.line([(S(x-2),S(y+7)),(S(x+2),S(y+7))],fill=mix(base,WHITE,0.4),width=S(1))
-    box(d,50,58,60,66,1,fill=INK)  # 커서 심장(깜빡)
-    for ex in (46,64): circ(d,ex,46,2.6,fill=INK); ell(d,ex,50,4,2,fill=mix(base,hx(0x6a7fd6),0.5))  # 눈+다크서클
-    _mouth(d,55,52,3,'flat')
+def spirit_bitjang():  # 빗장(캡차) — 열쇠 참 + 볼에 작은 X 스티커.
+    base = hx(0xff8a5c); im, d = cutie(base, 'wink', 'cat')
+    d.line([(S(80), S(64)), (S(80), S(80))], fill=GOLD, width=S(2)); circ(d, 80, 62, 3.4, outline=GOLD, ow=2); d.rectangle([S(78), S(78), S(82), S(82)], fill=GOLD)  # 열쇠
+    d.line([(S(66), S(62)), (S(72), S(68))], fill=RED, width=S(1.6)); d.line([(S(72), S(62)), (S(66), S(68))], fill=RED, width=S(1.6))  # X 스티커
     return im
 
-def spirit_pollin():  # 폴린 — 자유낙하 유선형 + 머리카락 위로 흩날림 + 심장빛 + 눈빛줄기.
-    base=hx(0xff8fa3); im,d=canvas(); frame(d,base)
-    d.polygon([(S(55),S(30)),(S(42),S(60)),(S(55),S(96)),(S(68),S(60))],fill=base,outline=mix(base,INK,0.3))  # 낙하 유선형 몸
-    for hx0 in (44,50,55,60,66):  # 위로 솟은 머리카락
-        d.line([(S(hx0),S(38)),(S(hx0+((hx0-55)//3)),S(24))],fill=mix(base,WHITE,0.4),width=S(1.6))
-    glow(d,55,58,12,hx(0xffd1dc)); circ(d,55,58,5,fill=WHITE)  # 심장빛
-    for ex in (49,61):  # 눈 + 빛줄기
-        circ(d,ex,50,2.4,fill=WHITE); d.line([(S(ex),S(50)),(S(ex+(ex-55)//2),S(44))],fill=(255,255,255,120),width=S(1.4))
+def spirit_ulrim():  # 울림(떼창) — 헤드폰 + 음표.
+    base = hx(0x7fe6c6); im, d = cutie(base, 'star', 'open')
+    d.arc([S(34), S(24), S(76), S(60)], 180, 360, fill=mix(base, INK, 0.2), width=S(3))  # 밴드
+    box(d, 26, 44, 34, 60, 3, fill=mix(base, INK, 0.2)); box(d, 76, 44, 84, 60, 3, fill=mix(base, INK, 0.2))  # 이어컵
+    d.line([(S(86), S(40)), (S(86), S(26))], fill=INK, width=S(1.6)); circ(d, 84, 40, 2.4, fill=INK)  # 음표
     return im
 
-def spirit_pick():  # 픽 — 겹친 홀로그램 카드 몸 + 안 뜯은 봉투 + 각진 실루엣.
-    base=hx(0x9a8fd6); im,d=canvas(); frame(d,base)
-    for k,(ox,oy) in enumerate(((-8,-6),(0,0),(8,6))):  # 겹친 카드 3장
-        col=mix(base,WHITE,0.15*k)
-        box(d,42+ox,36+oy,68+ox,80+oy,3,fill=col,outline=mix(base,WHITE,0.5),ow=1)
-        d.line([(S(44+ox),S(40+oy)),(S(66+ox),S(74+oy))],fill=(255,255,255,70),width=S(1))  # 홀로 사선
-    box(d,30,66,44,86,2,fill=mix(base,INK,0.3),outline=base,ow=1)  # 안 뜯은 봉투
-    circ(d,52,52,2.6,fill=INK); circ(d,60,55,2.6,fill=INK)  # 각도마다 갈리는 눈(어긋나게)
+def spirit_semi():  # 셈이(총공) — 동그란 안경 + 작은 체크 메모.
+    base = hx(0xcfa8ff); im, d = cutie(base, 'star', 'smile')
+    circ(d, 46, 52, 7, outline=INK, ow=1.6); circ(d, 64, 52, 7, outline=INK, ow=1.6); d.line([(S(53), S(52)), (S(57), S(52))], fill=INK, width=S(1.4))  # 안경
+    box(d, 70, 62, 86, 82, 2, fill=WHITE, outline=mix(base, INK, 0.3), ow=1)  # 메모
+    for yy in (68, 74, 79): d.line([(S(73), S(yy)), (S(83), S(yy))], fill=mix(base, INK, 0.4), width=S(1))
     return im
 
-def spirit_yeongsu():  # 영수 — 감열지 리본 몸(하반신 종이) + 눈=빨간 가격표 + 다 긁은 카드.
-    base=hx(0xffd66b); im,d=canvas(); frame(d,base)
-    box(d,42,32,68,60,3,fill=mix(base,WHITE,0.2),outline=mix(base,INK,0.3),ow=1.5)  # 상체(프린터 헤드)
-    # 말려 나오는 감열지 리본(하반신)
-    pts=[(46,60),(44,72),(52,80),(48,92),(58,96),(64,84),(60,72),(66,64)]
-    d.polygon([ (S(x),S(y)) for x,y in pts ], fill=mix(base,WHITE,0.35), outline=mix(base,INK,0.2))
-    for ry in range(64,94,6): d.line([(S(46),S(ry)),(S(64),S(ry))],fill=(base[0],base[1],base[2],70),width=S(1))  # 인쇄줄
-    for ex in (48,62): box(d,ex-4,44,ex+4,50,1,fill=RED); d.line([(S(ex-3),S(47)),(S(ex+3),S(47))],fill=WHITE,width=S(1))  # 빨간 가격표 눈
-    box(d,30,66,42,74,1,fill=mix(base,INK,0.4))  # 다 긁은 카드
+def spirit_yeongsu():  # 영수(굿즈) — 작은 쇼핑백 + 반짝.
+    base = hx(0xffd66b); im, d = cutie(base, 'sparkle', 'open')
+    box(d, 68, 66, 86, 88, 2, fill=mix(base, WHITE, 0.3), outline=mix(base, INK, 0.3), ow=1)  # 쇼핑백
+    d.arc([S(71), S(60), S(78), S(70)], 180, 360, fill=INK, width=S(1.4)); d.arc([S(76), S(60), S(83), S(70)], 180, 360, fill=INK, width=S(1.4))  # 손잡이
+    for dx in (-1.4, 1.4): circ(d, 77+dx, 76, 1.4, fill=RED)
+    d.polygon([(S(74), S(77)), (S(80), S(77)), (S(77), S(81))], fill=RED)  # 하트
     return im
 
-def spirit_chalna():  # 찰나 — 카메라/렌즈 머리 + 버퍼링 깜빡 몸 + REC 빨간 점 + 프레임 잔상.
-    base=hx(0xff8a5d); im,d=canvas(); frame(d,base)
-    for j in range(3): box(d,40+j*2,58,72+j*2,92,4,fill=(base[0],base[1],base[2],80))  # 프레임 잔상 몸
-    box(d,40,58,72,92,4,fill=base,outline=mix(base,INK,0.3),ow=1.5)
-    circ(d,55,48,16,fill=hx(0x241a33),outline=base,ow=2)  # 렌즈 머리
-    circ(d,55,48,10,fill=mix(base,INK,0.5)); circ(d,55,48,5,fill=mix(base,WHITE,0.3)); circ(d,51,44,2,fill=WHITE)
-    circ(d,66,36,3,fill=RED); glow(d,66,36,6,RED)  # REC 점
-    for bx in range(46,66,6): d.line([(S(bx),S(70)),(S(bx),S(84))],fill=(255,255,255,60),width=S(2))  # 버퍼링 바
+def spirit_chalna():  # 찰나(직캠) — 목에 건 작은 카메라 + REC 반짝.
+    base = hx(0xff8a5c); im, d = cutie(base, 'sparkle', 'smile')
+    box(d, 44, 74, 66, 90, 3, fill=mix(base, INK, 0.3))  # 카메라 바디
+    circ(d, 55, 82, 5, fill=mix(base, WHITE, 0.4), outline=INK, ow=1); circ(d, 55, 82, 2.4, fill=INK)  # 렌즈
+    circ(d, 62, 76, 1.6, fill=RED); glow(d, 62, 76, 4, RED)  # REC
+    d.arc([S(40), S(64), S(70), S(80)], 200, 340, fill=INK, width=S(1.2))  # 넥스트랩
     return im
 
-def spirit_diwon():  # 디원 — 플립 숫자판 몸 + D-1 배지 + 모래시계 세로 실루엣.
-    base=hx(0xf0c98a); im,d=canvas(); frame(d,base)
-    d.polygon([(S(40),S(32)),(S(70),S(32)),(S(58),S(60)),(S(70),S(90)),(S(40),S(90)),(S(52),S(60))],fill=base,outline=mix(base,INK,0.3))  # 모래시계 실루엣
-    for fy in (40,50,70,80):  # 플립 숫자판 칸
-        box(d,46,fy,64,fy+7,1,fill=mix(base,INK,0.25),outline=mix(base,WHITE,0.4),ow=1)
-        d.line([(S(46),S(fy+3.5)),(S(64),S(fy+3.5))],fill=INK,width=S(1))
-    box(d,44,62,66,72,2,fill=RED)  # D-1 배지
-    d.line([(S(47),S(67)),(S(51),S(67))],fill=WHITE,width=S(1.6))  # 'D'
-    d.arc([S(47),S(64),S(52),S(70)],270,90,fill=WHITE,width=S(1.4))
-    d.line([(S(55),S(67)),(S(58),S(67))],fill=WHITE,width=S(1.4))  # '-'
-    d.line([(S(61),S(64)),(S(61),S(70)),(S(63),S(70))],fill=WHITE,width=S(1.4))  # '1'
-    circ(d,50,45,2,fill=INK); circ(d,60,45,2,fill=INK)
+def spirit_diwon():  # 디원(컴백) — 배에 D-1 달력 배지 + 반짝.
+    base = hx(0xffe066); im, d = cutie(base, 'star', 'open')
+    box(d, 45, 74, 65, 90, 2, fill=WHITE, outline=mix(base, INK, 0.3), ow=1)  # 달력
+    d.rectangle([S(45), S(74), S(65), S(78)], fill=hx(0xff6b8a))  # 상단 빨강
+    d.line([(S(49), S(82)), (S(52), S(82))], fill=INK, width=S(1.6)); d.arc([S(49), S(80), S(53), S(88)], 270, 90, fill=INK, width=S(1.4))  # D
+    d.line([(S(55), S(84)), (S(57), S(84))], fill=INK, width=S(1.2))  # -
+    d.line([(S(60), S(80)), (S(60), S(88)), (S(62), S(88))], fill=INK, width=S(1.4))  # 1
     return im
 
-def spirit_nesi():  # 네시 — 이불 고치 둥근 실루엣 + 폰빛 얼굴(유일 광원) + 4:44 + 다크서클.
-    base=hx(0x6a7fd6); im,d=canvas(); frame(d,base)
-    circ(d,55,60,30,fill=mix(base,INK,0.35),outline=base,ow=1.5)  # 이불 고치(둥글게)
-    circ(d,55,60,30,outline=(base[0],base[1],base[2],80),ow=3)
-    box(d,46,50,64,68,3,fill=hx(0x1a2036))  # 얼굴 그늘
-    glow(d,55,58,12,hx(0xbfe0ff)); box(d,50,54,60,64,1,fill=hx(0xbfe0ff))  # 폰빛(유일 광원)
-    for ex in (51,59): d.line([(S(ex-2),S(58)),(S(ex+2),S(58))],fill=INK,width=S(1.4)); ell(d,ex,61,3,1.6,fill=mix(base,INK,0.4))  # 감은 눈+다크서클
-    # 떠다니는 '4:44' — 안 넘어가는 시각(작은 도형으로)
-    for i,fx in enumerate((72,78,84)):
-        d.line([(S(fx),S(38)),(S(fx),S(43))],fill=mix(base,WHITE,0.5),width=S(1.2))
-    circ(d,75,42,0.8,fill=mix(base,WHITE,0.5))
+def spirit_nesi():  # 네시(새벽) — 이불 후드 뒤집어씀 + 졸린 눈 + 별.
+    base = hx(0x8a7fe0); im, d = cutie(base, 'sleepy', 'smile')
+    d.pieslice([S(28), S(22), S(82), S(80)], 180, 360, fill=(mix(base, INK, 0.25)[0], mix(base, INK, 0.25)[1], mix(base, INK, 0.25)[2], 220))  # 이불 후드
+    d.arc([S(28), S(22), S(82), S(80)], 180, 360, fill=mix(base, WHITE, 0.3), width=S(2))
+    star(d, 84, 34, 3, 1.2, 4, fill=WHITE); star(d, 24, 42, 2.2, 0.9, 4, fill=WHITE)
+    circ(d, 78, 70, 3, fill=hx(0xbfe0ff)); glow(d, 78, 70, 5, hx(0xbfe0ff))  # 폰빛
     return im
 
-def spirit_yeobaek():  # 여백 — 반투명(속 비침) + 접힌 객석 의자 어깨 + 빈 장갑 + 바랜 파스텔.
-    base=hx(0xbca9e0); im,d=canvas(); frame(d,base)
-    faded=mix(base,PANEL,0.35)
-    d.polygon([(S(42),S(40)),(S(68),S(40)),(S(72),S(92)),(S(38),S(92))],fill=(faded[0],faded[1],faded[2],150),outline=base)  # 반투명 몸
-    box(d,44,36,52,54,2,fill=(base[0],base[1],base[2],120))  # 접히는 의자 어깨(좌)
-    box(d,58,36,66,54,2,fill=(base[0],base[1],base[2],120))
-    d.line([(S(55),S(50)),(S(55),S(90))],fill=(base[0],base[1],base[2],80),width=S(1))  # 속 비침 경계
-    box(d,30,70,40,82,3,outline=base,ow=1.4)  # 빈 장갑 한 짝(윤곽만)
-    for ex in (49,61): d.arc([S(ex-3),S(50),S(ex+3),S(56)],185,355,fill=INK,width=S(1.4))  # 잔잔한 눈
+def spirit_yeobaek():  # 여백(졸업) — 머리 리본 + 파스텔 부드럽게.
+    base = hx(0xcbb8ee); im, d = cutie(base, 'star', 'smile')
+    rib = hx(0xff9ecb)
+    d.polygon([(S(48), S(24)), (S(55), S(28)), (S(48), S(32))], fill=rib); d.polygon([(S(62), S(24)), (S(55), S(28)), (S(62), S(32))], fill=rib)  # 리본
+    circ(d, 55, 28, 2.6, fill=mix(rib, WHITE, 0.3))
     return im
 
-def spirit_seupjak():  # 습작 — 미완성 스케치(겹친 선+지우개 자국) + 덜 마른 잉크 손 + 남색/살구.
-    base=hx(0x8fb0f0); apr=hx(0xf6c9a0); im,d=canvas(); frame(d,base)
-    # 겹친 밑그림 선(실루엣이 흔들림)
-    for off in (-3,0,3):
-        d.line([(S(46+off),S(36)),(S(42+off),S(70)),(S(52+off),S(92))],fill=(base[0],base[1],base[2],120 if off else 220),width=S(1.6),joint='curve')
-        d.line([(S(64+off),S(36)),(S(68+off),S(70)),(S(58+off),S(92))],fill=(base[0],base[1],base[2],120 if off else 220),width=S(1.6),joint='curve')
-    d.arc([S(42),S(38),S(68),S(64)],200,340,fill=base,width=S(1.6))  # 머리 윤곽(미완)
-    for ex in (50,60): d.line([(S(ex-3),S(52)),(S(ex+3),S(52))],fill=INK,width=S(1.4))  # 눈=아직 선 (특히 눈이 안 됨)
-    d.ellipse([S(60),S(78),S(70),S(88)],fill=(apr[0],apr[1],apr[2],150))  # 덜 마른 잉크 손(번짐)
-    for gx,gy in ((40,44),(72,66),(44,84)): circ(d,gx,gy,1.2,fill=(base[0],base[1],base[2],120))  # 지우개 가루
+def spirit_seupjak():  # 습작(팬창작) — 붓 들고 볼에 물감.
+    base = hx(0x86c8ff); im, d = cutie(base, 'star', 'cat')
+    d.line([(S(80), S(88)), (S(86), S(58))], fill=hx(0xcaa27a), width=S(2))  # 붓대
+    d.polygon([(S(83), S(60)), (S(89), S(60)), (S(86), S(50))], fill=hx(0xff8a5c))  # 붓끝(물감)
+    ell(d, 69, 62, 3, 2, fill=hx(0xff8a5c))  # 볼 물감
+    ell(d, 40, 58, 2.4, 1.6, fill=hx(0x7fe6c6))
     return im
 
-def spirit_janbul():  # 잔불 — 재 뒤집어쓴 실루엣 + 주황 불씨 한 점 + 담요 + 감싼 손.
-    base=hx(0xffb07a); ash=hx(0x6b6470); im,d=canvas(); frame(d,base)
-    d.polygon([(S(55),S(34)),(S(36),S(58)),(S(40),S(92)),(S(70),S(92)),(S(74),S(58))],fill=ash,outline=mix(ash,INK,0.3))  # 재 담요 실루엣
-    for sx,sy in ((44,50),(66,54),(50,74),(64,80)): circ(d,sx,sy,1.4,fill=mix(ash,WHITE,0.3))  # 재 얼룩
-    glow(d,55,66,14,base); circ(d,55,66,6,fill=base); circ(d,55,66,3,fill=hx(0xfff2c9))  # 불씨 한 점
-    for ax in (44,66): d.arc([S(ax-6),S(62),S(ax+6),S(76)],250,470,fill=ash,width=S(2.4))  # 감싼 두 손
-    for ex in (49,61): circ(d,ex,50,2,fill=mix(base,WHITE,0.3))  # 재 속 눈(은은)
+def spirit_janbul():  # 잔불(버티기) — 담요 두르고 작은 랜턴(불씨) 안음.
+    base = hx(0xff9e6b); im, d = cutie(base, 'sleepy', 'smile')
+    blanket = hx(0x8a7f92)
+    d.pieslice([S(30), S(60), S(80), S(100)], 180, 360, fill=blanket)  # 담요
+    circ(d, 55, 82, 8, fill=mix(INK, base, 0.2), outline=hx(0x6a6470), ow=1.4)  # 랜턴
+    circ(d, 55, 82, 4, fill=hx(0xffb07a)); circ(d, 55, 82, 2, fill=hx(0xfff2c9)); glow(d, 55, 82, 8, hx(0xffb07a))  # 불씨
     return im
+
 
 def portrait_mugyeol():  # 무결 — 루멘의 그림자. 빛 버스트의 어둠 거울 + 완결 리본 + 감은 만족의 눈.
     base=hx(0x2a2440); im,d=canvas(); frame(d, hx(0x6a5a8a))
