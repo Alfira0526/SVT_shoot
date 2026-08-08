@@ -278,7 +278,45 @@
       "entry": "finale",
       "difficulty": 6,
       "isFinale": true,
-      "reward": 0
+      "reward": 0,
+      "boss": {
+        "name": "무결",
+        "portrait": "mugyeol",
+        "type": "mugyeol",
+        "hp": 3200,
+        "midBark": {
+          "at": 0.45,
+          "speaker": "무결",
+          "text": "여한 없지? 여기서 끝내면, 아무도 안 아파."
+        },
+        "phases": [
+          {
+            "from": 1.0,
+            "to": 0.6,
+            "pattern": "fan",
+            "count": 10,
+            "speed": 140,
+            "intervalMs": 900
+          },
+          {
+            "from": 0.6,
+            "to": 0.3,
+            "pattern": "refresh",
+            "count": 16,
+            "speed": 150,
+            "intervalMs": 1200,
+            "summon": "macro"
+          },
+          {
+            "from": 0.3,
+            "to": 0.0,
+            "pattern": "rage",
+            "count": 22,
+            "speed": 175,
+            "intervalMs": 680
+          }
+        ]
+      }
     }
   ]
 }

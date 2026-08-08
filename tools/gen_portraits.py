@@ -317,6 +317,23 @@ def spirit_janbul():  # 잔불 — 재 뒤집어쓴 실루엣 + 주황 불씨 �
     for ex in (49,61): circ(d,ex,50,2,fill=mix(base,WHITE,0.3))  # 재 속 눈(은은)
     return im
 
+def portrait_mugyeol():  # 무결 — 루멘의 그림자. 빛 버스트의 어둠 거울 + 완결 리본 + 감은 만족의 눈.
+    base=hx(0x2a2440); im,d=canvas(); frame(d, hx(0x6a5a8a))
+    for k in range(9,0,-1):  # 어둠 후광
+        a=int(12*(k/9)); rr=40*k/9
+        d.ellipse([S(55-rr),S(52-rr),S(55+rr),S(52+rr)],fill=(hx(0x160f22)[0],hx(0x160f22)[1],hx(0x160f22)[2],a))
+    circ(d,55,55,25,fill=base); circ(d,55,55,25,outline=hx(0x160f22),ow=1.4)
+    ell(d,47,47,10,7,fill=mix(base,PINK,0.18))  # 희미한 온기(루멘 잔영)
+    glow(d,55,60,10,LIGHT); circ(d,55,60,4,fill=LIGHT); circ(d,55,60,2,fill=WHITE)  # 삼켜진 마침표 빛
+    # 완결 리본
+    d.line([(S(34),S(60)),(S(76),S(48))],fill=GOLD_D,width=S(2.2)); d.line([(S(34),S(48)),(S(76),S(60))],fill=GOLD_D,width=S(2.2))
+    d.polygon([(S(50),S(52)),(S(55),S(54)),(S(50),S(58))],fill=GOLD_D); d.polygon([(S(60),S(52)),(S(55),S(54)),(S(60),S(58))],fill=GOLD_D)
+    circ(d,55,54,3,fill=mix(GOLD_D,WHITE,0.3))
+    # 만족스러운 감은 눈 + 응원봉(끝을 봉한)
+    d.arc([S(45),S(46),S(53),S(53)],190,350,fill=WHITE,width=S(1.8)); d.arc([S(57),S(46),S(65),S(53)],190,350,fill=WHITE,width=S(1.8))
+    d.line([(S(80),S(94)),(S(84),S(56))],fill=hx(0x6a5a3a),width=S(2.2)); circ(d,84,53,4,fill=mix(GOLD_D,INK,0.3))
+    return im
+
 def player():
     im,d=canvas(); frame(d, hx(0xf1c7d2))
     HOOD=hx(0x35304f); HOODD=hx(0x24203a); FACE=hx(0x2a2438)
@@ -352,7 +369,7 @@ def main():
         'pt_g_janbul':   spirit_janbul(),   # 버티기·현타 — 재+불씨
     }
     others={'pt_noise':antagonist_noise(),'pt_server':antagonist_server(),
-            'pt_monopolist':antagonist_monopolist(),'pt_player':player()}
+            'pt_monopolist':antagonist_monopolist(),'pt_mugyeol':portrait_mugyeol(),'pt_player':player()}
     allp={**guards,**others}
     for k,v in allp.items(): out(v,k)
     # 미리보기 몽타주

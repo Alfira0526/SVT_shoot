@@ -935,25 +935,25 @@
       "intro": [
         {
           "speaker": "무결",
-          "portrait": "pt_noise",
+          "portrait": "pt_mugyeol",
           "side": "left",
           "text": "축하해. 완벽했어. 여기서 접으면 아무도 안 아파."
         },
         {
           "speaker": "무결",
-          "portrait": "pt_noise",
+          "portrait": "pt_mugyeol",
           "side": "left",
           "text": "새로고침 백 번 한 손목, 관문 뚫다 멈춘 심장, 내가 다 봤어. 이제 쉬어."
         },
         {
           "speaker": "무결",
-          "portrait": "pt_noise",
+          "portrait": "pt_mugyeol",
           "side": "left",
           "text": "완결이 왜 무서워. 리본까지 달아줄게. 예쁘게 끝내자."
         },
         {
           "speaker": "무결",
-          "portrait": "pt_noise",
+          "portrait": "pt_mugyeol",
           "side": "left",
           "text": "…나도 원래 그 빛이었어. 근데 알아버렸어. 끝이 제일 예쁘더라."
         }
@@ -973,7 +973,7 @@
         },
         {
           "speaker": "무결",
-          "portrait": "pt_noise",
+          "portrait": "pt_mugyeol",
           "side": "left",
           "text": "남은 말 같은 거 없어. 다 했잖아."
         },
@@ -991,7 +991,7 @@
         },
         {
           "speaker": "무결",
-          "portrait": "pt_noise",
+          "portrait": "pt_mugyeol",
           "side": "left",
           "text": "왜 안 놓는 거야. 놓으면 편한데."
         },
@@ -1015,7 +1015,7 @@
         },
         {
           "speaker": "무결",
-          "portrait": "pt_noise",
+          "portrait": "pt_mugyeol",
           "side": "left",
           "text": "(빛이 그림자를 되삼킨다) ……그래. 나도, 사실 뒷얘기 궁금했어."
         }

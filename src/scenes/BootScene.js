@@ -14,7 +14,7 @@ export class BootScene extends Phaser.Scene {
       'player_ship', 'enemy_macro', 'enemy_spinner', 'enemy_popup',
       'w3_macro', 'w3_spinner', 'w3_popup', // W3 잡몹 팔레트 스왑 스킨 (D34)
       'item_wand', 'item_seed', 'item_shield', 'bullet_player', 'bullet_enemy',
-      'boss_noise', 'boss_scalper', 'boss_server', 'boss_monopolist', // 자체 도트(Pillow) 교체
+      'boss_noise', 'boss_scalper', 'boss_server', 'boss_monopolist', 'boss_mugyeol', // 자체 도트(Pillow) 교체
       'coin', // 엔들리스 별조각
     ];
     sprites.forEach((n) => this.load.image(n, `assets/sprites/${n}.png`));
@@ -35,7 +35,7 @@ export class BootScene extends Phaser.Scene {
       // 14정령 v2 — 루멘(bongi) + 팬덤 경험 정령 13
       'pt_g_bongi', 'pt_g_pollin', 'pt_g_pick', 'pt_g_saerok', 'pt_g_bitjang', 'pt_g_ulrim', 'pt_g_semi',
       'pt_g_yeongsu', 'pt_g_chalna', 'pt_g_diwon', 'pt_g_nesi', 'pt_g_yeobaek', 'pt_g_seupjak', 'pt_g_janbul',
-      'pt_player', 'pt_noise', 'pt_server', 'pt_monopolist',
+      'pt_player', 'pt_noise', 'pt_server', 'pt_monopolist', 'pt_mugyeol',
     ].forEach((n) => this.load.image(n, `assets/portraits/${n}.png`));
   }
 

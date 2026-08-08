@@ -193,6 +193,36 @@ def draw_boss_monopolist():
     d.point((28,30),fill=WHITE); d.point((50,30),fill=WHITE)
     return im
 
+def draw_boss_mugyeol():
+    """무결 — 완결/포기의 의인화, 루멘의 그림자. 빛구체의 어둠 거울 + 완결 리본 + 마침표 코어.
+       괴물이 아니라 '가장 다정한 목소리' — 만족스러운 감은 눈, 안으로 삼킨 빛."""
+    im=Image.new('RGBA',(80,80),(0,0,0,0)); d=ImageDraw.Draw(im)
+    DARK=hx(0x241a33); SHADOW=hx(0x160f22); RIBBON=hx(0xd9a63e); ROSE=hx(0xf1c7d2)
+    # 어둠 후광(루멘 빛후광의 반전)
+    for k in range(8,0,-1):
+        a=int(16*(k/8)); rr=40*k/8
+        d.ellipse([40-rr,42-rr,40+rr,42+rr], fill=(SHADOW[0],SHADOW[1],SHADOW[2],a))
+    # 그림자 구체
+    d.ellipse([12,14,68,70], fill=SHADOW)
+    d.ellipse([14,16,66,68], fill=DARK)
+    d.ellipse([20,20,48,42], fill=mix(DARK,ROSE,0.12))  # 희미한 온기(루멘의 잔영)
+    # 삼켜진 빛(마침표) — 코어에 갇힌 점
+    for k in range(6,0,-1):
+        a=int(30*(k/6)); rr=10*k/6
+        d.ellipse([40-rr,48-rr,40+rr,48+rr], fill=(LIGHT[0],LIGHT[1],LIGHT[2],a))
+    d.ellipse([36,44,44,52], fill=LIGHT); d.ellipse([38,46,42,50], fill=WHITE)
+    # 완결의 리본(몸을 감아 '예쁘게 끝내는')
+    d.line([(16,52),(64,34)], fill=RIBBON, width=3)
+    d.line([(16,34),(64,52)], fill=RIBBON, width=3)
+    # 리본 매듭 + 고리
+    d.polygon([(34,42),(40,44),(34,50)], fill=RIBBON)
+    d.polygon([(46,42),(40,44),(46,50)], fill=RIBBON)
+    d.ellipse([37,41,43,47], fill=mix(RIBBON,WHITE,0.3))
+    # 만족스러운 감은 눈(다정)
+    d.arc([24,30,36,40], 190, 350, fill=WHITE, width=2)
+    d.arc([44,30,56,40], 190, 350, fill=WHITE, width=2)
+    return im
+
 def draw_coin():
     im=Image.new('RGBA',(18,18),(0,0,0,0)); d=ImageDraw.Draw(im)
     d.polygon([(9,1),(16,9),(9,16),(2,9)], fill=GOLD, outline=GOLD_D)
@@ -214,13 +244,14 @@ def main():
     save(draw_boss_noise(), 'boss_noise')
     save(draw_boss_server_png:=draw_boss_server(), 'boss_server')
     save(draw_boss_monopolist(), 'boss_monopolist')
+    save(draw_boss_mugyeol(), 'boss_mugyeol')
     save(draw_coin(), 'coin')
 
     # 미리보기 몽타주
     scale=7; pad=10
     row1=[(f'rose s{st}', heroes[f'rose{st}']) for st in (1,2,3)] + [(f'gold s{st}', heroes[f'gold{st}']) for st in (1,2,3)]
     row2=[('spinner',draw_spinner()),('coin',draw_coin())]
-    row3=[('boss_noise',draw_boss_noise()),('boss_server',draw_boss_server()),('boss_monopolist',draw_boss_monopolist())]
+    row3=[('boss_noise',draw_boss_noise()),('boss_monopolist',draw_boss_monopolist()),('boss_mugyeol',draw_boss_mugyeol())]
     def strip(items):
         ims=[(n,im.resize((im.width*scale,im.height*scale),Image.NEAREST)) for n,im in items]
         W=sum(im.width for _,im in ims)+pad*(len(ims)+1); H=max(im.height for _,im in ims)+pad*2

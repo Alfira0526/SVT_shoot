@@ -69,6 +69,16 @@ FINALE_WORLD = {
   'objective':"'잘 끝났잖아'라는 완결의 유혹을 끊고, 마침표를 쉼표로 바꿔라.",
   'threat':'무결','threatDesc':'완결·만족의 의인화. 루멘의 그림자. 가장 다정한 목소리로 "여한 없지?"라며 덕질을 끝내게 한다.',
   'color':'rose','stageRef':'final','spirits':[],'entry':'finale','difficulty':6,'isFinale':True,'reward':0,
+  # 무결 전용 보스(루멘의 그림자). stage_final의 독점자 대신 사용. 패턴은 검증된 타입 재사용.
+  'boss': {
+    'name':'무결','portrait':'mugyeol','type':'mugyeol','hp':3200,
+    'midBark': {'at':0.45,'speaker':'무결','text':'여한 없지? 여기서 끝내면, 아무도 안 아파.'},
+    'phases':[
+      {'from':1.0,'to':0.6,'pattern':'fan','count':10,'speed':140,'intervalMs':900},
+      {'from':0.6,'to':0.3,'pattern':'refresh','count':16,'speed':150,'intervalMs':1200,'summon':'macro'},
+      {'from':0.3,'to':0.0,'pattern':'rage','count':22,'speed':175,'intervalMs':680},
+    ],
+  },
 }
 
 UNLOCK_COST = 2   # 세계 1개 해금 비용(코인)
@@ -143,7 +153,7 @@ def build(canon):
         else:
             who, txt = '무결', s.strip()
         if who == '무결':
-            return line('무결', 'pt_noise', txt, 'left')
+            return line('무결', 'pt_mugyeol', txt, 'left')
         return line('{nickname}', 'player', txt, 'right')
     fin_lines = [parse_fin(s) for s in fin]
     # 유혹(무결 연속 도입부) vs 거절 이후 분리 — 첫 플레이어 대사 등장 지점에서 자름.

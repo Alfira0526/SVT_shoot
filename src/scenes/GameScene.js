@@ -269,10 +269,18 @@ export class GameScene extends Phaser.Scene {
     this._dialogue('boss', () => this._startBoss());
   }
 
+  _bossConfig() {
+    // 세계별 보스 오버라이드(예: 무결) 우선, 없으면 스테이지 레이아웃 보스.
+    return (this._world && this._world.boss) ? this._world.boss : this.stage.boss;
+  }
+
   _startBoss() {
     this.phase = 'boss';
     this.physics.world.resume();
-    this.boss = new Boss(this, this._bossHp ? { ...this.stage.boss, hp: this._bossHp } : this.stage.boss);
+    const bc = this._bossConfig();
+    // 무결(피날레)은 자체 HP로 클라이맥스 볼륨 유지, 그 외엔 세계 난도 커브 HP.
+    const hp = this._world && this._world.isFinale ? bc.hp : (this._bossHp || bc.hp);
+    this.boss = new Boss(this, { ...bc, hp });
     this.physics.add.overlap(this.playerBullets, this.boss, this._hitBoss, null, this);
 
     this.bossNameText.setText(this._world ? this._world.threat : this.stage.boss.name).setVisible(true);
@@ -874,7 +882,7 @@ export class GameScene extends Phaser.Scene {
 
   // 보스 중간 대사 (D34 W3 총책 체력 50% 균열) — 비차단 말풍선
   _checkMidBark() {
-    const mb = this.stage.boss?.midBark;
+    const mb = this._bossConfig()?.midBark;
     if (!mb || this._midBarkShown) return;
     if (this.boss.hpRatio() <= (mb.at ?? 0.5)) {
       this._midBarkShown = true;
