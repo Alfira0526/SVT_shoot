@@ -4,6 +4,7 @@ import { Save } from '../systems/SaveSystem.js';
 import { Audio } from '../systems/Audio.js';
 import worldsCfg from '../config/worlds.json';
 import guardians from '../config/guardians.json';
+import lumenDialogue from '../config/dialogue_lumen.json';
 
 const NAME = {};
 guardians.roster.forEach((g) => { NAME[g.id] = g.name; });
@@ -55,6 +56,23 @@ export class MultiverseScene extends Phaser.Scene {
     });
 
     this._back();
+    this._firstBriefing();
+  }
+
+  // 첫 방문 1회: 루멘이 세계 구조(흩어진 열셋·거짓·응원봉의 역할·마지막 문)를 설명 — 프롤로그 뒤 설명 공백 보완
+  _firstBriefing() {
+    if (Save.getFlag('lumenBriefed')) return;
+    const lines = (lumenDialogue.firstMap || []).map((text) => ({
+      speaker: lumenDialogue.speaker, portrait: lumenDialogue.portrait, side: lumenDialogue.side, text,
+    }));
+    if (!lines.length) return;
+    Save.setFlag('lumenBriefed');
+    this.input.enabled = false;
+    this.scene.launch('Dialogue', {
+      lines,
+      nickname: Save.getNickname() || '',
+      onComplete: () => { this.input.enabled = true; },
+    });
   }
 
   // 세계 상태 판정 — open(플레이 가능) / affordable(해금 가능) / cost / reason

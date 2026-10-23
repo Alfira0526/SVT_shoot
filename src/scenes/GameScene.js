@@ -27,6 +27,13 @@ import dialogueFinal from '../config/dialogue_final.json';
 import guardians from '../config/guardians.json';
 import worldsCfg from '../config/worlds.json';
 import worldDialogue from '../config/dialogue_worlds.json';
+import lumenDialogue from '../config/dialogue_lumen.json';
+
+// 루멘(가이드) 한 줄 → 대사 라인 객체 (dialogue_lumen.json은 재생성되는 dialogue_worlds.json과 분리 보관)
+function lumenLine(text) {
+  if (!text) return null;
+  return { speaker: lumenDialogue.speaker, portrait: lumenDialogue.portrait, side: lumenDialogue.side, text };
+}
 
 const WORLDS_BY_ID = {};
 worldsCfg.worlds.forEach((w) => { WORLDS_BY_ID[w.id] = w; });
@@ -436,9 +443,18 @@ export class GameScene extends Phaser.Scene {
   // 세계 도착: 인트로 + 아직 못 만난 정령 조우 대사
   _playWorldIntro(onDone) {
     const wd = worldDialogue.worlds[this._world.id];
+    const lm = lumenDialogue.worlds[this._world.id];
     const lines = [];
     if (wd) {
       lines.push(...(wd.intro || []));
+      // 루멘 가이드 한 줄 — 이 세계의 '거짓'과 공략 힌트 (최초 1회만; 재도전 땐 생략해 템포 유지)
+      const cleared = Save.getWorldsCleared().includes(this._world.id);
+      if (lm && !cleared) {
+        const l1 = lumenLine(lm.intro);
+        const l2 = lumenLine(lm.intro2);
+        if (l1) lines.push(l1);
+        if (l2) lines.push(l2);
+      }
       (this._world.spirits || []).forEach((sid) => {
         if (!Save.isGuardianAwake(sid) && wd.spirits[sid]) lines.push(...(wd.spirits[sid].encounter || []));
       });
@@ -459,6 +475,10 @@ export class GameScene extends Phaser.Scene {
     const wd = worldDialogue.worlds[w.id];
     const awakenLines = [];
     newly.forEach((id) => { if (wd && wd.spirits[id]) awakenLines.push(...(wd.spirits[id].awaken || [])); });
+    if (newly.length) {
+      const after = lumenLine(lumenDialogue.worlds[w.id]?.after);
+      if (after) awakenLines.push(after);
+    }
     newly.forEach((id) => Save.awakenGuardian(id));
     this._playLines(awakenLines, () => {
       this._worldClearCelebrate(newly, () => {
@@ -471,7 +491,9 @@ export class GameScene extends Phaser.Scene {
   // 무결 피날레 — 완결의 유혹을 거절하는 종결 대사 → '쉼표' 엔딩 → 지도 복귀
   _finaleClear() {
     const wd = worldDialogue.worlds[this._world.id];
-    const lines = (wd && wd.clear) || [];
+    const lines = [...((wd && wd.clear) || [])];
+    const after = lumenLine(lumenDialogue.worlds.mugyeol?.after);
+    if (after) lines.push(after);
     Save.setFlag('storyComplete');
     this._playLines(lines, () => {
       this._finaleCelebrate(() => {
