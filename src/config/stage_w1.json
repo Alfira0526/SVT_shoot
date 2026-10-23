@@ -1,0 +1,38 @@
+{
+  "id": "w1",
+  "name": "W1. 입덕",
+  "caption": "빙의 직후, 봉이와의 첫 만남",
+  "dialogue": "w1",
+  "bgm": "w1",
+  "next": "w2",
+  "backdrop": ["#2a2358", "#5a3a8a"],
+  "clearBanner": ["첫 손님 격퇴", "FIRST LIGHT"],
+  "waves": [
+    {
+      "delay": 1200,
+      "maxWait": 9000,
+      "spawns": [
+        { "type": "noise_mote", "count": 4, "interval": 700, "x": [80, 400] }
+      ]
+    },
+    {
+      "delay": 1500,
+      "maxWait": 10000,
+      "spawns": [
+        { "type": "noise_mote", "count": 5, "interval": 500, "x": [60, 420], "drop": "lightstick" }
+      ]
+    }
+  ],
+  "midPattern": null,
+  "boss": {
+    "type": "small_noise",
+    "name": "소형 노이즈",
+    "hp": 140,
+    "entryY": 150,
+    "maxSummons": 0,
+    "hpLabel": "노이즈 농도",
+    "phases": [
+      { "until": 0, "pattern": "fan", "interval": 1300, "bullets": 5, "spread": 70, "speed": 150 }
+    ]
+  }
+}

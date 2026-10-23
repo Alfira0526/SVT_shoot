@@ -1,0 +1,64 @@
+{
+  "sceneId": "prologue",
+  "note": "기획서 §2.9 프롤로그 확정본(D30). 유저 시점 콜드오픈 → 탭 카드 뒤집기 → 메신저 자랑 → 글리치 → 사고 → 봉이 목소리(정체 유예).",
+  "steps": [
+    {
+      "type": "dialogue",
+      "image": "cutscenes/prologue_01.png",
+      "fallback": { "from": "#3a2a6a", "to": "#ff9ecb", "silhouette": "crowd" },
+      "lines": [
+        { "speaker": "", "text": "(콘서트장 앞)" },
+        { "speaker": "{nickname}", "portrait": "player", "text": "드디어 왔다……! 이 날을 얼마나 기다렸는데." }
+      ]
+    },
+    {
+      "type": "tap_card",
+      "image": "cutscenes/prologue_02.png",
+      "revealImage": "cutscenes/prologue_03.png",
+      "fallback": { "from": "#272250", "to": "#b18cff", "silhouette": "booth" },
+      "before": [
+        { "speaker": "", "text": "(부스 앞. 카드 한 장)" },
+        { "speaker": "{nickname}", "portrait": "player", "text": "제발 이번엔 럭키카드… 제발 진짜ㅠㅠ 🙏" }
+      ],
+      "prompt": "탭해서 카드 뒤집기",
+      "after": [
+        { "speaker": "{nickname}", "portrait": "player", "text": "?!?!?!", "effect": "shake" }
+      ]
+    },
+    {
+      "type": "messenger",
+      "title": "덕메 단톡",
+      "messages": [
+        { "from": "me", "text": "야 나 방금 13장 전체 뽑음" },
+        { "from": "me", "text": "실화임" },
+        { "from": "me", "text": "손 떨려서 사진 못 찍음" },
+        { "from": "친구A", "text": "주작ㅋㅋㅋ" },
+        { "from": "친구B", "text": "사진 없으면 무효" },
+        { "from": "친구C", "text": "부스 좌표 찍어 당장" },
+        { "from": "친구A", "text": "야 근데 방금 하늘이▒▒▒▒", "glitch": true }
+      ],
+      "after": [
+        { "speaker": "{nickname}", "portrait": "player", "text": "……읽씹도 아니고 뭐야 이거.", "effect": "glitch" }
+      ]
+    },
+    {
+      "type": "dialogue",
+      "image": "cutscenes/prologue_04.png",
+      "fallback": { "from": "#3a2a6a", "to": "#ff6b8a", "silhouette": "crowd" },
+      "lines": [
+        { "speaker": "", "text": "(고개를 드는 순간 — 인파에 휘청)" },
+        { "speaker": "???", "portrait": "none", "text": "위험해!!", "effect": "shake" }
+      ]
+    },
+    {
+      "type": "dialogue",
+      "image": "cutscenes/prologue_05.png",
+      "fallback": { "from": "#0f0d21", "to": "#272250", "silhouette": "lightstick" },
+      "blackout": true,
+      "lines": [
+        { "speaker": "", "text": "(암전. 손에 쥔 응원봉에서 목소리)" },
+        { "speaker": "???", "portrait": "bongi_shadow", "text": "……잡았다. 휴우. 폰 보면서 걸으면 어떡해, 너." }
+      ]
+    }
+  ]
+}

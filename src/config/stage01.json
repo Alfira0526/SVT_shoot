@@ -1,0 +1,68 @@
+{
+  "id": "w2",
+  "name": "W2. 티켓팅 대전",
+  "caption": "그림자 상단이 장악한 관문 돌파",
+  "dialogue": "w2",
+  "bgm": "w2",
+  "bossBgm": "boss",
+  "next": null,
+  "backdrop": ["#1e1b3a", "#3f2f7a"],
+  "clearBanner": ["예매 성공", "SEAT CONFIRMED"],
+  "waves": [
+    {
+      "delay": 1200,
+      "maxWait": 9000,
+      "spawns": [
+        { "type": "macro_bot", "count": 5, "interval": 420, "x": [70, 410] }
+      ]
+    },
+    {
+      "delay": 1200,
+      "maxWait": 10000,
+      "spawns": [
+        { "type": "spinner", "count": 4, "interval": 650, "x": [60, 420] },
+        { "type": "macro_bot", "count": 3, "interval": 900, "x": [120, 360], "startDelay": 1500 }
+      ]
+    },
+    {
+      "delay": 1200,
+      "maxWait": 11000,
+      "spawns": [
+        { "type": "error_popup", "count": 3, "interval": 1000, "x": [90, 390], "drop": "lightstick" },
+        { "type": "macro_bot", "count": 4, "interval": 500, "x": [60, 420], "startDelay": 800 }
+      ]
+    },
+    {
+      "delay": 1200,
+      "maxWait": 12000,
+      "spawns": [
+        { "type": "spinner", "count": 5, "interval": 400, "x": [50, 430] },
+        { "type": "macro_bot", "count": 6, "interval": 350, "x": [80, 400], "startDelay": 1200 },
+        { "type": "error_popup", "count": 2, "interval": 1400, "x": [140, 340], "startDelay": 2500, "drop": "shield" }
+      ]
+    }
+  ],
+  "midPattern": {
+    "type": "queue_burst",
+    "label": "대기열 폭주!",
+    "text": "999,999",
+    "delay": 800,
+    "duration": 8000,
+    "interval": 380,
+    "perTick": 3,
+    "speed": [150, 230]
+  },
+  "boss": {
+    "type": "ticket_server",
+    "name": "티켓팅 서버",
+    "hp": 620,
+    "entryY": 140,
+    "maxSummons": 14,
+    "hpLabel": "대기번호",
+    "phases": [
+      { "until": 0.7, "pattern": "fan", "interval": 950, "bullets": 7, "spread": 100, "speed": 200, "summon": "macro_bot", "summonInterval": 3200, "summonCount": 2 },
+      { "until": 0.3, "pattern": "refresh", "interval": 2400, "bullets": 14, "speed": 210, "label": "새로고침" },
+      { "until": 0, "pattern": "omni", "interval": 640, "bullets": 16, "speed": 170, "accelPerSec": 0.035, "maxAccel": 1.9 }
+    ]
+  }
+}

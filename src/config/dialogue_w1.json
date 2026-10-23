@@ -1,0 +1,32 @@
+{
+  "sceneId": "w1",
+  "note": "기획서 §2.9 W1 입덕 확정본 + 스토리 공백 보완 대사(각 줄 gap 필드 = docs/story_gapfill.md의 G번호). gap 없는 줄은 확정본 원문.",
+  "intro": [
+    { "speaker": "", "text": "(콘서트장 옆 골목. 인파 소리가 멀어지고, 손에 쥔 응원봉만 희미하게 빛난다)", "gap": "G1" },
+    { "speaker": "봉이", "portrait": "bongi_neutral", "text": "정신 좀 들어? 방금 진짜 아슬아슬했어." },
+    { "speaker": "{nickname}", "portrait": "player", "text": "……뭐야, 방금 목소리?" },
+    { "speaker": "봉이", "portrait": "bongi_sorry", "text": "나? 어, 그……. 나도 지금 좀 당황스러운데, 일단 네 응원봉 안에 있어." },
+    { "speaker": "봉이", "portrait": "bongi_smile", "text": "설명하자면 긴데 — 네가 낸 빛이 하도 예뻐서 눈여겨보다가, 위험해 보이길래 그냥 뛰어들었어." },
+    { "speaker": "봉이", "portrait": "bongi_neutral", "text": "아, 카드는 전부 네 주머니에 챙겨 넣었어. 열세 장. ……그거, 보통 카드가 아니야. 이 얘긴 나중에.", "gap": "G3" },
+    { "speaker": "봉이", "portrait": "bongi_surprise", "text": "그리고 13장 전체 뽑기 같은 빛은 나도 처음 봐. 그만큼 밝으면— 몰려오거든. 어두운 쪽에서.", "gap": "G2" },
+    { "speaker": "봉이", "portrait": "bongi_surprise", "text": "근데 하필 첫날부터 손님이 왔네. 잡는 법부터 가르쳐줄게!" }
+  ],
+  "boss": [
+    { "speaker": "노이즈", "portrait": "boss_noise", "text": "지지직…… 그 빛, 거슬려……", "effect": "glitch" }
+  ],
+  "bossMid": [
+    { "speaker": "노이즈", "portrait": "boss_noise", "text": "……더…… 밝아지지…… 마……", "effect": "glitch", "gap": "G7" },
+    { "speaker": "봉이", "portrait": "bongi_smile", "text": "먹히고 있어! 정면으로 계속 비춰!", "gap": "G7" }
+  ],
+  "defeat": [
+    { "speaker": "봉이", "portrait": "bongi_smile", "text": "봤지? 몰려오긴 해도 정면으로 비추면 못 버텨. 그게 노이즈야.", "gap": "G2" }
+  ],
+  "outro": [
+    { "speaker": "봉이", "portrait": "bongi_wink", "text": "소질 있는데? 정식 소개할게. 난 이제 네 응원봉에 깃든 요정, 뭐 그런 거야." },
+    { "speaker": "{nickname}", "portrait": "player", "text": "요정……? 이름은?", "gap": "G6" },
+    { "speaker": "봉이", "portrait": "bongi_sorry", "text": "이름? 응원봉에 살게 됐으니까…… 봉이. 방금 지었어. 괜찮지?", "gap": "G6" },
+    { "speaker": "봉이", "portrait": "bongi_neutral", "text": "아까 폰에 뜬 깨진 메시지 있지— '하늘이' 어쩌고. 그때 하늘의 빛이 한 번 크게 흔들렸어. 나도 그래서 급히 내려온 거야.", "gap": "G4" },
+    { "speaker": "봉이", "portrait": "bongi_neutral", "text": "응원하는 마음이 빛이 되고, 그 빛이 세계를 밝혀. 요즘 그 빛을 가로채려는 놈들이 부쩍 늘었어. 당장 내일 티켓팅부터.", "gap": "G5" },
+    { "speaker": "봉이", "portrait": "bongi_smile", "text": "오늘부터 우리가 빛을 지키는 거야." }
+  ]
+}

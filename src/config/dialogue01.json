@@ -1,0 +1,28 @@
+{
+  "sceneId": "w2",
+  "note": "기획서 §2.9 W2(파일럿) 보스 대사 승인본(D15) + 보완 대사(gap 필드). 인트로·아웃트로는 봉이 고정 화자(D20·D22).",
+  "intro": [
+    { "speaker": "", "text": "(다음 날 저녁 7시 59분. 예매 창 앞. 응원봉이 모니터 옆에서 깜빡인다)", "gap": "G5" },
+    { "speaker": "봉이", "portrait": "bongi_neutral", "text": "여기가 관문이야. 티켓이 모이는 자리엔 빛도 모이거든. 그걸 그림자 상단이 통째로 틀어쥐고 있어.", "gap": "G5" },
+    { "speaker": "봉이", "portrait": "bongi_surprise", "text": "매크로 봇, 로딩 스피너, 오류 팝업…… 전부 상단이 세워둔 문지기야. 하나씩 걷어내자.", "gap": "G9" },
+    { "speaker": "봉이", "portrait": "bongi_wink", "text": "8시 정각. 새로고침 금지. ……준비됐지, {nickname}?", "gap": "G5" }
+  ],
+  "boss": [
+    { "speaker": "서버", "portrait": "boss_server", "text": "대기번호 999,999번. ……뒤로 가." },
+    { "speaker": "{nickname}", "portrait": "player", "text": "8시 정각에 들어왔는데?!" },
+    { "speaker": "서버", "portrait": "boss_server", "text": "그건 너의 사정. 새로고침은 죄악이다." }
+  ],
+  "bossMid": [
+    { "speaker": "서버", "portrait": "boss_server", "text": "……트래픽 증가. 대기열…… 재정렬.", "effect": "glitch", "gap": "G7" },
+    { "speaker": "봉이", "portrait": "bongi_surprise", "text": "온다, 새로고침! 탄이 통째로 다시 깔릴 거야— 숨 고르고!", "gap": "G7" }
+  ],
+  "defeat": [
+    { "speaker": "서버", "portrait": "boss_server", "text": "좌석이…… 확정…… 되었습니다……", "effect": "glitch" },
+    { "speaker": "{nickname}", "portrait": "player", "text": "정공법으로 뚫었다." }
+  ],
+  "outro": [
+    { "speaker": "봉이", "portrait": "bongi_wink", "text": "봤지? 빛은 새로고침보다 세.", "gap": "G10" },
+    { "speaker": "봉이", "portrait": "bongi_neutral", "text": "……근데 이 서버, 혼자 돌아가던 게 아니야. 로그 맨 끝에 낯선 서명이 하나 찍혀 있어. 누가 위에서 줄을 당긴 흔적.", "gap": "G8" },
+    { "speaker": "봉이", "portrait": "bongi_smile", "text": "다음은 '가는 길'. 그건 다음 이야기에서— 오늘은 좌석 확정 축하부터!", "gap": "G10" }
+  ]
+}

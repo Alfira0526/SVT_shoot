@@ -1,0 +1,23 @@
+# §6 — Supabase 무료 티어 7일 무활동 자동 일시정지 방지 핑 (주 2회)
+# 저장소 Secrets에 SUPABASE_URL, SUPABASE_ANON_KEY 등록 필요
+name: supabase-keep-alive
+
+on:
+  schedule:
+    - cron: '0 3 * * 1,4'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query scores (1 row)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ]; then echo "SUPABASE_URL not set — skipping"; exit 0; fi
+          curl -sf "$SUPABASE_URL/rest/v1/scores?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            && echo "ok"

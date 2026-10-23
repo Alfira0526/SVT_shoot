@@ -1,0 +1,24 @@
+{
+  "name": "fan-shooter",
+  "private": true,
+  "version": "1.0.0-pilot",
+  "description": "덕질할 결심 — 모바일 세로 탄막 슈팅 (v1 파일럿)",
+  "type": "module",
+  "scripts": {
+    "manifest": "node scripts/build-manifest.mjs",
+    "icons": "node scripts/build-icons.mjs",
+    "predev": "node scripts/build-manifest.mjs",
+    "dev": "vite --host",
+    "prebuild": "node scripts/build-manifest.mjs",
+    "build": "vite build",
+    "preview": "vite preview --host"
+  },
+  "dependencies": {
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.5",
+    "vite": "^6.3.5",
+    "vite-plugin-pwa": "^1.0.0"
+  }
+}
