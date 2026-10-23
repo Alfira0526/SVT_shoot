@@ -43,6 +43,11 @@ export class TitleScene extends Phaser.Scene {
     this.add
       .text(GAME_WIDTH / 2, 322, '13인의 수호자와 함께, 빛을 지켜라', { fontSize: '15px', color: PALETTE.inkDim })
       .setOrigin(0.5);
+    // 완주 배지 — 무결을 넘긴 플레이어에게 작은 보상(쉼표)
+    if (Save.getFlag('storyComplete')) {
+      const badge = this.add.text(GAME_WIDTH / 2, 344, '✦ 쉼표 달성 · 다음 회차 대기 중', { fontSize: '12px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0.5);
+      this.tweens.add({ targets: badge, alpha: 0.55, duration: 1400, yoyo: true, repeat: -1 });
+    }
 
     // 닉네임 입력 (프롤로그 진입 전 최초 1회, §3.1 / D21)
     this.add.text(GAME_WIDTH / 2, 372, '랭킹 닉네임', { fontSize: '14px', color: PALETTE.serenityHex }).setOrigin(0.5);
