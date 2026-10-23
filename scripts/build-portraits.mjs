@@ -33,13 +33,13 @@ const SPIRITS = [
 
 // 적·보스 초상화 — 키는 기존 파일명 그대로
 const OTHERS = [
-  { file: 'pt_noise',         color: '#8a7fe0', glow: '#b18cff', face: '1f47e', prop: '1f4e1', dark: true },           // 노이즈: 외계 침입자 + 안테나
-  { file: 'pt_server',        color: '#86c8ff', glow: '#5a8fd0', face: '1f5c4', prop: '1f9fe', dark: true },           // 티켓팅 서버: 서버랙 + 대기표
-  { file: 'pt_scalper_sell',  color: '#ff8a5c', glow: '#ffb37f', face: '1f40d', prop: '1f3ab', dark: true },           // 암표 총책(영업): 뱀 + 티켓
-  { file: 'pt_scalper_smug',  color: '#ff8a5c', glow: '#ffb37f', face: '1f40d', prop: '1f4b8', dark: true },           // (능청): 뱀 + 돈
-  { file: 'pt_scalper_crack', color: '#ff6b8a', glow: '#ff9ecb', face: '1f40d', prop: '1f4a5', dark: true },           // (균열): 뱀 + 충격
-  { file: 'pt_monopolist',    color: '#4a2f7f', glow: '#b18cff', face: '1f311', prop: '1f451', dark: true },           // 독점자: 그믐달 + 왕관
-  { file: 'pt_mugyeol',       color: '#3a3566', glow: '#ffd66b', face: '1f425', prop: '1f380', dark: true, shadow: true }, // 무결: 루멘의 그림자 + 금빛 리본
+  { file: 'pt_noise',         color: '#8a7fe0', glow: '#b18cff', face: '1f47e', prop: '1f4e1', dark: true, noBody: true },  // 노이즈: 외계 침입자 + 안테나
+  { file: 'pt_server',        color: '#86c8ff', glow: '#5a8fd0', face: '1f5c4', prop: '1f9fe', dark: true, noBody: true },  // 티켓팅 서버: 서버랙 + 대기표
+  { file: 'pt_scalper_sell',  color: '#ff8a5c', glow: '#ffb37f', face: '1f40d', prop: '1f3ab', dark: true, noBody: true },  // 암표 총책(영업): 뱀 + 티켓
+  { file: 'pt_scalper_smug',  color: '#ff8a5c', glow: '#ffb37f', face: '1f40d', prop: '1f4b8', dark: true, noBody: true },  // (능청): 뱀 + 돈
+  { file: 'pt_scalper_crack', color: '#ff6b8a', glow: '#ff9ecb', face: '1f40d', prop: '1f4a5', dark: true, noBody: true },  // (균열): 뱀 + 충격
+  { file: 'pt_monopolist',    color: '#4a2f7f', glow: '#b18cff', face: '1f311', prop: '1f451', dark: true, noBody: true },  // 독점자: 그믐달 + 왕관
+  { file: 'pt_mugyeol',       color: '#3a3566', glow: '#ffd66b', face: '1f425', prop: '1f380', dark: true, shadow: true },   // 무결: 루멘의 그림자(몸까지 실루엣) + 금빛 리본
 ];
 
 function svg(code) {
@@ -57,17 +57,29 @@ async function raster(code, size, opts = {}) {
   return img.png().toBuffer();
 }
 
-function background({ color, glow, dark }) {
+// 배경 + 둥근 몸(큐트 베이스: 둥근 몸·짧은 팔·발) — 얼굴은 그 위에 합성
+function background({ color, glow, dark, shadow, noBody }) {
   const base = dark ? '#1a1733' : '#272250';
+  const bodyFill = shadow ? '#2a2450' : color;
+  const body = noBody
+    ? ''
+    : `<ellipse cx="55" cy="110" rx="34" ry="8" fill="#000" opacity="0.25"/>
+       <ellipse cx="55" cy="92" rx="30" ry="24" fill="${bodyFill}"/>
+       <ellipse cx="55" cy="86" rx="20" ry="13" fill="#ffffff" opacity="${shadow ? 0.05 : 0.22}"/>
+       <ellipse cx="25" cy="92" rx="9" ry="7" fill="${bodyFill}" transform="rotate(-20 25 92)"/>
+       <ellipse cx="80" cy="96" rx="9" ry="7" fill="${bodyFill}" transform="rotate(25 80 96)"/>
+       <ellipse cx="42" cy="113" rx="9" ry="5" fill="${bodyFill}"/><ellipse cx="68" cy="113" rx="9" ry="5" fill="${bodyFill}"/>
+       <circle cx="38" cy="90" r="4" fill="#ff9ecb" opacity="${shadow ? 0 : 0.6}"/><circle cx="72" cy="90" r="4" fill="#ff9ecb" opacity="${shadow ? 0 : 0.6}"/>`;
   return Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
     <defs>
-      <radialGradient id="g" cx="0.5" cy="0.42" r="0.55">
+      <radialGradient id="g" cx="0.5" cy="0.4" r="0.55">
         <stop offset="0" stop-color="${glow}" stop-opacity="${dark ? 0.35 : 0.55}"/>
         <stop offset="1" stop-color="${glow}" stop-opacity="0"/>
       </radialGradient>
     </defs>
     <rect width="${W}" height="${H}" rx="14" fill="${base}"/>
     <rect width="${W}" height="${H}" rx="14" fill="url(#g)"/>
+    ${body}
     <rect x="1" y="1" width="${W - 2}" height="${H - 2}" rx="13" fill="none" stroke="${color}" stroke-width="2" opacity="0.9"/>
     <circle cx="16" cy="18" r="2" fill="${color}" opacity="0.8"/><circle cx="94" cy="104" r="2" fill="${color}" opacity="0.6"/>
   </svg>`);
@@ -75,12 +87,13 @@ function background({ color, glow, dark }) {
 
 async function portrait(spec, outFile) {
   const layers = [];
-  const faceSize = 70;
+  const faceSize = spec.noBody ? 72 : 60;
   const face = await raster(spec.face, faceSize, spec.shadow ? { silhouette: '#2a2450' } : {});
-  layers.push({ input: face, left: Math.round((W - faceSize) / 2), top: 14 });
+  layers.push({ input: face, left: Math.round((W - faceSize) / 2), top: spec.noBody ? 14 : 12 });
   if (spec.prop) {
-    const propSize = 36;
-    layers.push({ input: await raster(spec.prop, propSize), left: W - propSize - 8, top: H - propSize - 8 });
+    // 소품은 오른손 근처에 "들고 있는" 위치
+    const propSize = spec.noBody ? 36 : 30;
+    layers.push({ input: await raster(spec.prop, propSize), left: spec.noBody ? W - propSize - 8 : 76, top: spec.noBody ? H - propSize - 8 : 74 });
   }
   if (spec.extra) {
     const exSize = 22;
