@@ -59,14 +59,27 @@ export class MultiverseScene extends Phaser.Scene {
     this._firstBriefing();
   }
 
-  // 첫 방문 1회: 루멘이 세계 구조(흩어진 열셋·거짓·응원봉의 역할·마지막 문)를 설명 — 프롤로그 뒤 설명 공백 보완
+  // 루멘 가이드 — 첫 방문 1회 브리핑(세계 구조 설명) + 깨운 정령 수 마일스톤 1회 대사(여정감)
   _firstBriefing() {
-    if (Save.getFlag('lumenBriefed')) return;
-    const lines = (lumenDialogue.firstMap || []).map((text) => ({
-      speaker: lumenDialogue.speaker, portrait: lumenDialogue.portrait, side: lumenDialogue.side, text,
-    }));
+    const mk = (text) => ({ speaker: lumenDialogue.speaker, portrait: lumenDialogue.portrait, side: lumenDialogue.side, text });
+    let lines = [];
+    let flag = null;
+    if (!Save.getFlag('lumenBriefed')) {
+      lines = (lumenDialogue.firstMap || []).map(mk);
+      flag = 'lumenBriefed';
+    } else {
+      const awake = Save.getAwakenedGuardians().length;
+      const ms = lumenDialogue.milestones || {};
+      const hit = Object.keys(ms).filter((k) => k !== '_note' && Number(k) <= awake && !Save.getFlag(`lumenMs${k}`)).sort((a, b) => Number(b) - Number(a))[0];
+      if (hit) {
+        lines = [mk(ms[hit])];
+        flag = `lumenMs${hit}`;
+        // 지나친 하위 마일스톤도 소진 처리(한 번에 여러 개 깨운 경우 중복 방지)
+        Object.keys(ms).filter((k) => k !== '_note' && Number(k) <= Number(hit)).forEach((k) => Save.setFlag(`lumenMs${k}`));
+      }
+    }
     if (!lines.length) return;
-    Save.setFlag('lumenBriefed');
+    if (flag) Save.setFlag(flag);
     this.input.enabled = false;
     this.scene.launch('Dialogue', {
       lines,

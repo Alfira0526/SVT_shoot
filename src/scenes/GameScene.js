@@ -494,6 +494,8 @@ export class GameScene extends Phaser.Scene {
     const lines = [...((wd && wd.clear) || [])];
     const after = lumenLine(lumenDialogue.worlds.mugyeol?.after);
     if (after) lines.push(after);
+    // 에필로그 — 현실 귀환(친구 메시지)로 프롤로그를 닫는다
+    (lumenDialogue.epilogue || []).forEach((l) => lines.push({ ...l }));
     Save.setFlag('storyComplete');
     this._playLines(lines, () => {
       this._finaleCelebrate(() => {
