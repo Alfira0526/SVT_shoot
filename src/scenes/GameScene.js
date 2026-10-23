@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME_WIDTH, GAME_HEIGHT, PALETTE, PLAYER, SCORE, DROP, LEVELUP_UNLOCK_COIN, theoreticalMaxScore } from '../config/constants.js';
+import { GAME_WIDTH, GAME_HEIGHT, PALETTE, PLAYER, SCORE, DROP, LEVELUP_UNLOCK_COIN, ENDING_CREDITS, theoreticalMaxScore } from '../config/constants.js';
 import { Player } from '../entities/Player.js';
 import { Enemy, createEnemyGroup } from '../entities/Enemy.js';
 import { Boss } from '../entities/Boss.js';
@@ -502,10 +502,47 @@ export class GameScene extends Phaser.Scene {
     Save.setFlag('storyComplete');
     this._playLines(lines, () => {
       this._finaleCelebrate(() => {
-        this.cameras.main.fadeOut(700, 0, 0, 0);
-        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Multiverse'));
+        this._finaleCredits(() => {
+          this.cameras.main.fadeOut(700, 0, 0, 0);
+          this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Multiverse'));
+        });
       });
     });
+  }
+
+  // 엔딩 크레딧 — 아래에서 위로 흐르는 텍스트, 탭하면 건너뜀. 출처 표기(CC BY) 겸함.
+  _finaleCredits(onDone) {
+    const c = this.add.container(0, 0).setDepth(47);
+    const dim = this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0a0716, 0.96).setOrigin(0).setInteractive();
+    c.add(dim);
+    const lines = ENDING_CREDITS.map((l) => String(l).replace(/\{nickname\}/g, this.nickname));
+    const roll = this.add.container(GAME_WIDTH / 2, GAME_HEIGHT + 20);
+    let y = 0;
+    lines.forEach((text, i) => {
+      if (!text) { y += 18; return; }
+      const head = i === 0;
+      const sub = text.startsWith('—');
+      roll.add(this.add.text(0, y, text, {
+        fontSize: head ? '30px' : sub ? '14px' : '15px',
+        fontStyle: head || sub ? 'bold' : 'normal',
+        color: head ? PALETTE.goldHex : sub ? PALETTE.roseHex : PALETTE.ink,
+        align: 'center',
+        wordWrap: { width: GAME_WIDTH - 80 },
+      }).setOrigin(0.5, 0));
+      y += head ? 48 : 30;
+    });
+    c.add(roll);
+    c.add(this.add.text(GAME_WIDTH - 16, GAME_HEIGHT - 16, '탭하여 건너뛰기 ▶', { fontSize: '12px', color: PALETTE.inkDim }).setOrigin(1, 1));
+    let done = false;
+    const finish = () => {
+      if (done) return; done = true;
+      this.tweens.killTweensOf(roll);
+      this.tweens.add({ targets: c, alpha: 0, duration: 400, onComplete: () => { c.destroy(); onDone?.(); } });
+    };
+    const total = y + GAME_HEIGHT + 60;
+    this.tweens.add({ targets: roll, y: -y - 40, duration: Math.max(9000, total * 14), ease: 'Linear', onComplete: finish });
+    dim.on('pointerdown', finish);
+    Audio.playTrack('title');
   }
 
   _finaleCelebrate(onDone) {

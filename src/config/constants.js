@@ -10,6 +10,31 @@ export const GAME_VERSION = 'v1.1.0';
 
 // §14 리스크 대응 — 문제 제기·버그 제보 채널. 비워 두면 정보 화면에 "준비 중"으로 표시. (발주자 결정 필요)
 export const CONTACT_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfwiY7O3UIxjKdhrjbJU9Q9jt8dEA2Tu8znAy0E1NJ75Ic-Cg/viewform';
+// 피날레 뒤 엔딩 크레딧 (탭으로 건너뜀). 빈 줄은 간격.
+export const ENDING_CREDITS = [
+  '덕질할 결심',
+  '빛의 세계 · 온빛',
+  '',
+  '— 함께한 빛 —',
+  '루멘 · 폴린 · 픽 · 새록 · 빗장 · 울림 · 셈이',
+  '영수 · 찰나 · 디원 · 네시 · 여백 · 습작 · 잔불',
+  '',
+  '— 그리고 —',
+  '{nickname} 수호자',
+  '',
+  '기획 · 세계관 · 대사 · 도트 · 사운드',
+  '자체 제작 (비영리 팬 창작)',
+  '',
+  '초상화 그래픽: Twemoji (CC BY 4.0)',
+  'Copyright 2020 Twitter, Inc and other contributors',
+  '엔진: Phaser 3 · 빌드: Vite',
+  '',
+  '실존 인물·그룹·공식 콘텐츠를 참조하지 않았습니다.',
+  '',
+  '마침표 대신, 쉼표.',
+  '다음 회차에서 만나.',
+];
+
 export const INFO_LINES = [
   '비영리 팬 창작 게임입니다. 광고·후원·결제가 없습니다.',
   '실명·그룹명·공식 이미지·가사를 쓰지 않은 오리지널 세계관(빛의 세계 · 온빛)입니다.',
