@@ -42,8 +42,13 @@ export class SettingsScene extends Phaser.Scene {
       .text(40, 494, '진행도·최고점수·로컬 랭킹·설정이 모두 삭제됩니다.', { fontSize: '12px', color: PALETTE.inkDim });
     this._smallButton(GAME_WIDTH / 2, 542, '초기화', PALETTE.danger, () => this._confirmReset());
 
-    // ── 정보·크레딧 (§12 BM · §7 IP 원칙 · §14 문의 채널 고지) ──
-    this._smallButton(GAME_WIDTH / 2, 620, '정보 · 크레딧', PALETTE.lavender, () => this._openInfo());
+    // ── 프롤로그 다시 보기 · 정보·크레딧 (§12 BM · §7 IP 원칙 · §14 문의 채널 고지) ──
+    this._smallButton(GAME_WIDTH / 2 - 74, 620, '프롤로그 보기', PALETTE.rose, () => {
+      Audio.sfx('ui');
+      this.registry.set('nickname', Save.getNickname());
+      this.scene.start('Prologue');
+    });
+    this._smallButton(GAME_WIDTH / 2 + 74, 620, '정보 · 크레딧', PALETTE.lavender, () => this._openInfo());
 
     // ── 뒤로 ────────────────────────────────────────────
     this._smallButton(GAME_WIDTH / 2, GAME_HEIGHT - 70, '타이틀로', PALETTE.rose, () => {

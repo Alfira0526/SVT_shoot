@@ -10,6 +10,7 @@ import { levelFromExp } from '../config/leveling.js';
 import { safeDisplayName } from '../systems/Filter.js';
 import { Audio } from '../systems/Audio.js';
 import guardians from '../config/guardians.json';
+import lumenDialogue from '../config/dialogue_lumen.json';
 
 // 엔들리스 거리 마일스톤으로 해금되는 잠든 수호자 (거리 오름차순)
 const ENDLESS_UNLOCKS = guardians.roster
@@ -72,6 +73,24 @@ export class EndlessScene extends Phaser.Scene {
     this._buildCollisions();
 
     this._banner('엔들리스', '빛을 따라 끝없이 올라가라', 900);
+    this._lumenOnce();
+  }
+
+  // 최초 1회 루멘 한 줄 — 엔들리스를 세계관 안에 붙인다(거짓 없는 연습 무대)
+  _lumenOnce() {
+    if (Save.getFlag('lumenEndless') || !lumenDialogue.endless) return;
+    Save.setFlag('lumenEndless');
+    this.physics.world.pause();
+    this.input.enabled = false;
+    this.scene.launch('Dialogue', {
+      lines: [{ speaker: lumenDialogue.speaker, portrait: lumenDialogue.portrait, side: lumenDialogue.side, text: lumenDialogue.endless }],
+      nickname: Save.getNickname() || '',
+      onComplete: () => {
+        this.input.enabled = true;
+        if (this.player?.target) this.player.target.set(this.player.x, this.player.y);
+        if (!this.paused && this.phase !== 'dead') this.physics.world.resume();
+      },
+    });
   }
 
   // ── 패럴랙스 배경 (다층 스크롤 — 체감 퀄 상승) ───────────

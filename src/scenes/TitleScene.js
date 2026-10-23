@@ -196,8 +196,9 @@ export class TitleScene extends Phaser.Scene {
   _startStory() {
     if (this._resolveNick() == null) return;
     Audio.sfx('ui');
-    // 프롤로그는 매번 재생 — 스토리 몰입 유지. 건너뛰기는 프롤로그 내 SKIP 버튼으로만.
-    this.scene.start('Prologue');
+    // 프롤로그는 최초 1회만 자동 재생. 이미 본 플레이어는 지도로 바로 진입(재플레이 마찰 제거, §3.8).
+    // 다시 보기는 설정 → '프롤로그 다시 보기'.
+    this.scene.start(Save.getFlag('prologueSeen') ? 'Multiverse' : 'Prologue');
   }
 
   _startEndless() {
