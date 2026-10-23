@@ -35,6 +35,8 @@
 1. ☐ **문의·제보 채널** — `src/config/constants.js`의 `CONTACT_URL`에 구글폼/이메일 링크. 비어 있으면 "준비 중". §14 리스크 대응(권리자 요청 시 즉시 교체)의 접수 창구라 공개 전 필수.
 2. ☐ 공유 문구·해시태그(`#덕질할결심`) 확정 — `src/scenes/RankingScene.js`
 3. ☐ QA 개발자 모드 패스워드(`DEV_PASSWORD`) 교체 — 번들에 노출되는 값
+4. ☐ 14정령 동물·소품 매핑 확정 — `scripts/build-portraits.mjs`의 `SPIRITS` 표(현재는 정령 컨셉 기준 임시안). 바꾼 뒤 `npm run portraits`
+5. ☐ BGM 트랙 취향 확인 — `src/systems/Audio.js`의 `TRACKS` (title/prologue/world/boss/final/endless). 템포·음색·멜로디는 숫자만 바꾸면 됨
 
 ## 5. 참고
 

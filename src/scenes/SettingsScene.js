@@ -133,7 +133,7 @@ export class SettingsScene extends Phaser.Scene {
       this.add.text(
         56,
         top + 300,
-        '캐릭터·컷씬·사운드·세계관: 자체 제작\n엔진: Phaser 3 (MIT) · 빌드: Vite (MIT)',
+        '초상화: Twemoji 그래픽 (CC BY 4.0, Twitter Inc. & contributors) 가공\n도트 스프라이트·컷씬·사운드·세계관: 자체 제작\n엔진: Phaser 3 (MIT) · 빌드: Vite (MIT)',
         { fontSize: '12px', color: PALETTE.serenityHex, wordWrap: { width: GAME_WIDTH - 112 }, lineSpacing: 4 }
       )
     );

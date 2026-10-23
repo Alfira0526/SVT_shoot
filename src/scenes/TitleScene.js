@@ -20,6 +20,7 @@ export class TitleScene extends Phaser.Scene {
   }
 
   create() {
+    Audio.playTrack('title');
     this._starfield();
 
     // 로고 (제목 상수화 — T2 확정 시 constants.js만 교체)

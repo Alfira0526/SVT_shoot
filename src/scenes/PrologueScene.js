@@ -15,6 +15,7 @@ export class PrologueScene extends Phaser.Scene {
   }
 
   create() {
+    Audio.playTrack('prologue');
     this.beats = prologueData.beats || [];
     this.nickname = safeDisplayName(this.registry.get('nickname'));
     this.i = -1;

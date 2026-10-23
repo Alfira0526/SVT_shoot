@@ -17,6 +17,7 @@ export class RankingScene extends Phaser.Scene {
   }
 
   async create() {
+    Audio.playTrack('title');
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PALETTE.deep).setOrigin(0);
     if (this.viewOnly) await this._createViewOnly();
     else await this._createResult();

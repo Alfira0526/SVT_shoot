@@ -61,6 +61,7 @@ export class EndlessScene extends Phaser.Scene {
   }
 
   create() {
+    Audio.playTrack('endless');
     this._buildBackground();
     this._buildGroups();
 

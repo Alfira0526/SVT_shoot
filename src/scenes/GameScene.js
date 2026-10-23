@@ -78,6 +78,8 @@ export class GameScene extends Phaser.Scene {
   create() {
     this.score = new ScoreSystem();
     this.paused = false;
+    // 세계 전투 BGM — 세계 난도 순서대로 조옮김해 분위기 변주
+    Audio.playTrack('world', (((this._world?.difficulty || 1) - 1) % 4) * 2);
     this._buildBackground();
     this._buildGroups();
 
@@ -284,6 +286,7 @@ export class GameScene extends Phaser.Scene {
     this.phase = 'boss';
     this.physics.world.resume();
     const bc = this._bossConfig();
+    Audio.playTrack(['monopolist', 'mugyeol'].includes(bc?.portrait) ? 'final' : 'boss');
     // 무결(피날레)은 자체 HP로 클라이맥스 볼륨 유지, 그 외엔 세계 난도 커브 HP.
     const hp = this._world && this._world.isFinale ? bc.hp : (this._bossHp || bc.hp);
     this.boss = new Boss(this, { ...bc, hp });

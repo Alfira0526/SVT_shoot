@@ -17,6 +17,7 @@ export class MultiverseScene extends Phaser.Scene {
   }
 
   create() {
+    Audio.playTrack('title');
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PALETTE.deep).setOrigin(0);
     for (let i = 0; i < 50; i++) {
       this.add.image(Phaser.Math.Between(0, GAME_WIDTH), Phaser.Math.Between(0, GAME_HEIGHT), 'star')

@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "smoke": "node smoke.mjs",
-    "icons": "node scripts/build-icons.mjs"
+    "icons": "node scripts/build-icons.mjs",
+    "portraits": "node scripts/build-portraits.mjs"
   },
   "license": "UNLICENSED",
   "private": true,
