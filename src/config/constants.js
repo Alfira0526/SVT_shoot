@@ -9,7 +9,7 @@ export const TITLE_CANDIDATES = ['티켓팅 워리어', '덕질 원정대']; // 
 export const GAME_VERSION = 'v1.1.0';
 
 // §14 리스크 대응 — 문제 제기·버그 제보 채널. 비워 두면 정보 화면에 "준비 중"으로 표시. (발주자 결정 필요)
-export const CONTACT_URL = '';
+export const CONTACT_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfwiY7O3UIxjKdhrjbJU9Q9jt8dEA2Tu8znAy0E1NJ75Ic-Cg/viewform';
 export const INFO_LINES = [
   '비영리 팬 창작 게임입니다. 광고·후원·결제가 없습니다.',
   '실명·그룹명·공식 이미지·가사를 쓰지 않은 오리지널 세계관(빛의 세계 · 온빛)입니다.',

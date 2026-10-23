@@ -32,7 +32,7 @@
 
 ## 4. 운영 전 결정 사항 (발주자)
 
-1. ☐ **문의·제보 채널** — `src/config/constants.js`의 `CONTACT_URL`에 구글폼/이메일 링크. 비어 있으면 "준비 중". §14 리스크 대응(권리자 요청 시 즉시 교체)의 접수 창구라 공개 전 필수.
+1. ✅ **문의·제보 채널** — 구글폼 생성·게시 완료(2026-10-24), `CONTACT_URL` 반영. 새 응답은 소유자 지메일로 알림, 응답은 드라이브 '덕질할 결심 운영' 폴더의 시트에 누적. 구성은 `docs/contact_form_spec.md`.
 2. ☐ 공유 문구·해시태그(`#덕질할결심`) 확정 — `src/scenes/RankingScene.js`
 3. ✅ QA 개발자 모드 패스워드(`DEV_PASSWORD`) 교체(2026-10-24) — 값은 `src/config/constants.js`. 번들에 노출되는 값이므로 팀 외부 공유 금지
 4. ✅ 14정령 동물·소품 매핑 — 발주자 확정(2026-10-24). 변경 시 `scripts/build-portraits.mjs`의 `SPIRITS` 표 수정 후 `npm run portraits`
