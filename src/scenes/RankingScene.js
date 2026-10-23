@@ -78,13 +78,15 @@ export class RankingScene extends Phaser.Scene {
       }
     });
 
+    // 세계 모드(다중세계)에서 온 결과면 같은 세계 재도전 + 지도 복귀, 구 선형 모드면 W1부터
+    const worldId = this.result.worldId || null;
     this._button(GAME_WIDTH / 2 - 92, GAME_HEIGHT - 66, '다시 도전', () => {
       Audio.sfx('ui');
-      this.scene.start('Game', { stageId: 'w1' });
+      this.scene.start('Game', worldId ? { worldId } : { stageId: 'w1' });
     });
-    this._button(GAME_WIDTH / 2 + 92, GAME_HEIGHT - 66, '타이틀', () => {
+    this._button(GAME_WIDTH / 2 + 92, GAME_HEIGHT - 66, worldId ? '지도로' : '타이틀', () => {
       Audio.sfx('ui');
-      this.scene.start('Title');
+      this.scene.start(worldId ? 'Multiverse' : 'Title');
     });
   }
 

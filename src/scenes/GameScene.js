@@ -631,6 +631,7 @@ export class GameScene extends Phaser.Scene {
       maxAllowed,
       noMiss,
       playMs,
+      worldId: this._world?.id || null, // 세계 모드에서 죽었으면 '다시 도전'이 그 세계로 돌아가게
     });
   }
 

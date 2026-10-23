@@ -56,7 +56,7 @@ export class TitleScene extends Phaser.Scene {
     this._button(GAME_WIDTH / 2, 480, '스토리 모드', () => this._startStory(), { primary: true });
     this._button(GAME_WIDTH / 2, 534, '엔들리스 모드', () => this._startEndless(), { accent: true });
     const gCount = 1 + Save.getAwakenedGuardians().length; // 봉이 포함
-    this._button(GAME_WIDTH / 2, 588, `수호자 도감  ${gCount}/13`, () => {
+    this._button(GAME_WIDTH / 2, 588, `수호자 도감  ${gCount}/14`, () => {
       Audio.unlock();
       Audio.sfx('ui');
       this.scene.start('Guardian');
