@@ -35,6 +35,11 @@ export class TitleScene extends Phaser.Scene {
     this.add.text(GAME_WIDTH / 2, 176, GAME_SUBTITLE, { fontSize: '24px', color: PALETTE.roseHex }).setOrigin(0.5);
 
     this._diaCrystal(GAME_WIDTH / 2, 258);
+    // 가이드 루멘 — 새 초상화를 타이틀에서도 보여 첫인상과 도감·대사창의 톤을 맞춘다
+    if (this.textures.exists('pt_g_bongi')) {
+      const lumen = this.add.image(GAME_WIDTH / 2 + 118, 262, 'pt_g_bongi').setScale(0.72).setAngle(-6);
+      this.tweens.add({ targets: lumen, y: 254, duration: 1600, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    }
     this.add
       .text(GAME_WIDTH / 2, 322, '13인의 수호자와 함께, 빛을 지켜라', { fontSize: '15px', color: PALETTE.inkDim })
       .setOrigin(0.5);
