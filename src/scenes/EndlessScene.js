@@ -117,7 +117,22 @@ export class EndlessScene extends Phaser.Scene {
     this.coins = this.physics.add.group({ classType: Coin, maxSize: 48, runChildUpdate: true });
   }
 
+  // 탭 전환·전화 수신 시 자동 일시정지 (복귀 즉사 방지)
+  _bindVisibility() {
+    const onHide = () => {
+      if (!document.hidden || this.paused || this.phase !== 'flying') return;
+      this._togglePause();
+    };
+    document.addEventListener('visibilitychange', onHide);
+    this.game.events.on('blur', onHide);
+    this.events.once('shutdown', () => {
+      document.removeEventListener('visibilitychange', onHide);
+      this.game.events.off('blur', onHide);
+    });
+  }
+
   _buildHud() {
+    this._bindVisibility();
     // 거리 (상단 중앙)
     this.distText = this.add.text(GAME_WIDTH / 2, 16, '0 m', { fontSize: '26px', color: PALETTE.ink, fontStyle: 'bold' })
       .setOrigin(0.5, 0).setDepth(20);

@@ -65,9 +65,11 @@ export class Boss extends Phaser.Physics.Arcade.Sprite {
   }
 
   _onPhaseChange() {
-    // "새로고침" 등 페이즈 진입 플래시
+    // "새로고침" 등 페이즈 진입 플래시 + 화면 탄 소거(장르 관례 — 전환 직후 즉사 방지)
     this.scene.cameras.main.flash(180, 255, 255, 255, false);
     this.scene.tweens.add({ targets: this, alpha: 0.3, duration: 60, yoyo: true, repeat: 3 });
+    this.scene.cancelEnemyBullets?.(true);
+    this._nextShot = this.scene.time.now + 500; // 전환 후 0.5초 숨 고르기
   }
 
   update(time) {
@@ -111,12 +113,30 @@ export class Boss extends Phaser.Physics.Arcade.Sprite {
         break;
       }
       case 'refresh': {
-        // 화면 플래시 후 랜덤 재배치 탄
+        // 화면 플래시 후 랜덤 재배치 탄.
+        // 재배치 탄은 0.3초간 반투명·정지(텔레그래프)였다가 떨어진다 — 플래시 직후 즉사 방지.
         this.scene.cameras.main.flash(120, 200, 220, 255, false);
+        const frozen = [];
         for (let i = 0; i < ph.count; i++) {
           const x = Phaser.Math.Between(20, GAME_WIDTH - 20);
-          this.scene.enemyFireAt?.(x, -10, 0, speed);
+          const y = Phaser.Math.Between(40, 260);
+          const b = this.scene.enemyFireAt?.(x, y, 0, speed);
+          if (b) {
+            const vy = b.body.velocity.y;
+            b.setVelocity(0, 0);
+            b.setAlpha(0.35);
+            b.body.enable = false;
+            frozen.push([b, vy]);
+          }
         }
+        this.scene.time.delayedCall(ph.graceMs ?? 320, () => {
+          for (const [b, vy] of frozen) {
+            if (!b.active) continue;
+            b.body.enable = true;
+            b.setAlpha(1);
+            b.setVelocity(0, vy);
+          }
+        });
         break;
       }
       case 'rage': {

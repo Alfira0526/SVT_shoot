@@ -157,3 +157,23 @@ class GameAudio {
 }
 
 export const Audio = new GameAudio();
+
+// 탭이 가려지면 BGM 시퀀서 정지(백그라운드에서 소리가 계속 나는 것 방지), 돌아오면 재개.
+// iOS 사파리는 touchend에서만 오디오가 풀리는 경우가 있어 unlock 리스너도 함께 등록.
+if (typeof window !== 'undefined') {
+  const unlock = () => Audio.unlock();
+  window.addEventListener('pointerup', unlock, { passive: true });
+  window.addEventListener('touchend', unlock, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (!Audio.ctx) return;
+    if (document.hidden) {
+      Audio._wasPlaying = Boolean(Audio.bgmTimer);
+      Audio.stopBgm();
+      Audio.ctx.suspend?.();
+    } else {
+      Audio.ctx.resume?.();
+      if (Audio._wasPlaying && Audio.bgmOn) Audio.startBgm();
+      Audio._wasPlaying = false;
+    }
+  });
+}

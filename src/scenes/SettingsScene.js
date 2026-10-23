@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME_WIDTH, GAME_HEIGHT, PALETTE, NICKNAME } from '../config/constants.js';
+import { GAME_WIDTH, GAME_HEIGHT, PALETTE, NICKNAME, GAME_TITLE, GAME_VERSION, CONTACT_URL, INFO_LINES } from '../config/constants.js';
 import { Save } from '../systems/SaveSystem.js';
 import { Audio } from '../systems/Audio.js';
 import { validateNickname } from '../systems/Filter.js';
@@ -41,6 +41,9 @@ export class SettingsScene extends Phaser.Scene {
     this.add
       .text(40, 494, '진행도·최고점수·로컬 랭킹·설정이 모두 삭제됩니다.', { fontSize: '12px', color: PALETTE.inkDim });
     this._smallButton(GAME_WIDTH / 2, 542, '초기화', PALETTE.danger, () => this._confirmReset());
+
+    // ── 정보·크레딧 (§12 BM · §7 IP 원칙 · §14 문의 채널 고지) ──
+    this._smallButton(GAME_WIDTH / 2, 620, '정보 · 크레딧', PALETTE.lavender, () => this._openInfo());
 
     // ── 뒤로 ────────────────────────────────────────────
     this._smallButton(GAME_WIDTH / 2, GAME_HEIGHT - 70, '타이틀로', PALETTE.rose, () => {
@@ -98,6 +101,60 @@ export class SettingsScene extends Phaser.Scene {
     });
     overlay.add(yes);
     overlay.add(no);
+  }
+
+  _openInfo() {
+    Audio.sfx('ui');
+    this.nickInput?.setVisible(false); // DOM 입력이 딤 위로 뜨지 않게
+    const overlay = this.add.container(0, 0).setDepth(50);
+    overlay.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.74).setOrigin(0).setInteractive());
+    const top = 110;
+    const h = 580;
+    const g = this.add.graphics();
+    g.fillStyle(PALETTE.panel, 1);
+    g.lineStyle(2, PALETTE.lavender, 1);
+    g.fillRoundedRect(36, top, GAME_WIDTH - 72, h, 16);
+    g.strokeRoundedRect(36, top, GAME_WIDTH - 72, h, 16);
+    overlay.add(g);
+    overlay.add(
+      this.add
+        .text(GAME_WIDTH / 2, top + 34, `${GAME_TITLE} ${GAME_VERSION}`, { fontSize: '20px', color: PALETTE.ink, fontStyle: 'bold' })
+        .setOrigin(0.5)
+    );
+    overlay.add(
+      this.add.text(56, top + 70, INFO_LINES.map((l) => `· ${l}`).join('\n\n'), {
+        fontSize: '14px',
+        color: PALETTE.ink,
+        wordWrap: { width: GAME_WIDTH - 112 },
+        lineSpacing: 4,
+      })
+    );
+    overlay.add(
+      this.add.text(
+        56,
+        top + 300,
+        '캐릭터·컷씬·사운드·세계관: 자체 제작\n엔진: Phaser 3 (MIT) · 빌드: Vite (MIT)',
+        { fontSize: '12px', color: PALETTE.serenityHex, wordWrap: { width: GAME_WIDTH - 112 }, lineSpacing: 4 }
+      )
+    );
+    const contact = this.add
+      .text(GAME_WIDTH / 2, top + 400, CONTACT_URL ? '문의·제보: 탭해서 열기' : '문의·제보 채널: 준비 중', {
+        fontSize: '14px',
+        color: CONTACT_URL ? PALETTE.goldHex : PALETTE.inkDim,
+      })
+      .setOrigin(0.5);
+    if (CONTACT_URL) {
+      contact.setInteractive({ useHandCursor: true });
+      contact.on('pointerdown', () => window.open(CONTACT_URL, '_blank', 'noopener'));
+    }
+    overlay.add(contact);
+    overlay.add(
+      this._smallButton(GAME_WIDTH / 2, top + h - 44, '닫기', PALETTE.rose, () => {
+        Audio.sfx('ui');
+        overlay.destroy();
+        this.nickInput?.setVisible(true);
+      })
+    );
   }
 
   // ── UI 헬퍼 ─────────────────────────────────────────────

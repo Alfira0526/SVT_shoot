@@ -59,6 +59,24 @@ export class RankingScene extends Phaser.Scene {
     await this._renderBoard(238, submitName, score, 7);
     this._notice();
 
+    // 팬덤 확산용 결과 공유 — Web Share API, 미지원 시 클립보드 복사
+    this._button(GAME_WIDTH / 2, GAME_HEIGHT - 122, '결과 공유', async () => {
+      Audio.sfx('ui');
+      const text = `${nickname} 수호자, ${gameover ? '대기열 탈락' : '예매 성공'} — ${score.toLocaleString('en-US')}점 #덕질할결심`;
+      const url = location.href.split('#')[0];
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: '덕질할 결심', text, url });
+          status.setText('공유했어요!');
+        } else {
+          await navigator.clipboard.writeText(`${text}\n${url}`);
+          status.setText('결과 문구를 복사했어요. 붙여넣어 자랑하세요!');
+        }
+      } catch {
+        status.setText('공유가 취소됐어요.');
+      }
+    });
+
     this._button(GAME_WIDTH / 2 - 92, GAME_HEIGHT - 66, '다시 도전', () => {
       Audio.sfx('ui');
       this.scene.start('Game', { stageId: 'w1' });
@@ -86,7 +104,7 @@ export class RankingScene extends Phaser.Scene {
     this.add
       .text(
         GAME_WIDTH / 2,
-        GAME_HEIGHT - 112,
+        this.viewOnly ? GAME_HEIGHT - 112 : GAME_HEIGHT - 166,
         isRemoteRanking() ? '※ 랭킹은 온라인 서버에 기록됩니다' : '※ 진행도·랭킹은 이 기기에 저장됩니다 (v1)',
         { fontSize: '11px', color: PALETTE.inkDim }
       )

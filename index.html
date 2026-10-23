@@ -6,12 +6,25 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
     />
-    <meta name="theme-color" content="#0d0b1a" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%92%8E%3C/text%3E%3C/svg%3E"
-    />
-    <title>빛의 세계 — DIA</title>
+    <meta name="theme-color" content="#1e1b3a" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="덕질할 결심" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="description" content="2~3분 안에 덕질 스트레스를 탄막으로 해소하는 모바일 세로 슈팅. 13정령과 함께 빛의 세계를 지켜라. 비영리 팬 창작 게임." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="덕질할 결심 — 빛의 세계 · 온빛" />
+    <meta property="og:description" content="대기번호 999,999번. ……뒤로 가. — 티켓팅 서버를 정공법으로 뚫는 2~3분 공감 아케이드" />
+    <meta property="og:image" content="./og.png" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="덕질할 결심 — 빛의 세계 · 온빛" />
+    <meta name="twitter:description" content="13정령과 함께 빛의 세계를 지키는 세로 탄막 슈팅. 비영리 팬 창작." />
+    <meta name="twitter:image" content="./og.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-192.png" />
+    <title>덕질할 결심 — 빛의 세계</title>
     <style>
       html,
       body {
@@ -19,7 +32,7 @@
         padding: 0;
         height: 100%;
         height: 100dvh; /* 모바일 브라우저 UI 바 대응 (지원 시) */
-        background: #0d0b1a;
+        background: #1e1b3a;
         overflow: hidden;
         -webkit-tap-highlight-color: transparent;
         overscroll-behavior: none;
@@ -44,10 +57,85 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic',
           'Apple SD Gothic Neo', sans-serif;
       }
+
+      /* 가로 모드 안내 (세로 전용 게임) — 터치 기기에서 가로로 돌렸을 때만 */
+      #rotate-overlay {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+        background: #1e1b3a;
+        color: #fff3c4;
+        z-index: 20;
+        text-align: center;
+        font-size: 18px;
+        line-height: 1.6;
+      }
+      #rotate-overlay span { font-size: 44px; }
+      @media (orientation: landscape) and (max-height: 520px) and (pointer: coarse) {
+        #rotate-overlay { display: flex; }
+      }
+
+      /* 치명적 오류 안내 — 진행도는 localStorage에 있어 새로고침해도 유지됨 */
+      #error-overlay {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 14px;
+        background: rgba(30, 27, 58, 0.96);
+        color: #fff3c4;
+        z-index: 30;
+        text-align: center;
+        padding: 24px;
+        line-height: 1.6;
+      }
+      #error-overlay button {
+        font-size: 17px;
+        font-weight: 700;
+        padding: 12px 28px;
+        border: 0;
+        border-radius: 12px;
+        background: #ff9ecb;
+        color: #2a1030;
+      }
+      #error-overlay small { color: #8f8bb0; font-size: 11px; word-break: break-all; }
     </style>
   </head>
   <body>
     <div id="game-root"></div>
+
+    <div id="rotate-overlay" aria-live="polite">
+      <span>📱</span>
+      <div>세로 전용 게임이에요.<br />기기를 세로로 돌려 주세요.</div>
+    </div>
+
+    <div id="error-overlay" role="alert">
+      <div>앗, 빛이 잠깐 끊겼어요.<br />새로고침하면 바로 이어서 할 수 있어요.</div>
+      <button type="button" onclick="location.reload()">새로고침</button>
+      <small id="error-detail"></small>
+    </div>
+
+    <noscript>
+      <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#1e1b3a;color:#fff3c4;text-align:center;padding:24px;">
+        이 게임은 JavaScript가 필요해요. 브라우저 설정에서 JavaScript를 켜 주세요.
+      </div>
+    </noscript>
+
+    <script>
+      window.addEventListener('error', function (e) {
+        var box = document.getElementById('error-overlay');
+        if (!box || box.style.display === 'flex') return;
+        box.style.display = 'flex';
+        var d = document.getElementById('error-detail');
+        if (d) d.textContent = e && e.message ? String(e.message).slice(0, 160) : '';
+      });
+    </script>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

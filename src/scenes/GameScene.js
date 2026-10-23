@@ -86,6 +86,7 @@ export class GameScene extends Phaser.Scene {
 
     this._buildHud();
     this._buildCollisions();
+    this._bindVisibility();
 
     // 씬 시작: 물리 정지 후 인트로 대사
     this.physics.world.pause();
@@ -640,6 +641,41 @@ export class GameScene extends Phaser.Scene {
     if (this.phase === 'fighting' || this.phase === 'boss') this.physics.world.resume();
   }
 
+  // 탭 전환·전화 수신 등으로 화면이 가려지면 자동 일시정지 (복귀 즉사 방지)
+  _bindVisibility() {
+    const onHide = () => {
+      if (!document.hidden) return;
+      if (this.paused || (this.phase !== 'fighting' && this.phase !== 'boss')) return;
+      this._pause();
+    };
+    document.addEventListener('visibilitychange', onHide);
+    this.game.events.on('blur', onHide);
+    this.events.once('shutdown', () => {
+      document.removeEventListener('visibilitychange', onHide);
+      this.game.events.off('blur', onHide);
+    });
+  }
+
+  // 화면의 적 탄 전부 소거 — 보스 페이즈 전환 시 빛 입자로 터뜨린다 (전환 직후 즉사 방지)
+  cancelEnemyBullets(withFx = false) {
+    this.enemyBullets.children.each((b) => {
+      if (!b.active) return;
+      if (withFx) {
+        const p = this.add.particles(b.x, b.y, 'spark', {
+          speed: { min: 20, max: 70 },
+          scale: { start: 0.7, end: 0 },
+          lifespan: 300,
+          quantity: 2,
+          tint: [PALETTE.lemon, PALETTE.light],
+          blendMode: 'ADD',
+        });
+        p.explode(2);
+        this.time.delayedCall(350, () => p.destroy());
+      }
+      b.deactivate();
+    });
+  }
+
   _menuButton(x, y, label, color, cb) {
     const container = this.add.container(x, y);
     const w = 200;
@@ -694,6 +730,7 @@ export class GameScene extends Phaser.Scene {
     const b = this.enemyBullets.get();
     const m = this._bulletSpdMul || 1; // 세계 난도별 탄속
     if (b) b.fire(x, y, vx * m, vy * m, 1, 'bullet_enemy');
+    return b || null;
   }
 
   spawnExplosion(x, y, scale = 1) {

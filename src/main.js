@@ -10,6 +10,10 @@ import { MultiverseScene } from './scenes/MultiverseScene.js';
 import { DialogueScene } from './scenes/DialogueScene.js';
 import { RankingScene } from './scenes/RankingScene.js';
 import { SettingsScene } from './scenes/SettingsScene.js';
+import { registerSW } from 'virtual:pwa-register';
+
+// PWA 서비스 워커 — 새 배포가 있으면 자동 갱신 (vite-plugin-pwa)
+registerSW({ immediate: true });
 
 // 팬덤 세로 슈팅 파일럿 — 빛의 세계(온빛)
 // 모바일 세로 480×800 논리 해상도 / 터치 드래그 이동 / 자동 발사 (§5.1, §9)
