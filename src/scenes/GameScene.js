@@ -30,9 +30,11 @@ import worldDialogue from '../config/dialogue_worlds.json';
 import lumenDialogue from '../config/dialogue_lumen.json';
 
 // 루멘(가이드) 한 줄 → 대사 라인 객체 (dialogue_lumen.json은 재생성되는 dialogue_worlds.json과 분리 보관)
-function lumenLine(text) {
+// mood: neutral(기본) | wink(축하) | worry(불안) — 표정 배리언트 초상화 (build-portraits.mjs)
+const LUMEN_MOOD = { wink: 'pt_g_bongi_wink', worry: 'pt_g_bongi_worry' };
+function lumenLine(text, mood = 'neutral') {
   if (!text) return null;
-  return { speaker: lumenDialogue.speaker, portrait: lumenDialogue.portrait, side: lumenDialogue.side, text };
+  return { speaker: lumenDialogue.speaker, portrait: LUMEN_MOOD[mood] || lumenDialogue.portrait, side: lumenDialogue.side, text };
 }
 
 const WORLDS_BY_ID = {};
@@ -450,8 +452,9 @@ export class GameScene extends Phaser.Scene {
       // 루멘 가이드 한 줄 — 이 세계의 '거짓'과 공략 힌트 (최초 1회만; 재도전 땐 생략해 템포 유지)
       const cleared = Save.getWorldsCleared().includes(this._world.id);
       if (lm && !cleared) {
-        const l1 = lumenLine(lm.intro);
-        const l2 = lumenLine(lm.intro2);
+        const finale = Boolean(this._world.isFinale);
+        const l1 = lumenLine(lm.intro, finale ? 'worry' : 'neutral');
+        const l2 = lumenLine(lm.intro2, finale ? 'worry' : 'neutral');
         if (l1) lines.push(l1);
         if (l2) lines.push(l2);
       }
@@ -476,7 +479,7 @@ export class GameScene extends Phaser.Scene {
     const awakenLines = [];
     newly.forEach((id) => { if (wd && wd.spirits[id]) awakenLines.push(...(wd.spirits[id].awaken || [])); });
     if (newly.length) {
-      const after = lumenLine(lumenDialogue.worlds[w.id]?.after);
+      const after = lumenLine(lumenDialogue.worlds[w.id]?.after, 'wink');
       if (after) awakenLines.push(after);
     }
     newly.forEach((id) => Save.awakenGuardian(id));
@@ -492,7 +495,7 @@ export class GameScene extends Phaser.Scene {
   _finaleClear() {
     const wd = worldDialogue.worlds[this._world.id];
     const lines = [...((wd && wd.clear) || [])];
-    const after = lumenLine(lumenDialogue.worlds.mugyeol?.after);
+    const after = lumenLine(lumenDialogue.worlds.mugyeol?.after, 'wink');
     if (after) lines.push(after);
     // 에필로그 — 현실 귀환(친구 메시지)로 프롤로그를 닫는다
     (lumenDialogue.epilogue || []).forEach((l) => lines.push({ ...l }));

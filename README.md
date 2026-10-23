@@ -5,7 +5,9 @@
 
 v1.1 보강: PWA(홈 화면 추가·오프라인 캐시, 갱신은 타이틀 화면에서만 적용), 공유 메타·OG 이미지·앱 아이콘(`npm run icons`), 가로 모드·오류 안내, 탭 전환 자동 일시정지, 보스 페이즈 전환 탄 소거·새로고침 텔레그래프, 설정 → 정보·크레딧, 결과 공유 버튼, 장면별 BGM 6트랙, 14정령·보스 초상화(오픈소스 Twemoji 가공, `npm run portraits`).
 
-에셋 출처·라이선스: [CREDITS.md](CREDITS.md). 초상화 매핑 변경은 `scripts/build-portraits.mjs`의 `SPIRITS` 표.
+에셋 출처·라이선스: [CREDITS.md](CREDITS.md). 초상화 매핑 변경은 `scripts/build-portraits.mjs`의 `SPIRITS` 표, 컷씬은 `scripts/build-cutscenes.mjs`.
+
+스토리 데이터: `story_canon.json` → `tools/build_story.py` → `worlds.json`·`guardians.json`·`dialogue_worlds.json`(자동 생성). 가이드 루멘의 대사(첫 브리핑·세계별 인트로/각성 리액션·마일스톤·엔들리스·에필로그)는 재생성에 영향받지 않도록 `src/config/dialogue_lumen.json`에 따로 둔다. 점검 결과와 남은 결정은 [docs/story_review.md](docs/story_review.md).
 
 ## ▶ 플레이 (라이브)
 

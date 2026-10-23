@@ -40,6 +40,9 @@ const OTHERS = [
   { file: 'pt_scalper_crack', color: '#ff6b8a', glow: '#ff9ecb', face: '1f40d', prop: '1f4a5', dark: true, noBody: true },  // (균열): 뱀 + 충격
   { file: 'pt_monopolist',    color: '#4a2f7f', glow: '#b18cff', face: '1f311', prop: '1f451', dark: true, noBody: true },  // 독점자: 그믐달 + 왕관
   { file: 'pt_mugyeol',       color: '#3a3566', glow: '#ffd66b', face: '1f425', prop: '1f380', dark: true, shadow: true },   // 무결: 루멘의 그림자(몸까지 실루엣) + 금빛 리본
+  // 루멘 표정 배리언트 — 대사 톤별 (wink=축하·각성 리액션, worry=피날레 직전 불안)
+  { file: 'pt_g_bongi_wink',  color: '#ffd66b', glow: '#fff3c4', face: '1f425', prop: '1f389', extra: '2728', overlay: '2728' },
+  { file: 'pt_g_bongi_worry', color: '#ffd66b', glow: '#8f8bb0', face: '1f425', prop: '1fa84', overlay: '1f4a7' },
 ];
 
 function svg(code) {
@@ -98,6 +101,11 @@ async function portrait(spec, outFile) {
   if (spec.extra) {
     const exSize = 22;
     layers.push({ input: await raster(spec.extra, exSize), left: 10, top: 12 });
+  }
+  if (spec.overlay) {
+    // 얼굴 오른쪽 위 감정 표식 (땀방울·반짝)
+    const ovSize = 22;
+    layers.push({ input: await raster(spec.overlay, ovSize), left: W - ovSize - 12, top: 10 });
   }
   await sharp(background(spec)).composite(layers).png().toFile(join(outDir, `${outFile}.png`));
 }
