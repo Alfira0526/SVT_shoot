@@ -149,6 +149,7 @@ export class GameScene extends Phaser.Scene {
     // 일시정지 버튼 (좌상단, §11)
     this.pauseBtn = this.add
       .text(16, 14, '⏸', { fontSize: '22px', color: PALETTE.ink })
+      .setPadding(12) // 터치 영역 48px 이상 확보 (모바일 엄지)
       .setDepth(20)
       .setScrollFactor(0)
       .setInteractive({ useHandCursor: true });

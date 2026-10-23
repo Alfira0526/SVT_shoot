@@ -20,6 +20,13 @@ export class TitleScene extends Phaser.Scene {
   }
 
   create() {
+    // 배포 갱신이 보류돼 있으면 안전한 지점(타이틀)에서 적용 → 새 버전으로 새로고침
+    if (typeof window.__pendingSwUpdate === 'function') {
+      const apply = window.__pendingSwUpdate;
+      window.__pendingSwUpdate = null;
+      apply();
+      return;
+    }
     Audio.playTrack('title');
     this._starfield();
 

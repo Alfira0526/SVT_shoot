@@ -152,6 +152,7 @@ export class EndlessScene extends Phaser.Scene {
 
     // 일시정지
     this.add.text(GAME_WIDTH - 14, GAME_HEIGHT - 24, '⏸', { fontSize: '20px', color: PALETTE.inkDim })
+      .setPadding(12) // 터치 영역 확보
       .setOrigin(1).setDepth(20).setInteractive({ useHandCursor: true })
       .on('pointerdown', () => this._togglePause());
 

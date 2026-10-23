@@ -17,7 +17,8 @@ export default defineConfig({
   plugins: [
     // 홈 화면 추가(PWA) + 오프라인 캐시. main 배포마다 서비스 워커가 자동 갱신된다.
     VitePWA({
-      registerType: 'autoUpdate',
+      // prompt: 새 버전이 있어도 게임 도중 강제 새로고침하지 않고, 타이틀 화면에 들어올 때만 갱신 (TitleScene)
+      registerType: 'prompt',
       includeAssets: ['og.png', 'icons/*.png', 'assets/**/*'],
       manifest: {
         name: '덕질할 결심',

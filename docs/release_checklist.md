@@ -4,9 +4,9 @@
 
 ## 1. 랭킹 백엔드 (Supabase) — D3 "v1부터 온라인 랭킹 필수"
 
-1. ☐ https://supabase.com 프로젝트 생성 (리전: Northeast Asia(Seoul) 권장)
-2. ☐ `supabase/README.md` 절차대로 스키마 적용 + Edge Function(submit-score) 배포
-3. ☐ 로컬 `.env`(`.env.example` 복사)와 GitHub 저장소 Secrets에 `SUPABASE_URL`, `SUPABASE_ANON_KEY` 등록 — `.env`는 커밋 금지
+1. ✅ Supabase 프로젝트 — 라이브 번들에 URL·publishable key가 주입돼 있어 온라인 랭킹 모드로 동작 중 (2026-10-24 확인)
+2. ☐ `supabase/README.md`의 스키마·Edge Function(submit-score)이 실제 프로젝트에 적용됐는지 대시보드에서 확인 (랭킹 제출이 "내 순위 N위"로 끝나면 정상)
+3. ✅ GitHub Secrets `SUPABASE_URL`, `SUPABASE_ANON_KEY` 등록됨. 로컬 개발용 `.env`는 필요 시 `.env.example` 복사 — 커밋 금지
 4. ✅ 7일 무활동 자동 일시정지 방지 핑: `.github/workflows/keep-alive.yml`. 2026년 자료 다수가 "무료 프로젝트는 1주 무활동 시 일시정지"로 설명. 한 자료는 2026-10-30부터 기존 무료 프로젝트의 REST 접근에 명시적 grant가 필요하다고 적었으나 교차 확인이 안 됨 — 배포 전 Supabase 공식 공지 확인.
 
 ## 2. 배포 (GitHub Pages)
@@ -34,7 +34,7 @@
 
 1. ☐ **문의·제보 채널** — `src/config/constants.js`의 `CONTACT_URL`에 구글폼/이메일 링크. 비어 있으면 "준비 중". §14 리스크 대응(권리자 요청 시 즉시 교체)의 접수 창구라 공개 전 필수.
 2. ☐ 공유 문구·해시태그(`#덕질할결심`) 확정 — `src/scenes/RankingScene.js`
-3. ☐ QA 개발자 모드 패스워드(`DEV_PASSWORD`) 교체 — 번들에 노출되는 값
+3. ✅ QA 개발자 모드 패스워드(`DEV_PASSWORD`) 교체(2026-10-24) — 값은 `src/config/constants.js`. 번들에 노출되는 값이므로 팀 외부 공유 금지
 4. ✅ 14정령 동물·소품 매핑 — 발주자 확정(2026-10-24). 변경 시 `scripts/build-portraits.mjs`의 `SPIRITS` 표 수정 후 `npm run portraits`
 5. ☐ BGM 트랙 취향 확인 — `src/systems/Audio.js`의 `TRACKS` (title/prologue/world/boss/final/endless). 템포·음색·멜로디는 숫자만 바꾸면 됨
 

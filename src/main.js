@@ -12,8 +12,14 @@ import { RankingScene } from './scenes/RankingScene.js';
 import { SettingsScene } from './scenes/SettingsScene.js';
 import { registerSW } from 'virtual:pwa-register';
 
-// PWA 서비스 워커 — 새 배포가 있으면 자동 갱신 (vite-plugin-pwa)
-registerSW({ immediate: true });
+// PWA 서비스 워커 — 새 배포가 감지되면 바로 새로고침하지 않고 보류해 두었다가
+// 타이틀 화면에 들어올 때 적용한다 (전투·컷씬 도중 강제 새로고침 방지). TitleScene 참조.
+const updateSW = registerSW({
+  immediate: true,
+  onNeedRefresh() {
+    window.__pendingSwUpdate = () => updateSW(true);
+  },
+});
 
 // 팬덤 세로 슈팅 파일럿 — 빛의 세계(온빛)
 // 모바일 세로 480×800 논리 해상도 / 터치 드래그 이동 / 자동 발사 (§5.1, §9)

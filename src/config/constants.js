@@ -145,7 +145,7 @@ export const ENDLESS = {
 
 // QA 개발자 모드 — 타이틀 숨김 버튼 + 패스워드로 진입. 무제한 라이프(무적).
 // 주의: 클라이언트 번들에 노출되는 값이라 보안용 아님(캐주얼 차단용). 팀 공유 후 필요 시 교체.
-export const DEV_PASSWORD = 'qa-guardian';
+export const DEV_PASSWORD = 'onbit-7k3q-lumen'; // 2026-10-24 교체 — 공개 전 팀 내부 공유값으로 다시 변경 권장
 
 // 닉네임 규칙 (인수인계 §6: scores.nickname 2~8자)
 export const NICKNAME = {

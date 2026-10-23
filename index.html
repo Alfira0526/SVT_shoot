@@ -128,12 +128,19 @@
     </noscript>
 
     <script>
-      window.addEventListener('error', function (e) {
+      function showFatal(msg) {
         var box = document.getElementById('error-overlay');
         if (!box || box.style.display === 'flex') return;
         box.style.display = 'flex';
         var d = document.getElementById('error-detail');
-        if (d) d.textContent = e && e.message ? String(e.message).slice(0, 160) : '';
+        if (d) d.textContent = msg ? String(msg).slice(0, 160) : '';
+      }
+      window.addEventListener('error', function (e) { showFatal(e && e.message); });
+      window.addEventListener('unhandledrejection', function (e) {
+        var r = e && e.reason;
+        // 네트워크(랭킹) 실패는 게임 안에서 처리되므로 치명 오류로 띄우지 않음
+        if (r && /fetch|network|Failed to fetch/i.test(String(r.message || r))) return;
+        showFatal(r && (r.message || r));
       });
     </script>
     <script type="module" src="/src/main.js"></script>
