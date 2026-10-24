@@ -13,22 +13,24 @@ const outDir = join(root, 'public', 'assets', 'portraits');
 const W = 110;
 const H = 120;
 
-// 정령 이름 · 파일 키 · 컬러 · 얼굴 이모지 · 시그니처 소품 (라이트&위트 대개편 §3 기준)
+// 정령 이름 · 파일 키 · 컬러 · 얼굴 이모지 · 시그니처 소품
+// 동물 = 노션 「발주자 과제 작업장」 T1 매핑표의 13종(너구리·토끼·사슴·노란 고양이·호랑이·보라 여우·흰 고양이·개구리·셰퍼드·리트리버·렛서판다·북극곰·수달)을
+// 정령 컨셉에 맞춰 1:1 배정(2026-10-24). 미니틴 등 공식 캐릭터 디자인 미참조(D27). hue = 색상 회전(보라 여우), light = 밝게(흰 고양이).
 const SPIRITS = [
-  { key: 'bongi',   name: '루멘(봉이)', color: '#ffd66b', glow: '#fff3c4', face: '1f425', prop: '1fa84', extra: '2b50' },   // 병아리 + 응원봉(마법봉) + 별
-  { key: 'pollin',  name: '폴린(입덕)', color: '#ff9ecb', glow: '#ffd1e8', face: '1f430', prop: '1f497' },                  // 토끼 + 하트
-  { key: 'pick',    name: '픽(뽑기)',   color: '#b18cff', glow: '#d9c8ff', face: '1f431', prop: '1f3b4', extra: '2728' },   // 고양이 + 화투(포카) + 반짝
-  { key: 'saerok',  name: '새록(새로고침)', color: '#86c8ff', glow: '#c2e3ff', face: '1f989', prop: '1f504' },              // 부엉이 + 새로고침
-  { key: 'bitjang', name: '빗장(캡차)', color: '#ff8a5c', glow: '#ffc2a6', face: '1f98a', prop: '1f511' },                  // 여우 + 열쇠
-  { key: 'ulrim',   name: '울림(떼창)', color: '#7fe6c6', glow: '#c6f5e8', face: '1f438', prop: '1f3a7', extra: '1f3b5' },  // 개구리 + 헤드폰 + 음표
-  { key: 'semi',    name: '셈이(총공)', color: '#cfa8ff', glow: '#e8d9ff', face: '1f43c', prop: '1f4cb', extra: '1f453' },  // 판다 + 체크리스트 + 안경
-  { key: 'yeongsu', name: '영수(굿즈)', color: '#ffd66b', glow: '#ffe9a8', face: '1f439', prop: '1f6cd' },                  // 햄스터 + 쇼핑백
-  { key: 'chalna',  name: '찰나(직캠)', color: '#ff8a5c', glow: '#ffc2a6', face: '1f99d', prop: '1f4f7' },                  // 너구리 + 카메라
-  { key: 'diwon',   name: '디원(컴백)', color: '#ffe066', glow: '#fff0b3', face: '1f42f', prop: '1f4c5' },                  // 호랑이 + 달력
-  { key: 'nesi',    name: '네시(새벽)', color: '#9fa8ff', glow: '#d0d4ff', face: '1f428', prop: '1f319', extra: '2b50' },   // 코알라 + 달 + 별
-  { key: 'yeobaek', name: '여백(졸업)', color: '#d8b4ff', glow: '#ecdcff', face: '1f411', prop: '1f380' },                  // 양 + 리본
-  { key: 'seupjak', name: '습작(팬창작)', color: '#86c8ff', glow: '#c2e3ff', face: '1f42d', prop: '1f58c' },                // 생쥐 + 붓
-  { key: 'janbul',  name: '잔불(버티기)', color: '#ff9a5c', glow: '#ffc9a3', face: '1f43b', prop: '1f3ee' },                // 곰 + 등불
+  { key: 'bongi',   name: '루멘(봉이)', color: '#ffd66b', glow: '#fff3c4', face: '1f425', prop: '1fa84', extra: '2b50' },             // 병아리 + 응원봉 + 별 (가이드, T1 밖)
+  { key: 'pollin',  name: '폴린(입덕)', color: '#ff9ecb', glow: '#ffd1e8', face: '1f430', prop: '1f497' },                            // T1-02 토끼 + 하트
+  { key: 'pick',    name: '픽(뽑기)',   color: '#b18cff', glow: '#d9c8ff', face: '1f98a', prop: '1f3b4', extra: '2728', hue: 250 },   // T1-06 보라 여우 + 포카 + 반짝
+  { key: 'saerok',  name: '새록(새로고침)', color: '#86c8ff', glow: '#c2e3ff', face: '1f9a6', prop: '1f504' },                        // T1-13 수달(쉴 새 없는 손) + 새로고침
+  { key: 'bitjang', name: '빗장(캡차)', color: '#ff8a5c', glow: '#ffc2a6', face: '1f436', prop: '1f511' },                            // T1-09 셰퍼드(문지기) + 열쇠
+  { key: 'ulrim',   name: '울림(떼창)', color: '#7fe6c6', glow: '#c6f5e8', face: '1f438', prop: '1f3a7', extra: '1f3b5' },            // T1-08 개구리 + 헤드폰 + 음표
+  { key: 'semi',    name: '셈이(총공)', color: '#cfa8ff', glow: '#e8d9ff', face: '1f431', prop: '1f4cb', extra: '1f453', light: true }, // T1-07 흰 고양이(작은) + 체크리스트 + 안경
+  { key: 'yeongsu', name: '영수(굿즈)', color: '#ffd66b', glow: '#ffe9a8', face: '1f99d', prop: '1f6cd' },                            // T1-01 너구리(반짝이는 걸 모음) + 쇼핑백
+  { key: 'chalna',  name: '찰나(직캠)', color: '#ff8a5c', glow: '#ffc2a6', face: '1f43f', prop: '1f4f7' },                            // T1-11 렛서판다(다람쥐 아이콘으로 근사) + 카메라
+  { key: 'diwon',   name: '디원(컴백)', color: '#ffe066', glow: '#fff0b3', face: '1f42f', prop: '1f4c5' },                            // T1-05 호랑이 + 달력
+  { key: 'nesi',    name: '네시(새벽)', color: '#9fa8ff', glow: '#d0d4ff', face: '1f43b-200d-2744-fe0f', prop: '1f319', extra: '2b50' }, // T1-12 북극곰 + 달 + 별
+  { key: 'yeobaek', name: '여백(졸업)', color: '#d8b4ff', glow: '#ecdcff', face: '1f98c', prop: '1f380' },                            // T1-03 사슴 + 리본
+  { key: 'seupjak', name: '습작(팬창작)', color: '#86c8ff', glow: '#c2e3ff', face: '1f415', prop: '1f58c' },                          // T1-10 리트리버(붓 물고 다님) + 붓
+  { key: 'janbul',  name: '잔불(버티기)', color: '#ff9a5c', glow: '#ffc9a3', face: '1f431', prop: '1f3ee', hue: 20 },                 // T1-04 노란 고양이(큰) + 등불
 ];
 
 // 적·보스 초상화 — 키는 기존 파일명 그대로
@@ -57,6 +59,8 @@ async function raster(code, size, opts = {}) {
     // 실루엣: 알파만 남기고 단색으로 (무결 = 루멘의 그림자)
     img = img.ensureAlpha().tint(opts.silhouette).modulate({ brightness: 0.25, saturation: 0.6 });
   }
+  if (opts.hue) img = img.modulate({ hue: opts.hue }); // 색상 회전 (예: 주황 여우 → 보라 여우)
+  if (opts.light) img = img.modulate({ brightness: 1.25, saturation: 0.35 }); // 밝은 털 (흰 고양이)
   return img.png().toBuffer();
 }
 
@@ -91,7 +95,7 @@ function background({ color, glow, dark, shadow, noBody }) {
 async function portrait(spec, outFile) {
   const layers = [];
   const faceSize = spec.noBody ? 72 : 60;
-  const face = await raster(spec.face, faceSize, spec.shadow ? { silhouette: '#2a2450' } : {});
+  const face = await raster(spec.face, faceSize, spec.shadow ? { silhouette: '#2a2450' } : { hue: spec.hue, light: spec.light });
   layers.push({ input: face, left: Math.round((W - faceSize) / 2), top: spec.noBody ? 14 : 12 });
   if (spec.prop) {
     // 소품은 오른손 근처에 "들고 있는" 위치

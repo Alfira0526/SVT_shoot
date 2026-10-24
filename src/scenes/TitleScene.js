@@ -220,6 +220,16 @@ export class TitleScene extends Phaser.Scene {
   // ── 연출 헬퍼 ────────────────────────────────────────────
   _starfield() {
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PALETTE.deep).setOrigin(0);
+    // 타이틀 실사 배경 — 프롤로그 C1(공연장 조명, CC0 가공)을 깔아 첫인상을 '사진 듀오톤' 톤으로 맞춘다
+    if (this.textures.exists('cutscenes/c1_concert.png')) {
+      const ph = this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'cutscenes/c1_concert.png').setAlpha(0.55);
+      ph.setScale(Math.max(GAME_WIDTH / ph.width, GAME_HEIGHT / ph.height) * 1.03);
+      this.tweens.add({ targets: ph, scale: ph.scale * 1.03, duration: 18000, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+      // 메뉴 영역(하단) 가독성 — 아래로 갈수록 짙은 딤
+      const dim = this.add.graphics();
+      dim.fillGradientStyle(PALETTE.deep, PALETTE.deep, PALETTE.deep, PALETTE.deep, 0, 0, 0.92, 0.92);
+      dim.fillRect(0, GAME_HEIGHT * 0.3, GAME_WIDTH, GAME_HEIGHT * 0.7);
+    }
     for (let i = 0; i < 80; i++) {
       const s = this.add.image(Phaser.Math.Between(0, GAME_WIDTH), Phaser.Math.Between(0, GAME_HEIGHT), 'star');
       s.setScale(Phaser.Math.Between(1, 3)).setAlpha(Phaser.Math.FloatBetween(0.2, 0.9));

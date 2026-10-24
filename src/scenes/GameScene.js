@@ -127,13 +127,21 @@ export class GameScene extends Phaser.Scene {
     const tint = PALETTE[this.stage.bgTint] || PALETTE.deep;
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, tint).setOrigin(0).setDepth(-10);
     const wc = this._world ? (PALETTE[this._world.color] || PALETTE.serenity) : null;
-    // 세계별 특색 배경(Phase D) — 있으면 절차적 배경, 없으면 기존 색 워시로 폴백.
+    // 실사 배경(사진 듀오톤, 2026-10-24) — 세계 분위기의 주 레이어. 가공 단계에서 이미 어둡게 눌러 탄 가독성 확보.
+    const photoKey = this._world ? `bd_${this._world.id}` : null;
+    const hasPhoto = photoKey && this.textures.exists(photoKey);
+    if (hasPhoto) {
+      const ph = this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, photoKey).setDepth(-9.8).setAlpha(0.85); // 베이스 딥 퍼플이 15% 비쳐 톤 통일
+      ph.setScale(Math.max(GAME_WIDTH / ph.width, GAME_HEIGHT / ph.height) * 1.04); // 살짝 키워 느린 드리프트 여유
+      this.tweens.add({ targets: ph, y: GAME_HEIGHT / 2 - 14, duration: 14000, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    }
+    // 세계별 절차 배경(Phase D) — 사진 위에 반투명으로 얹어 움직임·상징만 남긴다. 사진이 없으면 단독 사용.
     const hasBackdrop = this._world && WorldBackdrop.has(this._world.id);
-    if (hasBackdrop) WorldBackdrop.render(this, this._world.id);
+    if (hasBackdrop) { const c = WorldBackdrop.render(this, this._world.id); if (hasPhoto && c) c.setAlpha(0.42); }
     else if (wc) this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, wc, 0.12).setOrigin(0).setDepth(-9.6);
     // 별 — 특색 배경이 있는 세계는 개수·밝기를 줄여 가독성·분위기 보호
     this.stars = [];
-    const nStars = hasBackdrop ? 26 : 60;
+    const nStars = hasPhoto ? 18 : hasBackdrop ? 26 : 60;
     for (let i = 0; i < nStars; i++) {
       const s = this.add
         .image(Phaser.Math.Between(0, GAME_WIDTH), Phaser.Math.Between(0, GAME_HEIGHT), 'star')

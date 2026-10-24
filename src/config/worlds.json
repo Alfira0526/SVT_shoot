@@ -291,7 +291,7 @@
         },
         "phases": [
           {
-            "from": 1.0,
+            "from": 1,
             "to": 0.6,
             "pattern": "fan",
             "count": 10,
@@ -309,7 +309,7 @@
           },
           {
             "from": 0.3,
-            "to": 0.0,
+            "to": 0,
             "pattern": "rage",
             "count": 22,
             "speed": 175,

@@ -98,6 +98,11 @@ export class EndlessScene extends Phaser.Scene {
     const g = this.add.graphics().setDepth(-20);
     g.fillGradientStyle(PALETTE.deep, PALETTE.deep, PALETTE.deepMid, PALETTE.deepMid, 1);
     g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    // 연습 무대 실사 배경 — 떼창홀 사진(손 든 관객)을 옅게. 패럴랙스 층은 그 위에 그대로.
+    if (this.textures.exists('bd_w_ulrim')) {
+      const ph = this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'bd_w_ulrim').setDepth(-19).setAlpha(0.5);
+      ph.setScale(Math.max(GAME_WIDTH / ph.width, GAME_HEIGHT / ph.height));
+    }
 
     // 빛 구름 밴드 (느린 층)
     this.clouds = [];

@@ -5,9 +5,11 @@
 
 v1.1 보강: PWA(홈 화면 추가·오프라인 캐시, 갱신은 타이틀 화면에서만 적용), 공유 메타·OG 이미지·앱 아이콘(`npm run icons`), 가로 모드·오류 안내, 탭 전환 자동 일시정지, 보스 페이즈 전환 탄 소거·새로고침 텔레그래프, 설정 → 정보·크레딧, 결과 공유 버튼, 장면별 BGM 6트랙, 14정령·보스 초상화(오픈소스 Twemoji 가공, `npm run portraits`).
 
-에셋 출처·라이선스: [CREDITS.md](CREDITS.md). 초상화 매핑 변경은 `scripts/build-portraits.mjs`의 `SPIRITS` 표, 컷씬은 `scripts/build-cutscenes.mjs`.
+에셋 출처·라이선스: [CREDITS.md](CREDITS.md). 초상화 매핑 변경은 `scripts/build-portraits.mjs`의 `SPIRITS` 표(동물은 노션 T1 매핑 13종).
 
-스토리 데이터: `story_canon.json` → `tools/build_story.py` → `worlds.json`·`guardians.json`·`dialogue_worlds.json`(자동 생성). 가이드 루멘의 대사(첫 브리핑·세계별 인트로/각성 리액션·마일스톤·엔들리스·에필로그)는 재생성에 영향받지 않도록 `src/config/dialogue_lumen.json`에 따로 둔다. 점검 결과와 남은 결정은 [docs/story_review.md](docs/story_review.md).
+**비주얼 방향(2026-10-24)**: 도트 전제를 버리고 **사진 듀오톤 + 플랫 벡터**로 전환 — [docs/design_direction.md](docs/design_direction.md). 세계 배경·프롤로그 컷씬은 Wikimedia Commons CC0 사진을 가공(`npm run bg` 수집 → `npm run backdrops` 가공). 원본은 `raw/bg/`(배포 제외), 출처는 `raw/bg/credits.json`·CREDITS.md.
+
+스토리 데이터: `story_canon.json` → `npm run story`(`tools/build_story.mjs`, Python판 `tools/build_story.py`와 동일) → `worlds.json`·`guardians.json`·`dialogue_worlds.json`(자동 생성). 가이드 루멘의 대사(첫 브리핑·세계별 인트로/각성 리액션·마일스톤·엔들리스·에필로그)는 재생성에 영향받지 않도록 `src/config/dialogue_lumen.json`에 따로 둔다. 점검 결과와 남은 결정은 [docs/story_review.md](docs/story_review.md).
 
 ## ▶ 플레이 (라이브)
 
@@ -46,7 +48,8 @@ npm run preview    # 빌드 결과 로컬 확인
 ## 프로젝트 구조 (인수인계 §3 / 기획서 §5.2)
 
 ```
-/public/assets   sprites · portraits · ui · audio   (도트 에셋 교체 위치, §9-5)
+/public/assets   sprites · portraits · backdrops(세계 실사 배경) · cutscenes · emoji(Twemoji 원본)
+/raw/bg          배경 사진 원본(1280px) + credits.json — 빌드 입력 전용, 배포 제외
 /src
   /scenes        Boot · Title · Prologue · Game · Dialogue(오버레이) · Ranking
   /entities      Player · Enemy · Boss · Bullet · Item
@@ -67,7 +70,7 @@ npm run preview    # 빌드 결과 로컬 확인
 | 2 | 코어 루프 (드래그·자동발사·충돌·점수 HUD) | ✅ |
 | 3 | 웨이브 시스템 (JSON·잡몹 3종·중간 패턴) | ✅ |
 | 4 | 대사·보스 3페이즈·플로우·스킵/빨리감기 | ✅ |
-| 5 | 도트 에셋 교체 | ⬜ 임시 도형으로 전 기능 완성 (디자이너 산출물 교체 대기) |
+| 5 | 비주얼(도트 전제 폐기 → 사진 듀오톤 + 벡터) | ✅ 배경 19장(CC0 사진 가공)·초상화 21·컷씬 5 교체. 소형 스프라이트(플레이어·탄·몹)는 도형 유지 |
 | 6 | Supabase 랭킹 연동 + keep-alive | ✅ 코드 완성 — 스키마·Edge Function(서버검증 5종)·env 자동전환. 프로젝트 생성+시크릿만 남음 ([supabase/](./supabase/)) |
 | 7 | 모바일 최적화 | ✅ 터치·멀티터치·컨텍스트메뉴 억제·100dvh·FIT autoRound·60fps 목표 |
 | 8 | GitHub Pages 배포 | 🟡 워크플로 준비 (`main` 병합 + Pages 활성화 시 게시) |

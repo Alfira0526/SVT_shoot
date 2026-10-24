@@ -28,6 +28,9 @@ export class BootScene extends Phaser.Scene {
     ['c1_concert', 'c2_booth', 'c3_reveal', 'c4_accident', 'c5_wand']
       .forEach((n) => this.load.image(`cutscenes/${n}.png`, `assets/cutscenes/${n}.png`));
     this.load.image('card_back', 'assets/cutscenes/card_back.png');
+    // 세계 실사 배경(2026-10-24, Commons CC0 사진 가공 — scripts/build-backdrops.mjs). 키 bd_<worldId>
+    ['w_pollin', 'w_pick', 'w_saerok', 'w_bitjang', 'w_ulrim', 'w_semi', 'w_yeongsu', 'w_chalna', 'w_diwon', 'w_nesi', 'w_yeobaek', 'w_seupjak', 'w_janbul', 'mugyeol']
+      .forEach((n) => this.load.image(`bd_${n}`, `assets/backdrops/${n}.jpg`));
     // W3 암표 총책 초상화(D34 — v2 선반영, 감정곡선 sell/smug/crack)
     ['sell', 'smug', 'crack'].forEach((e) => this.load.image(`pt_scalper_${e}`, `assets/portraits/pt_scalper_${e}.png`));
     // 자체 일러스트 버스트(Pillow) — 수호자 4종 + 적/플레이어 (Graphics 도형 대체)

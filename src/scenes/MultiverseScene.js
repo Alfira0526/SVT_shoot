@@ -20,6 +20,11 @@ export class MultiverseScene extends Phaser.Scene {
   create() {
     Audio.playTrack('title');
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, PALETTE.deep).setOrigin(0);
+    // 지도 실사 배경 — 공연장 뒷좌석(찰나 세계 사진)을 아주 옅게. 카드 그리드가 주인공이라 알파를 낮춘다.
+    if (this.textures.exists('bd_w_chalna')) {
+      const ph = this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'bd_w_chalna').setAlpha(0.38);
+      ph.setScale(Math.max(GAME_WIDTH / ph.width, GAME_HEIGHT / ph.height));
+    }
     for (let i = 0; i < 50; i++) {
       this.add.image(Phaser.Math.Between(0, GAME_WIDTH), Phaser.Math.Between(0, GAME_HEIGHT), 'star')
         .setScale(Phaser.Math.Between(1, 2)).setAlpha(Phaser.Math.FloatBetween(0.15, 0.6))

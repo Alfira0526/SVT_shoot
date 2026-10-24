@@ -10,7 +10,10 @@
     "smoke": "node smoke.mjs",
     "icons": "node scripts/build-icons.mjs",
     "portraits": "node scripts/build-portraits.mjs",
-    "cutscenes": "node scripts/build-cutscenes.mjs"
+    "cutscenes": "node scripts/build-cutscenes.mjs",
+    "bg": "node scripts/fetch-backgrounds.mjs",
+    "backdrops": "node scripts/build-backdrops.mjs",
+    "story": "node tools/build_story.mjs"
   },
   "license": "UNLICENSED",
   "private": true,

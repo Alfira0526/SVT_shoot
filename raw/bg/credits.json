@@ -1,0 +1,173 @@
+{
+  "c1_concert": {
+    "title": "File:Suspended stage in red light (Unsplash).jpg",
+    "artist": "Karina Carvalho karinacarvalho",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Suspended_stage_in_red_light_(Unsplash).jpg",
+    "query": "pick",
+    "size": "6000x4000"
+  },
+  "c2_booth": {
+    "title": "File:Rainy window and table book (Unsplash).jpg",
+    "artist": "Rosalind Chang rosalindjchang",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Rainy_window_and_table_book_(Unsplash).jpg",
+    "query": "pick",
+    "size": "4288x2848"
+  },
+  "c4_accident": {
+    "title": "File:New York skyline with light trails (Unsplash).jpg",
+    "artist": "Davide Cantelli cant89",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:New_York_skyline_with_light_trails_(Unsplash).jpg",
+    "query": "light trails night Unsplash",
+    "size": "2600x1735"
+  },
+  "w_pick": {
+    "title": "File:Envelopes (Unsplash).jpg",
+    "artist": "Joanna Kosinska joannakosinska",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Envelopes_(Unsplash).jpg",
+    "query": "pick",
+    "size": "6016x4016"
+  },
+  "w_saerok": {
+    "title": "File:Woman in yellow with a yellow shadow in a queue (VY1EDHABTDE).jpg",
+    "artist": "Paul Dufour bill_bokeh",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Woman_in_yellow_with_a_yellow_shadow_in_a_queue_(VY1EDHABTDE).jpg",
+    "query": "queue people Unsplash",
+    "size": "3600x2443"
+  },
+  "w_bitjang": {
+    "title": "File:Subway This Way (Unsplash).jpg",
+    "artist": "Jake Ingle ingle_jake",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Subway_This_Way_(Unsplash).jpg",
+    "query": "turnstile Unsplash",
+    "size": "5184x3456"
+  },
+  "w_ulrim": {
+    "title": "File:Put your hands in the air (Unsplash).jpg",
+    "artist": "Arkady Lifshits overdriv3",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Put_your_hands_in_the_air_(Unsplash).jpg",
+    "query": "hands in the air Unsplash",
+    "size": "6000x4000"
+  },
+  "w_yeongsu": {
+    "title": "File:Browsing record store shelves (Unsplash).jpg",
+    "artist": "Edu Grande edgr",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Browsing_record_store_shelves_(Unsplash).jpg",
+    "query": "pick",
+    "size": "4608x2592"
+  },
+  "w_chalna": {
+    "title": "File:At the back of a concert venue (Unsplash).jpg",
+    "artist": "Rob Bye robertbye",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:At_the_back_of_a_concert_venue_(Unsplash).jpg",
+    "query": "phone concert Unsplash",
+    "size": "4032x3024"
+  },
+  "w_diwon": {
+    "title": "File:Roman numerals on alarm clock (Unsplash).jpg",
+    "artist": "Ales Krivec aleskrivec",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Roman_numerals_on_alarm_clock_(Unsplash).jpg",
+    "query": "clock Unsplash",
+    "size": "6600x4912"
+  },
+  "w_yeobaek": {
+    "title": "File:Olympic stadium munich - Flickr - markus spiske.jpg",
+    "artist": "Markus Spiske from Forchheim, Bavaria Upper Franconia",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Olympic_stadium_munich_-_Flickr_-_markus_spiske.jpg",
+    "query": "theater seats Unsplash",
+    "size": "1600x1067"
+  },
+  "w_seupjak": {
+    "title": "File:A notebook with paint brushes.jpg",
+    "artist": "Tim Arterbury",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:A_notebook_with_paint_brushes.jpg",
+    "query": "sketchbook Unsplash",
+    "size": "6000x3582"
+  },
+  "w_janbul": {
+    "title": "File:Strike fire (Unsplash).jpg",
+    "artist": "Luke Porter lukeporter",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Strike_fire_(Unsplash).jpg",
+    "query": "embers Unsplash",
+    "size": "5184x3456"
+  },
+  "c3_reveal": {
+    "title": "File:Sparkler at night (Unsplash).jpg",
+    "artist": "Karina Carvalho karinacarvalho",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Sparkler_at_night_(Unsplash).jpg",
+    "query": "pick",
+    "size": "6000x4000"
+  },
+  "c5_wand": {
+    "title": "File:Hands (Unsplash).jpg",
+    "artist": "Daiga Ellaby daiga_ellaby",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Hands_(Unsplash).jpg",
+    "query": "holding light dark Unsplash",
+    "size": "5257x3505"
+  },
+  "w_pollin": {
+    "title": "File:Building Western University (Unsplash).jpg",
+    "artist": "Scott Webb scottwebb",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Building_Western_University_(Unsplash).jpg",
+    "query": "looking up sky buildings Unsplash",
+    "size": "5967x3978"
+  },
+  "w_semi": {
+    "title": "File:Laptop in close-up (Unsplash).jpg",
+    "artist": "seth schwiet schwiet",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Laptop_in_close-up_(Unsplash).jpg",
+    "query": "laptop dark Unsplash",
+    "size": "4608x3456"
+  },
+  "w_nesi": {
+    "title": "File:Café Girl (Unsplash).jpg",
+    "artist": "Sean Witzke seanwitzke",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Caf%C3%A9_Girl_(Unsplash).jpg",
+    "query": "night window Unsplash",
+    "size": "5472x3648"
+  },
+  "mugyeol": {
+    "title": "File:Silhouettes against pale stage smoke (Unsplash).jpg",
+    "artist": "Daniel Ebersole danielebersole",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Silhouettes_against_pale_stage_smoke_(Unsplash).jpg",
+    "query": "pick",
+    "size": "1544x1024"
+  }
+}

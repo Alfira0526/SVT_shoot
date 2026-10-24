@@ -1,23 +1,23 @@
 {
   "sceneId": "prologue",
-  "note": "전면 개편 오프닝(스토리 캐논) — 랜덤 포카 뽑기 → 럭키카드(최고옵션) → 루멘이 응원봉에 깃듦. 친구는 부추기는 톤+밈. 정체(루멘)·다중세계 설명은 이후 분산.",
+  "note": "오프닝(스토리 캐논) — 공연 뒤 부스 마지막 박스 → 럭키카드(최고 옵션) → 켠 적 없는 응원봉에 불 → 발밑이 사라진다. 2026-10-24 톤 리라이트: 밈 축소, 친구는 등 떠미는 역할만. 정체(루멘)·세계 설명은 지도 첫 브리핑으로 미룸. 배경: Commons CC0 사진 가공(CREDITS.md).",
   "beats": [
     { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "speaker": "친구", "text": "앵콜까지 다 봤는데 왜 더 두근거려. 집에 가자며." },
-    { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "speaker": "나", "text": "부스 마지막 박스래. 딱 한 장만 더 까고 가자." },
-    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "친구", "text": "포장 뜯는 손 왜 떨어. 응원봉이야 폭탄이야." },
-    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "나", "text": "이거 마지막 한 장이야." },
-    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "친구", "text": "확률? 알빠노. 까. 안 까면 내가 깜." },
-    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "나", "text": "세 박스 째다. 이번에도 꽝이면 나 진짜…" },
-    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "친구", "text": "손이 먼저 나갔네 뭐. 인정하고 까라고." },
+    { "type": "caption", "cut": "c1", "image": "cutscenes/c1_concert.png", "speaker": "나", "text": "부스 마지막 박스래. 딱 한 장만 더." },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "친구", "text": "손 왜 떨어. 포장 뜯는 거야, 폭탄 해체하는 거야." },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "나", "text": "마지막 한 장이야. 진짜로." },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "친구", "text": "확률 계산하지 마. 그냥 까. 안 까면 내가 깐다." },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "나", "text": "세 박스째야. 이번에도 꽝이면 나…" },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "친구", "text": "손이 먼저 나갔네. 그럼 된 거야. 까." },
     { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "나", "text": "…최고 옵션 나오면 어떡하지." },
-    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "친구", "text": "울지 마 화장 번져. (근데 카메라는 켤게)" },
+    { "type": "caption", "cut": "c2", "image": "cutscenes/c2_booth.png", "speaker": "친구", "text": "울지 마, 화장 번져. 근데 카메라는 켤게." },
     { "type": "tap_card", "cut": "c2", "text": "카드를 뒤집어 보자 — 탭" },
-    { "type": "caption", "cut": "c3", "image": "cutscenes/c3_reveal.png", "speaker": "나", "text": "……떴다. 최고 옵션. 럭키카드. 진짜로 떴어." },
+    { "type": "caption", "cut": "c3", "image": "cutscenes/c3_reveal.png", "speaker": "나", "text": "……떴다. 떴어. 최고 옵션. 럭키카드. 진짜로." },
     { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "", "text": "켠 적도 없는 응원봉에, 불이 들어온다.", "effect": "shake" },
     { "type": "voice", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "???", "text": "……드디어. 누가 날 봤네." },
     { "type": "caption", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "나", "text": "방금 뭐라 그랬어?" },
     { "type": "caption", "cut": "c5", "image": "cutscenes/c5_wand.png", "speaker": "친구", "text": "뭐가. 나 입도 안 뗐는데." },
-    { "type": "voice", "cut": "c4", "image": "cutscenes/c4_accident.png", "speaker": "", "text": "응원봉이 한 번 크게 깜빡인 순간 — 발밑이 사라진다.", "effect": "shake" },
-    { "type": "voice", "cut": "c4", "image": "cutscenes/c4_accident.png", "speaker": "???", "text": "잡아! 떨어지는 동안 설명할게. 아니, 떨어지면서 쏴야 돼. 일단 쏴!" }
+    { "type": "voice", "cut": "c4", "image": "cutscenes/c4_accident.png", "speaker": "", "text": "응원봉이 한 번 크게 깜빡인다. 그리고, 발밑이 없다.", "effect": "shake" },
+    { "type": "voice", "cut": "c4", "image": "cutscenes/c4_accident.png", "speaker": "???", "text": "잡아! 설명은 떨어지면서 할게. 아니, 떨어지면서 쏴야 돼. 일단 쏴!" }
   ]
 }
