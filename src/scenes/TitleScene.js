@@ -34,33 +34,34 @@ export class TitleScene extends Phaser.Scene {
     this.add.text(GAME_WIDTH / 2, 128, GAME_TITLE, { fontSize: '48px', fontStyle: 'bold', color: PALETTE.ink }).setOrigin(0.5);
     this.add.text(GAME_WIDTH / 2, 176, GAME_SUBTITLE, { fontSize: '24px', color: PALETTE.roseHex }).setOrigin(0.5);
 
-    this._diaCrystal(GAME_WIDTH / 2, 258);
-    // 가이드 루멘 — 새 초상화를 타이틀에서도 보여 첫인상과 도감·대사창의 톤을 맞춘다
+    // 세로 배치(겹침 방지): 크리스탈·루멘 카드(최하단 ~292) → 태그라인 312 → 완주 배지 334 → 닉네임 라벨 362 → 입력 398 → 경고 432 → 버튼 480~
+    this._diaCrystal(GAME_WIDTH / 2, 244);
+    // 가이드 루멘 — 새 초상화를 타이틀에서도 보여 첫인상과 도감·대사창의 톤을 맞춘다 (0.66배 ≈ 73×79, 하단 ≈ 288)
     if (this.textures.exists('pt_g_bongi')) {
-      const lumen = this.add.image(GAME_WIDTH / 2 + 118, 262, 'pt_g_bongi').setScale(0.72).setAngle(-6);
-      this.tweens.add({ targets: lumen, y: 254, duration: 1600, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+      const lumen = this.add.image(GAME_WIDTH / 2 + 118, 248, 'pt_g_bongi').setScale(0.66).setAngle(-6);
+      this.tweens.add({ targets: lumen, y: 242, duration: 1600, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
     }
     this.add
-      .text(GAME_WIDTH / 2, 322, '열셋의 정령과 함께, 빛을 지켜라', { fontSize: '15px', color: PALETTE.inkDim })
+      .text(GAME_WIDTH / 2, 312, '열셋의 정령과 함께, 빛을 지켜라', { fontSize: '15px', color: PALETTE.inkDim })
       .setOrigin(0.5);
     // 완주 배지 — 무결을 넘긴 플레이어에게 작은 보상(쉼표)
     if (Save.getFlag('storyComplete')) {
-      const badge = this.add.text(GAME_WIDTH / 2, 344, '✦ 쉼표 달성 · 다음 회차 대기 중', { fontSize: '12px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0.5);
+      const badge = this.add.text(GAME_WIDTH / 2, 334, '✦ 쉼표 달성 · 다음 회차 대기 중', { fontSize: '12px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0.5);
       this.tweens.add({ targets: badge, alpha: 0.55, duration: 1400, yoyo: true, repeat: -1 });
     }
 
     // 닉네임 입력 (프롤로그 진입 전 최초 1회, §3.1 / D21)
-    this.add.text(GAME_WIDTH / 2, 372, '랭킹 닉네임', { fontSize: '14px', color: PALETTE.serenityHex }).setOrigin(0.5);
+    this.add.text(GAME_WIDTH / 2, 362, '랭킹 닉네임', { fontSize: '14px', color: PALETTE.serenityHex }).setOrigin(0.5);
     const existing = Save.getNickname();
     this.domInput = this.add
-      .dom(GAME_WIDTH / 2, 406)
+      .dom(GAME_WIDTH / 2, 398)
       .createFromHTML(
         `<input id="nick" maxlength="${NICKNAME.max}" value="${escapeHtml(existing)}"
           placeholder="최애를 부르듯 2~8자" style="
           width:240px;padding:12px 14px;border-radius:12px;border:2px solid ${PALETTE.serenityHex};
           background:#12102a;color:#fff;font-size:16px;text-align:center;outline:none;" />`
       );
-    this.warn = this.add.text(GAME_WIDTH / 2, 440, '', { fontSize: '13px', color: PALETTE.dangerHex }).setOrigin(0.5);
+    this.warn = this.add.text(GAME_WIDTH / 2, 432, '', { fontSize: '13px', color: PALETTE.dangerHex }).setOrigin(0.5);
 
     // 메뉴 (§11) — 스토리(캠페인) / 엔들리스(무한 성장) 2모드 + 수호자 도감
     this._button(GAME_WIDTH / 2, 480, '스토리 모드', () => this._startStory(), { primary: true });

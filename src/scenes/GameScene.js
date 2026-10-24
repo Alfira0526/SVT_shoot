@@ -189,13 +189,14 @@ export class GameScene extends Phaser.Scene {
     // 보스 HP 바 (초기 숨김)
     this.bossHpBg = this.add.graphics().setDepth(20).setVisible(false);
     this.bossHpBar = this.add.graphics().setDepth(21).setVisible(false);
+    // 보스 이름(40) · 대기열 텍스트(58) · HP 바 — 세 줄이 서로 닿지 않게 간격 확보
     this.bossHpText = this.add
-      .text(GAME_WIDTH / 2, 60, '', { fontSize: '13px', color: PALETTE.ink })
+      .text(GAME_WIDTH / 2, 59, '', { fontSize: '13px', color: PALETTE.ink })
       .setOrigin(0.5)
       .setDepth(22)
       .setVisible(false);
     this.bossNameText = this.add
-      .text(GAME_WIDTH / 2, 44, '', { fontSize: '12px', color: PALETTE.dangerHex, fontStyle: 'bold' })
+      .text(GAME_WIDTH / 2, 40, '', { fontSize: '12px', color: PALETTE.dangerHex, fontStyle: 'bold' })
       .setOrigin(0.5)
       .setDepth(22)
       .setVisible(false);

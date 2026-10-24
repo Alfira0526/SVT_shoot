@@ -27,9 +27,10 @@ export class DialogueScene extends Phaser.Scene {
     const boxH = 190;
     const boxY = GAME_HEIGHT - boxH - 16;
 
-    // 초상화 슬롯 (좌/우)
-    this.portraitLeft = this.add.image(74, boxY - 20, '__none').setVisible(false).setDepth(2);
-    this.portraitRight = this.add.image(GAME_WIDTH - 74, boxY - 20, '__none').setVisible(false).setDepth(2);
+    // 초상화 슬롯 (좌/우) — 카드(110×120)가 대사창 위에 '얹히되' 화자 이름(boxY+14)을 가리지 않도록 패널 바로 위에 둔다
+    const portraitY = boxY - 66;
+    this.portraitLeft = this.add.image(74, portraitY, '__none').setVisible(false).setDepth(2);
+    this.portraitRight = this.add.image(GAME_WIDTH - 74, portraitY, '__none').setVisible(false).setDepth(2);
 
     // 대사창 패널
     this.panel = this.add.graphics().setDepth(1);

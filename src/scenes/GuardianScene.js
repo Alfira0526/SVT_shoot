@@ -64,12 +64,13 @@ export class GuardianScene extends Phaser.Scene {
         aura.fillCircle(cx, cy - 14, stage >= 3 ? 30 : 26);
       }
       const key = this.textures.exists(g.portrait) ? g.portrait : 'pt_g_bongi';
-      this.add.image(cx, cy - 14, key).setScale(0.52);
+      // 초상화(110×120 × 0.44 ≈ 48×53)는 Lv/장착 배지 줄(위 16px) 아래, 이름 줄(아래) 위에 들어가도록 축소 배치 — 겹침 방지
+      this.add.image(cx, cy - 12, key).setScale(0.44);
       // Lv 배지
-      this.add.text(cx - w / 2 + 8, cy - h / 2 + 6, `Lv.${level}`, { fontSize: '11px', color: PALETTE.goldHex, fontStyle: 'bold' });
-      if (equipped) this.add.text(cx + w / 2 - 8, cy - h / 2 + 6, '장착', { fontSize: '10px', color: PALETTE.gold ? PALETTE.goldHex : '#fff', fontStyle: 'bold' }).setOrigin(1, 0);
-      this.add.text(cx, cy + 28, g.name, { fontSize: '15px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5);
-      this.add.text(cx, cy + 44, `${g.light} · ${STAGE_NAME[stage]}`, { fontSize: '9px', color: PALETTE.roseHex }).setOrigin(0.5);
+      this.add.text(cx - w / 2 + 8, cy - h / 2 + 5, `Lv.${level}`, { fontSize: '11px', color: PALETTE.goldHex, fontStyle: 'bold' });
+      if (equipped) this.add.text(cx + w / 2 - 8, cy - h / 2 + 5, '장착', { fontSize: '10px', color: PALETTE.gold ? PALETTE.goldHex : '#fff', fontStyle: 'bold' }).setOrigin(1, 0);
+      this.add.text(cx, cy + 25, g.name, { fontSize: '14px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5);
+      this.add.text(cx, cy + 42, `${g.light} · ${STAGE_NAME[stage]}`, { fontSize: '9px', color: PALETTE.roseHex }).setOrigin(0.5);
       this.add.zone(cx, cy, w, h).setInteractive({ useHandCursor: true })
         .on('pointerdown', () => { Audio.sfx('ui'); this._detail(g); });
     } else {
@@ -95,8 +96,8 @@ export class GuardianScene extends Phaser.Scene {
       aura.fillCircle(GAME_WIDTH / 2, 230, stage >= 3 ? 92 : 80);
       c.add(aura);
     }
-    c.add(this.add.image(GAME_WIDTH / 2, 230, key).setScale(1.5));
-    c.add(this.add.text(GAME_WIDTH / 2, 330, g.name, { fontSize: '30px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5));
+    c.add(this.add.image(GAME_WIDTH / 2, 226, key).setScale(1.3)); // 143×156 → 148~304, 이름(334)과 겹치지 않게
+    c.add(this.add.text(GAME_WIDTH / 2, 334, g.name, { fontSize: '30px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5));
     c.add(this.add.text(GAME_WIDTH / 2, 364, `${g.light}  ·  Lv.${st.level} ${STAGE_NAME[stage]}`, { fontSize: '15px', color: PALETTE.roseHex, fontStyle: 'bold' }).setOrigin(0.5));
 
     // EXP 바
