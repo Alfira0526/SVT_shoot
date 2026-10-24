@@ -29,7 +29,7 @@ export class GuardianScene extends Phaser.Scene {
     const isAwake = (g) => g.awake || awake.includes(g.id);
     const count = guardians.roster.filter(isAwake).length;
 
-    this.add.text(GAME_WIDTH / 2, 40, '수호자 도감', { fontSize: '30px', fontStyle: 'bold', color: PALETTE.ink }).setOrigin(0.5);
+    this.add.text(GAME_WIDTH / 2, 40, '정령 도감', { fontSize: '30px', fontStyle: 'bold', color: PALETTE.ink }).setOrigin(0.5);
     this.add.text(GAME_WIDTH / 2, 74, `흩어진 빛을 되찾는 중  ·  ${count} / ${guardians.roster.length}`, { fontSize: '14px', color: PALETTE.goldHex }).setOrigin(0.5);
 
     // 3열 그리드 (루멘 + 13정령 = 14)
@@ -136,7 +136,7 @@ export class GuardianScene extends Phaser.Scene {
     eg.fillRoundedRect(GAME_WIDTH / 2 - bw2 / 2, by2 - bh2 / 2, bw2, bh2, 12);
     if (equipped) { eg.lineStyle(2, PALETTE.gold, 0.9); eg.strokeRoundedRect(GAME_WIDTH / 2 - bw2 / 2, by2 - bh2 / 2, bw2, bh2, 12); }
     c.add(eg);
-    c.add(this.add.text(GAME_WIDTH / 2, by2, equipped ? '장착됨' : '이 수호자로 장착', { fontSize: '17px', color: equipped ? PALETTE.goldHex : '#2a1a12', fontStyle: 'bold' }).setOrigin(0.5));
+    c.add(this.add.text(GAME_WIDTH / 2, by2, equipped ? '장착됨' : '이 정령으로 장착', { fontSize: '17px', color: equipped ? PALETTE.goldHex : '#2a1a12', fontStyle: 'bold' }).setOrigin(0.5));
     if (!equipped) {
       c.add(this.add.zone(GAME_WIDTH / 2, by2, bw2, bh2).setInteractive({ useHandCursor: true })
         .on('pointerdown', (p, lx, ly, ev) => { ev?.stopPropagation?.(); Audio.sfx('powerup'); Save.setEquipped(g.id); this.scene.restart(); }));
@@ -188,7 +188,7 @@ export class GuardianScene extends Phaser.Scene {
         fontSize: '16px', color: PALETTE.ink, align: 'center', lineSpacing: 6, wordWrap: { width: GAME_WIDTH - 70 },
       }).setOrigin(0.5, 0));
     } else {
-      c.add(this.add.text(GAME_WIDTH / 2, 300, '이 수호자의 이 세계관 이야기는\n곧 밝혀진다…', {
+      c.add(this.add.text(GAME_WIDTH / 2, 300, '이 정령의 이 세계관 이야기는\n곧 밝혀진다…', {
         fontSize: '18px', color: PALETTE.inkDim, align: 'center', lineSpacing: 8,
       }).setOrigin(0.5));
     }

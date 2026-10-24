@@ -364,12 +364,12 @@ export class GameScene extends Phaser.Scene {
     const c = this.add.container(GAME_WIDTH / 2, GAME_HEIGHT / 2).setDepth(45);
     c.add(this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0a0716, 0.82).setOrigin(0.5));
     const count = 1 + Save.getAwakenedGuardians().length; // 루멘 포함
-    c.add(this.add.text(0, -170, '새로운 수호자 각성', { fontSize: '20px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0.5));
+    c.add(this.add.text(0, -170, '새로운 정령 각성', { fontSize: '20px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0.5));
     const port = this.add.image(0, -40, this.textures.exists(gd.portrait) ? gd.portrait : 'pt_g_bongi').setScale(1.4);
     c.add(port);
     c.add(this.add.text(0, 70, gd.name, { fontSize: '34px', color: PALETTE.ink, fontStyle: 'bold' }).setOrigin(0.5));
     c.add(this.add.text(0, 108, gd.light, { fontSize: '16px', color: PALETTE.roseHex }).setOrigin(0.5));
-    c.add(this.add.text(0, 150, `수호자 ${count} / 14`, { fontSize: '13px', color: PALETTE.inkDim }).setOrigin(0.5));
+    c.add(this.add.text(0, 150, `정령 ${count} / 14`, { fontSize: '13px', color: PALETTE.inkDim }).setOrigin(0.5));
     const p = this.add.particles(0, -40, 'spark', {
       speed: { min: 40, max: 160 }, scale: { start: 1, end: 0 }, lifespan: 900, frequency: 60,
       tint: [PALETTE.light, PALETTE.rose, PALETTE.gold], blendMode: 'ADD',
@@ -604,7 +604,7 @@ export class GameScene extends Phaser.Scene {
     const before = levelFromExp(Save.getGuardianExp(lo.id)).level;
     Save.addGuardianExp(lo.id, amount);
     const after = levelFromExp(Save.getGuardianExp(lo.id)).level;
-    const name = lo.guardian?.name || '수호자';
+    const name = lo.guardian?.name || '정령';
     // 레벨업 시 해금 코인 지급 — 플레이 성장이 곧 세계 해금 진행(레벨업 또는 코인)
     const gained = Math.max(0, after - before);
     if (gained > 0) Save.addUnlockCoins(gained * LEVELUP_UNLOCK_COIN);

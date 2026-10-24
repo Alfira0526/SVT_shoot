@@ -41,7 +41,7 @@ export class TitleScene extends Phaser.Scene {
       this.tweens.add({ targets: lumen, y: 254, duration: 1600, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
     }
     this.add
-      .text(GAME_WIDTH / 2, 322, '13인의 수호자와 함께, 빛을 지켜라', { fontSize: '15px', color: PALETTE.inkDim })
+      .text(GAME_WIDTH / 2, 322, '열셋의 정령과 함께, 빛을 지켜라', { fontSize: '15px', color: PALETTE.inkDim })
       .setOrigin(0.5);
     // 완주 배지 — 무결을 넘긴 플레이어에게 작은 보상(쉼표)
     if (Save.getFlag('storyComplete')) {
@@ -66,7 +66,7 @@ export class TitleScene extends Phaser.Scene {
     this._button(GAME_WIDTH / 2, 480, '스토리 모드', () => this._startStory(), { primary: true });
     this._button(GAME_WIDTH / 2, 534, '엔들리스 모드', () => this._startEndless(), { accent: true });
     const gCount = 1 + Save.getAwakenedGuardians().length; // 봉이 포함
-    this._button(GAME_WIDTH / 2, 588, `수호자 도감  ${gCount}/14`, () => {
+    this._button(GAME_WIDTH / 2, 588, `정령 도감  ${gCount}/14`, () => {
       Audio.unlock();
       Audio.sfx('ui');
       this.scene.start('Guardian');

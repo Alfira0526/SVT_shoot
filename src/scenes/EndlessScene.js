@@ -474,7 +474,7 @@ export class EndlessScene extends Phaser.Scene {
       const before = levelFromExp(Save.getGuardianExp(lo.id)).level;
       Save.addGuardianExp(lo.id, expGain);
       const after = levelFromExp(Save.getGuardianExp(lo.id)).level;
-      expLine = `${lo.guardian?.name || '수호자'}  +${expGain} EXP` + (after > before ? `  ·  Lv.${after}!` : '');
+      expLine = `${lo.guardian?.name || '정령'}  +${expGain} EXP` + (after > before ? `  ·  Lv.${after}!` : '');
     }
 
     this.time.delayedCall(700, () => {
@@ -489,7 +489,7 @@ export class EndlessScene extends Phaser.Scene {
       c.add(this.add.text(GAME_WIDTH / 2 - 20, 388, `+${this.gold}  (누적 ${rec.totalGold})`, { fontSize: '16px', color: PALETTE.goldHex, fontStyle: 'bold' }).setOrigin(0, 0));
       if (expLine) c.add(this.add.text(GAME_WIDTH / 2, 428, expLine, { fontSize: '14px', color: PALETTE.serenityHex, fontStyle: 'bold' }).setOrigin(0.5));
       if (unlocked.length) {
-        c.add(this.add.text(GAME_WIDTH / 2, 450, `✦ 새 수호자 해금: ${unlocked.map((g) => g.name).join(', ')}`, {
+        c.add(this.add.text(GAME_WIDTH / 2, 450, `✦ 새 정령 해금: ${unlocked.map((g) => g.name).join(', ')}`, {
           fontSize: '15px', color: PALETTE.goldHex, fontStyle: 'bold', align: 'center', wordWrap: { width: GAME_WIDTH - 60 },
         }).setOrigin(0.5));
       }
